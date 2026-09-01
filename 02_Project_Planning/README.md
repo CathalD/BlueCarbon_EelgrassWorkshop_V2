@@ -11,158 +11,59 @@
 # Part 2 — Project Planning
 ## From a carbon question to a sampling design
 
-**Quick links:** [Sampling Design Guide](Sampling-Design-Eng-2026.pdf) · [Sample Allocation Calculator](SampleDesign_SampleAllocationCalculator_WithStrata.xlsx) · [Coastal Blue Carbon Field Guide](../Coastal-Blue-Carbon-Field-Guide-FINAL.pdf) · [Howard et al. (2014) Blue Carbon Manual](https://www.thebluecarboninitiative.org/manual)
-
-## Why planning matters
-
-This section is the workshop's **making the data useful** component (see the
-[main guide](../README.md)). Before you collect any sediment samples, it's worth making sure what you are collecting
-will answer your team's questions. That's what a **Project Plan** aims to accomplish.
-
-> The following methods are based on WWF-Canada's [Sampling Design guide](Sampling-Design-Eng-2026.pdf),
-> as well as the sampling-design guidance provided in the
-> [Howard et al. Blue Carbon Manual](https://www.thebluecarboninitiative.org/manual)
-> (see [Section 1](../01_Background/)).
+**Quick links:** [Sampling Design Guide](Sampling-Design-Eng-2026.pdf) · [Sample Allocation Calculator](BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx) · [Calculator — Google Sheets copy](https://docs.google.com/spreadsheets/d/1TGLz11ZmWO2EsAF86PMbEYZFO75_X_pKdJPS38a0O-M/edit?usp=sharing) · [Blue Carbon Hub tool](https://blue-carbon-hub.projects.earthengine.app/) · [Coastal Blue Carbon Field Guide](../Coastal-Blue-Carbon-Field-Guide-FINAL.pdf) · [Appendix A — sampling logic](#appendix-a--a-brief-lesson-in-sampling-logic)
 
 ---
 
-**Before collecting sediment cores** it's worth considering these four questions:
+**Before collecting sediment cores**, four questions are worth addressing:
 
-1. **What do I want to know?** - Are you collecting baseline data? Interested in comparing different management types?
-2. **Where does that question apply?** What areas do I want to know about? Is it the whole ecosystem? Just the eelgrass? High-meadow vs low?
-3. **How much data do I need?** How many samples is enough? Can I estimate this before planning to see if it fits my budget?
-4. **Where should I collect samples?** Where exactly should I be collecting data from?
+1. **What do I want to know?** Am I interested in collecting baseline data? Making a comparison between different management types? Tracking restoration success? All of the above?
+2. **Where does that question apply?** The whole ecosystem, just the eelgrass, high meadow vs low?
+3. **How much data do I need?** How many samples is enough? What is our capacity to meet this?
+4. **Where should the samples be collected from?**
 
----
+Answering these is what a **sampling design** aims to achieve. It turns a carbon question into a field plan: a number of cores, and a set of sampling coordinates.
 
-### The road from here to the field — and what you'll have at the end
+This section covers the five steps of a sampling design. Work through them and you'll leave with a plan for the field.
+
+| # | Step | Answers |
+|---|------|---------|
+| 1 | **Define the study area** | *Where, roughly, am I working?* |
+| 2 | **Stratify** (optional) | *Does the site split into distinct areas?* |
+| 3 | **Choose the carbon pool** | *Water, plant, or sediment?* |
+| 4 | **Determine how many samples** | *How many cores meet my goal?* |
+| 5 | **Determine where they go** | *Exactly where do I core?* |
+
+> The methods here follow WWF-Canada's [Sampling Design guide](Sampling-Design-Eng-2026.pdf) and the sampling guidance in the [Howard et al. Blue Carbon Manual](https://www.thebluecarboninitiative.org/manual) (see [Section 1](../01_Background/)).
+
+**Two companion tools** appear throughout:
 
 <table>
 <tr>
-<td width="52%">
+<td width="50%">
 
-**The five steps**
+**🗺 [Blue Carbon Hub sampling-design app](https://blue-carbon-hub.projects.earthengine.app/)** — the spatial tool. Draw your boundary, stratify it, place your samples on a map.
 
-```
-     Your carbon question
-              │
-              ▼
-  1.  Study area boundary
-              │        where am I working?
-              ▼
-  2.  Stratification
-              │        does it split into zones?
-              ▼
-  3.  Carbon pool
-              │        what am I measuring?
-              ▼
-  4.  Sample size
-              │        how many cores?
-              ▼
-  5.  Sample locations
-              │        where do they go?
-              ▼
-     Field collection → Section 3
-```
+*Used in Steps 1, 2 and 5.*
 
 </td>
-<td width="48%">
+<td width="50%">
 
-**What each step leaves you with**
+**📄 [Sample Allocation Calculator](BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx)** — the numbers tool. Give it an area, a precision target and a rough prior; it returns a core count.
 
-```
-  ✓  Study area boundary
-
-  ✓  Ecosystem strata
-     (if you need them)
-
-  ✓  Carbon pool selected
-
-  ✓  Required number of cores
-
-  ✓  Sampling locations to
-     collect sediment core data
-```
+*Used in Step 4.*
 
 </td>
 </tr>
 </table>
 
-Each of the five steps below follows the same shape: **why it matters**, **a demonstration using our worked example**, **tools for you to try**, and **what you should have** before moving on.
+If you want to know how the calculator returns the number it does and dive deeper into the math behind the tools, look to [**Appendix A**](#appendix-a--a-brief-lesson-in-sampling-logic), at the bottom of this page, where we go through how sample size is estimated before sampling — and how to check whether the sampling met your goals afterwards.
 
 ---
 
+## Background — what sampling is, and why it works
 
-## Introducing our worked example
-
-> [!NOTE]
-> **📊 See a demonstrated worked example here.** One small team in British Columbia, followed
-> from planning through fieldwork to carbon estimates. It runs through **every part of this
-> workshop**, so you can watch one project end to end.
->
-> The full planning walkthrough lives in
-> **[`Worked_Example/02_Project_Planning.md`](../Worked_Example/02_Project_Planning.md)**, and
-> the complete project — data sheets, analysis and results — in
-> [`Worked_Example/`](../Worked_Example/).
->
-> Follow it to see the shape of a project. Don't copy its numbers: yours will differ.
-
-<details>
-<summary><b>📊 Meet the team at Tsawwassen Beach</b> &nbsp;·&nbsp; <i>their goal and their questions</i></summary>
-
-<br>
-
-Here we meet a small team working in B.C., aiming to gather baseline carbon data in the
-**Tsawwassen Beach marshes**.
-
-You and your team of 4 are tasked with **assessing the baseline measurements of an eelgrass ecosystem before protection and restoration** measures are implemented.
-
-You want to know two things:
-
-A) The **average carbon stock** across the meadow, and want to be able to
-
-B) **Compare these measurements** between different areas of the eelgrass, as well as to future measurements
-to assess how different management practices are affecting the ecosystem.
-
-**How would you accomplish this?**
-Let's break the scenario into digestible parts.
-
-**First**, you want a rough idea of the different areas you're interested in. *This doesn't have to be precise, but it helps to have a general understanding of where those areas are and their boundaries. This helps constrain "where" the measurements will be made. By dividing up the ecosystem, you not only ensure all areas of interest are measured, but you also sample more effectively.*
-
-**Second**, you want to collect samples from within these different areas, so you can "measure" the amount of carbon in these ecosystems.
-
-But how do you know how many samples to collect and exactly where to take them? This can be answered with a **sampling design**.
-
-</details>
-
----
-
-## Background Information
-
-### What is a sampling design?
-
-A sampling design in this workshop is a framework for choosing what and where to sample to estimate the carbon stored in a larger ecosystem area.
-
-<table>
-<tr>
-<td width="60%">
-
-<img width="100%" alt="Site and plot selection — slide" src="https://github.com/user-attachments/assets/19e30448-624d-460d-98da-93acce8724c5">
-
-</td>
-<td width="40%">
-
-Sampling designs allow for the strategic measurement of smaller sections (i.e., sites and plots) within the larger study area. Combining measurements from multiple plots allows us to estimate the value for the study area.
-
-</td>
-</tr>
-</table>
-
----
-
-### What sampling is and why it works
-
-**Sampling** is based on probability-based estimation methods. It is used when directly measuring an entire population or area is impractical because of its size. Instead, a small sample is measured and used to estimate the value of the whole.
+Measuring every square metre of an entire ecosystem isn't always feasible. So we measure a **small portion** of it and use that to estimate the whole. Because an estimate built from a portion will never be exactly right every single time, we also want to know the probability that the estimate reflects the actual value. This is called **probability-based sampling**.
 
 <table>
 <tr>
@@ -173,37 +74,27 @@ Sampling designs allow for the strategic measurement of smaller sections (i.e., 
 </td>
 <td width="40%">
 
-**What is sampling?**
+**Sampling** = taking a small portion of a thing to make an informed estimate of the whole.
 
-= Taking a small portion (sample) of a thing to make an informed estimate of it
+A **sampling design** is the framework for choosing *what* and *where* to sample by dividing the study area into sites and plots, measuring those, and combining them into an estimate for the full area.
 
 </td>
 </tr>
 </table>
 
-The more samples you collect, the more precisely you can estimate the true value — the value you would obtain if you could measure the entire ecosystem. Because only a subset of the ecosystem is sampled, every estimate contains some uncertainty. A probability-based sampling result is therefore reported as three parts:
+The more samples you take, the closer your estimate is likely to be to the true value. Because you don't measure everything, every estimate carries uncertainty, which is why you will usually see a result reported in **three parts**:
 
-<details>
-<summary><b>The 3 parts of a sample estimate</b></summary>
-
-<br>
-
-| Component | Symbol | What it tells you |
+| Component | | What it tells you |
 |---|---|---|
-| **Estimate** | $\bar{x}$ | Your measured estimate of the carbon value, calculated as the average across all sampled plots. |
-| **Confidence level** | $1-\alpha$ | Describes how often the sampling procedure would capture the true value if repeated many times. For example, a 95% confidence level means that about 95 out of every 100 confidence intervals produced by the same sampling method would contain the true value |
-| **Margin of error** | $E$ | Describes the precision of the estimate. It is the distance from the estimate to the edge of the confidence interval and is often reported relative to the estimate (e.g., ±10%). Smaller margins of error indicate more precise estimates |
+| **Estimate** | $\bar{x}$ | The average carbon value across your sampled plots. |
+| **Confidence level** | $1-\alpha$ | How often this procedure would capture the true value if repeated. At 95% confidence, about 95 out of every 100 intervals built this way contain the true value. |
+| **Margin of error** | $E$ | How precise that estimate is — the distance from the estimate to the edge of the interval, usually given relative to the mean (e.g. ±10%). |
 
-Put together, an example of a result would be: *"mean carbon = 100 ±10 (confidence level = 95%, so the confidence interval is 90–110)."*
+> Put together: *"mean carbon = 100 ±10, at 95% confidence."*
 
-</details>
+### Seeing it on a map
 
-
-### Visualizing Sampling on map
-
-Below are clips taken from the **[Sample Size Visualization Tool](https://blue-carbon-hub.projects.earthengine.app/)**.
-
-Here we can see how sampling an area can reveal the "True Map" underlying it
+These clips come from the **[Sample Size Visualization Tool](https://blue-carbon-hub.projects.earthengine.app/)**.
 
 <table>
 <tr>
@@ -214,7 +105,7 @@ Here we can see how sampling an area can reveal the "True Map" underlying it
 </td>
 <td width="40%">
 
-Look at the bottom-left map aerial map, showing a hypothetical carbon map where each square represents the carbon value at that location. You can switch between the **"True value"** of carbon across the ecosystem and the **"Revealed"** view, which shows how with each sample, we are revealing this map, 1 sample at a time. With each sample collected, the estimate updates, and the true map underneath is revealed a little more. It would take thousands of samples to fully uncover it, but we only need a *reasonable* estimate, not a perfect one.
+The bottom-left map is a hypothetical carbon map, where each square is the carbon value at that location. Switch between the **True value** and the **Revealed** view to watch the map uncover itself one sample at a time.
 
 </td>
 </tr>
@@ -229,89 +120,50 @@ Look at the bottom-left map aerial map, showing a hypothetical carbon map where 
 </td>
 <td width="40%">
 
-On the right side, the top graph is showing "How many samples we need to collect". Below, we need our estimate relative to **true value**, the dashed blue line we're trying to reach. With only a few samples, our estimate is off and the error range (purple) is wide. As more samples are done, the map is revealed more, and the error on our graph shrinks. **That purple band is $E$, your margin of error**, watch it narrow as *n* grows.
+On the right, we see how each sample on the map is combined together to estimate the **true value** (dashed blue line). With a few samples the estimate is off and the error range (purple) is wide. As samples accumulate, it narrows.
+
+**That purple band is your margin of error** — watch it shrink as the number of samples grows.
 
 </td>
 </tr>
 </table>
 
-
 ### The takeaway
-**Sampling** is a tool for estimating things unfeasible to measure
-In addition, the same methods that let us **estimate something too large to measure** also let us test
-  whether changes *within* or *between* sites are statistically verifiable.
-- By **rearranging the formula** (see dropdown menu below), we can work backwards to the
-  number of samples needed to get there
+
+- Sampling estimates what's impractical to measure directly.
+- The same process that produces an estimate can also tell you whether differences *within* or *between* sites are statistically significant.
+- And it runs **backwards**: fix the precision you want, and it returns the number of cores needed to get there. That's Step 4 — the reversal itself is [Appendix A2](#a2--working-backwards-from-precision-to-sample-size).
+
+---
+
+# Implementing a sampling design
 
 <details>
-<summary><b>Rearranging the sample estimate to solve sample size</b> &nbsp;·&nbsp; <i>showing the derivation</i></summary>
+<summary><b>📊 Meet the team at Tsawwassen Beach</b> &nbsp;·&nbsp; <i>the worked example, in brief</i></summary>
 
 <br>
 
-Start from what a margin of error *is* — the z-multiplier times the standard error of the mean:
+These drop-down menus contain brief descriptions from a hypothetical worked example. If you want to see how each of these steps can be applied, find them here or in the **→ [Worked Example](../Worked_Example/) folder**.
 
-$$E \cdot \bar{x} = z\,\frac{s}{\sqrt{n}}$$
+A team of four in B.C. is gathering **baseline carbon data in the Tsawwassen Beach eelgrass meadows**, before protection and restoration measures go in.
 
-Solve that for $n$, and write the variability as a **coefficient of variation**, $CV = s/\bar{x}$,
-so the result is scale-free — it no longer depends on the units carbon is measured in:
+They want to gather information on two specific things:
 
-$$n = \left(\frac{z \cdot CV}{E}\right)^{2}$$
+**A)** the **average carbon stock** across the meadow, and
 
-This is the infinite-population form: it assumes your study area could hold unlimited plots.
-Real sites cannot, so Cochran's correction accounts for a **finite** number of possible plot
-locations $N$ (your study area ÷ your plot size):
+**B)** the ability to **compare** areas of the meadow against each other, and against future surveys.
 
-$$n \geq \frac{z^2\, N\, CV^2}{(N-1)\,E^2 + z^2\, CV^2}$$
+Both need the same thing first: a sampling design. They appear at every step below.
 
-Read the two forms together and the behaviour of the whole method falls out: $E$ and $CV$ are
-both **squared**, so precision and patchiness dominate the cost of a campaign — while $N$ only
-matters when the area is small enough that plots are genuinely scarce.
+**→ [Full planning walkthrough](../Worked_Example/02_Project_Planning.md)** · **→ [The whole project](../Worked_Example/)**
 
 </details>
-
----
-# Implementing a Sampling Design
-
-## The sampling roadmap in five steps
-
-The guide breaks *applying* a sampling design into **five steps**.
-
-| # | Step | Answers |
-|---|------|---------|
-| 1 | **Identify the boundary** of the study area | *Where, roughly, am I working?* |
-| 2 | **Stratify** the study area (optional) | *Does the site split into distinct areas?* |
-| 3 | **Choose what to measure** — the carbon pool | *Water, plant, or sediment carbon?* |
-| 4 | **Determine how many samples** to take | *How many cores meet my intended goal?* |
-| 5 | **Determine where to sample** — distribution | *Where exactly do I collect sample and data from?* |
-
-Selecting a plot design (the physical layout of each core) follows from these; for eelgrass
-sediment cores, see [Section 3 — Field Methods](../03_Field_Methods/).
-
----
 
 ## Step 1 — Define your study area
 
 *Where, roughly, am I working?*
 
-Why this matters: Every number you produce later is *per unit area*, so the boundary
-is what turns a carbon density into a carbon total. It also sets $N$ — the number of possible
-plot locations — which feeds the sample-size calculation in Step 4.
-> [Note]
-> For sample size planning estimates, the exact boundary does **not** need to be exact. A rough outline of where the meadow is beats a perfect
-> outline of the wrong thing.
-
-<details>
-<summary><b>📊 See our worked example</b> &nbsp;·&nbsp; <i>how the Tsawwassen team defined their area</i></summary>
-
-<br>
-
-Using the Google Earth Engine sampling-design tool, they drew a rough outline of the area they
-knew was mostly eelgrass — a **5 ha inlet (50,000 m²)**. They did not survey the edge; they
-traced what they could see on recent imagery.
-
-<img width="60%" alt="Drawing a study area boundary in Google Earth Engine" src="images/download%20(5).gif">
-
-</details>
+Every carbon value you produce from collecting cores is reported **per unit area**, so the boundary of the area in this step is what turns a carbon *density* into a carbon *total*. It also sets $N$, the number of possible plot locations, which will determine how many plots to set up to meet your desired goals.
 
 <table>
 <tr>
@@ -322,19 +174,26 @@ traced what they could see on recent imagery.
 </td>
 <td width="55%">
 
-The boundary can be a simple polygon drawn on a map, or a pre-defined area if one already
-exists for your site.
+The boundary can be a simple polygon drawn on a map, or a pre-defined area if one already exists for your site.
 
-If you run transects, or already know the general area you're interested in, a simple estimate
-of the area is enough. A rough guess is genuinely informative here.
+If you run transects, or already know the general area you're interested in, a simple estimate of the area is enough.
 
 </td>
 </tr>
 </table>
 
-### 🛠 Your turn
+<details>
+<summary><b>📊 Worked example</b> &nbsp;·&nbsp; <i>how the Tsawwassen team defined their area</i></summary>
 
-**Tool: [Blue Carbon Hub sampling-design app](https://blue-carbon-hub.projects.earthengine.app/)** — draw your area of interest directly on the map.
+<br>
+
+They opened the sampling-design tool and traced what they could see on recent imagery — a **5 ha inlet (50,000 m²)** they knew was mostly eelgrass. They did not survey the edge.
+
+<img width="60%" alt="Drawing a study area boundary in Google Earth Engine" src="images/download%20(5).gif">
+
+</details>
+
+### 🛠 Your turn
 
 <table>
 <tr>
@@ -345,32 +204,28 @@ of the area is enough. A rough guess is genuinely informative here.
 </td>
 <td width="55%">
 
-Draw a simple polygon on a map — in the
-[Blue Carbon Hub tool](https://blue-carbon-hub.projects.earthengine.app/), in Google Earth
-Engine, or in whatever GIS you already use — or take a pre-defined area if one exists.
+**Tool: [Blue Carbon Hub sampling-design app](https://blue-carbon-hub.projects.earthengine.app/)**
+
+Draw a simple polygon over your area of interest — in the tool, in Google Earth Engine, or in whatever GIS you already use. Or import a pre-defined boundary if one exists.
+
+Read the **area in m²** off the tool and write it down.
 
 </td>
 </tr>
 </table>
 
 > [!TIP]
-> **✅ What you should have before you move on**
+> **✅ Before moving on, you should have:**
 > - A boundary polygon (or a sketched area on a map)
-> - Its **total area in m²** — you'll need this number in Step 4
+> - Its **total area in m²** (Step 4 — Sample Allocation needs this number)
 
 ---
 
-## Step 2: Stratify your site (optional)
+## Step 2 — Stratify your site *(optional)*
 
-*Does the site split into distinct areas?* In other words, divide your site into distinct areas.
+*Does the site split into distinct areas?*
 
-Why? Because we're collecting data at a single point and using it to extrapolate across
-a larger area — the more similar that area is to where we sampled, the more accurate our
-estimates will be. For example, you wouldn't want to use a sediment sample from an
-eelgrass meadow to estimate carbon in an upland marsh; distinguishing between the two
-ecosystems gives more accurate results.
-
-Stratification can be done manually, or using remote sensing techniques *(links to be added)*.
+When we measure carbon stock, we measure at a point and extrapolate this across a larger area, so the more that area resembles where we sampled, the more accurate the estimate will be. You wouldn't use a core from an eelgrass meadow to estimate carbon in an upland marsh, or vice versa. Splitting the two gives better numbers from the same effort.
 
 <table>
 <tr>
@@ -381,18 +236,26 @@ Stratification can be done manually, or using remote sensing techniques *(links 
 </td>
 <td width="55%">
 
-Stratification divides ecosystems into distinct areas, such that the data we collect in
-one area is only applied within that ecosystem. In addition to distinguishing
-ecosystems, stratification can also be used to compare different management
-techniques, restoration years, etc.
+**Stratification** divides the study area into distinct sub-areas, so data collected in one is only applied within that one.
+
+Beyond separating ecosystems, strata let you compare things deliberately: management techniques, restoration years, dense vs sparse meadow, depth zones.
+
+Strata can be drawn by hand or derived from remote sensing.
 
 </td>
 </tr>
 </table>
 
-### 🛠 Your turn
+<details>
+<summary><b>📊 Worked example</b> &nbsp;·&nbsp; <i>how the Tsawwassen team split their inlet</i></summary>
 
-**Tool: [Blue Carbon Hub sampling-design app](https://blue-carbon-hub.projects.earthengine.app/)** — use the auto-stratification function, or draw your strata by hand.
+<br>
+
+They split the 5 ha inlet into **two strata** — a denser central meadow and a sparser fringe — because density was the most obvious driver of variation on the imagery, and because their second question (B: comparing areas of the meadow) required the split to exist before fieldwork, not after.
+
+</details>
+
+### 🛠 Your turn
 
 <table>
 <tr>
@@ -403,27 +266,28 @@ techniques, restoration years, etc.
 </td>
 <td width="55%">
 
-**In practice:** the [Blue Carbon Hub sampling-design tool](https://blue-carbon-hub.projects.earthengine.app/)
-draws the area of interest (Step 1), then applies automatic stratification (Step 2) to
-split it into distinct strata before calculating the sample size (Step 4).
+**Tool: [Blue Carbon Hub sampling-design app](https://blue-carbon-hub.projects.earthengine.app/)**
+
+Take the boundary from Step 1 and either run the **automatic stratification**, or draw your strata by hand.
+
+Record the **area in m² of each stratum** — Step 4 uses these to divide the cores between them.
+
+> 🎥
 
 </td>
 </tr>
 </table>
 
 > [!TIP]
-> **✅ What you should have before you move on**
+> **✅ Before moving on, you should have** either:
+> - **One** area containing a single ecosystem type, **or**
+> - **Multiple** boundaries containing distinct ecosystems, management areas, or anything else you want to compare
 >
-> Either:
-> - **One** large area containing a single ecosystem type, **or**
-> - **Multiple** boundaries containing unique ecosystems, different management areas, or any
->   other areas you wish to distinguish for comparison
->
-> Plus the **area in m² of each** — Step 4 uses these to divide the cores between them.
+> Plus the **area in m² of each**.
 
 ---
 
-## Step 3: What to measure
+## Step 3 — Choose what to measure
 
 *Water, plant, or sediment carbon?*
 
@@ -436,163 +300,119 @@ split it into distinct strata before calculating the sample size (Step 4).
 </td>
 <td width="55%">
 
-Select the **carbon pool** you wish to measure. This can be from the water, the plant,
-or the sediment. For an eelgrass carbon project, this is the **sediment**.
+Carbon in a coastal ecosystem sits in several **pools**, such as the water column, the living plants, and the sediments.
+
+For an eelgrass carbon project, the pool that matters most is the **sediment**. It holds the overwhelming majority of the carbon, and it's the pool that persists for a long time.
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary><b>📊 Worked example</b> &nbsp;·&nbsp; <i>what the Tsawwassen team chose</i></summary>
+
+<br>
+
+**Sediment**, cored **to refusal** rather than to a fixed depth — so each core captures the full accumulated profile at that location rather than a truncated slice.
+
+</details>
+
+### 🛠 Your turn
+
+<table>
+<tr>
+<td width="45%">
+
+> 📸 **[SCREENSHOT NEEDED]** — the carbon-pool selection, or a sediment core with its depth interval labelled.
+
+</td>
+<td width="55%">
+
+Write down the pool you're measuring — for this workshop, **sediment**.
+
+Then decide on depth: a **target core depth**, or a decision to **core to refusal**. Either is defensible; what matters is that it's consistent across the campaign and recorded.
+
+See [Section 3 — Field Methods](../03_Field_Methods/) for how that decision plays out with a corer in hand.
+
+> 🎥 *[VIDEO — "Site Selection and Required Materials"]* · [workshop playlist](https://www.youtube.com/playlist?list=PLLsjpJMfNDP5w78ZJNDUvMj1VoRG_qSwd)
 
 </td>
 </tr>
 </table>
 
 > [!TIP]
-> **✅ What you should have before you move on**
-> - The **carbon pool** you're measuring, written down — for this workshop, sediment
-> - A target **core depth**, or a decision to core to refusal (see [Section 3](../03_Field_Methods/))
+> **✅ Before moving on, you should have:**
+> - The **carbon pool** you're measuring, written down
+> - A **target core depth**, or a decision to core to refusal
 
 ---
 
 ## Step 4 — Decide how many samples
 
-*How many cores meet my precision goal?*
+*How many cores meet my project goal?*
+
+This is the step that sets how many samples are required to answer the questions you have. Too few cores and your estimate carries too much uncertainty to make confident decisions. Too many and you spend resources collecting data you didn't need, which could have gone towards other efforts.
+
+To get there, you define three things, and the calculator returns an estimate of the number of samples.
+
+| You provide | Meaning | Typical |
+|---|---|---|
+| **Area** (m²) | How big the boundary is, in square metres | derived from Step 1 |
+| **Margin of error** ($E$) | How precise you need the estimate to be | ±10% or ±20% |
+| **Confidence level** | How reliable that interval has to be | 80% or 90% |
+| **A variability prior** *(optional)* | Roughly how much carbon is there, and how patchy | a pilot study, or regional values — see below |
+
+### Where the prior comes from
+
+The calculator needs a rough idea of how much carbon is there and how variable it is *before* you've measured anything. That's a **prior**: a starting estimate used only to size the campaign. It is never reported as a result, and nothing in your final numbers depends on it.
+
+Two sources, in order of preference:
+
+| | Source | Use when |
+|---|---|---|
+| **1** | **A pilot study** — mean and standard deviation from a handful of your own cores, an earlier survey, or nearby sites | You can get a few cores before the main campaign. This is the better option: local variability is what actually drives sample size. |
+| **2** | **Regional values** — published stocks from comparable ecosystems. By default we use the regional averages for coastal blue carbon ecosystems reported in Janousek et al. (2025) | You have nothing local to work from. |
 
 > [!NOTE]
-> **🎓 Why this matters.** This is the step that decides your budget and your field schedule —
-> and the one most likely to be challenged by a reviewer. Too few cores and your estimate
-> carries an interval too wide to act on; too many and you spend a season collecting data you
-> didn't need.
+> **Pad the standard deviation when using regional values.** The Janousek et al. dataset's central finding is that blue carbon stocks along this coast are driven mainly by **local rather than regional** factors. A regional average therefore tends to *understate* how patchy any individual meadow is — and variability is the single largest driver of sample size ([Appendix A4](#a4--what-actually-drives-sample-size)). Rounding the SD upward gives you a safety margin at exactly the input where being wrong is most expensive.
 >
-> You set two things — **how precise** you need to be, and **how confident** — then describe how
-> variable you expect the meadow to be. The calculator returns the number of cores. You never
-> work the formula by hand, but it pays to know which inputs actually move the answer.
+> Janousek, C. N., Krause, J. R., Drexler, J. Z., Buffington, K. J., Poppe, K. L., Peck, E., et al. (2025). Blue carbon stocks along the Pacific coast of North America are mainly driven by local rather than regional factors. *Global Biogeochemical Cycles*, 39, e2024GB008239. [doi:10.1029/2024GB008239](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2024GB008239)
+
+> [!NOTE]
+> **What matters most for sample size.** [Appendix A4](#a4--what-actually-drives-sample-size) sets out the full formula and shows why some of these inputs move the answer far more than others.
 
 <details>
-<summary><b>📊 What the Tsawwassen team did</b></summary>
+<summary><b>📊 Worked example</b> &nbsp;·&nbsp; <i>what the Tsawwassen team calculated</i></summary>
 
 <br>
-
-They calculated the required number of cores from:
-
-- Total area = **50,000 m²** (the 5 ha inlet from Step 1) → at **100 m² per plot**, $N$ = **500** possible plots
-- Confidence level = **90%** → $z = 1.645$
-- Margin of error = **±10%** ($E = 0.10$)
-- Prior mean and variation = **≈ 120 Mg C ha⁻¹, SD ≈ 60** (regional WWF-Canada carbon map) → $CV = 0.5$
-
-That returns **≈ 60 cores**. Padding for ~70% usable-sample recovery — attrition, lost cores,
-damaged samples — they planned to collect **≈ 86**.
-
-</details>
-
-### What moves the answer
-
-### What drives sample size?
-
-Four inputs dominate, and two of them sit **squared** in the formula, so small changes have
-outsized effects.
-
-First, one modelling choice that everything else depends on: **each core is taken to represent a
-plot, not a pinprick.** We use a **10 × 10 m plot (100 m²)** per core. That converts your study
-area into the number of possible plot locations, $N$ — a 5 ha inlet holds 500 of them. Change the
-plot size and every number below shifts.
-
-The table is anchored on the worked example: a **5 ha inlet** ($N$ = 500 plots), ±10% margin of
-error, 90% confidence, CV 0.5 → **≈ 60 cores**. One knob at a time:
-
-```
-                                              cores needed (from 60)
-  Precision      ±10% → ±5%      ████████████████████████  176
-  Variability    CV 0.5 → 1.0    ████████████████████████  176
-  Confidence     90% → 95%       ███████████               81
-  Study area     5 ha → 50 ha    █████████                 67
-```
-
-| Knob | Turn it… | Effect on cores (*n*) | Why |
-|---|---|---|---|
-| **Margin of error, $E$** | tighter: ±10% → ±5% | **~3× more** (60 → ~176) | $E$ is squared |
-| **Variability, $CV = s/\bar{x}$** | patchier: 0.5 → 1.0 | **~3× more** (60 → ~176) | also squared |
-| **Confidence, $1-\alpha$** | stricter: 90% → 95% | **~35% more** (60 → ~81) | more certainty costs cores, far less steeply |
-| **Study area** | bigger: 5 ha → 50 ha | **~10% more** (60 → ~67) | rises, then plateaus — see below |
-
-Three things here routinely surprise people:
-
-- **CV is the hidden driver.** It's squared, exactly like $E$ — so a meadow twice as variable
-  needs roughly **three times** the cores. This is why a good variability prior matters more than
-  almost any other input, and why you pad it when you're unsure.
-- **Precision is expensive, confidence is cheap.** Tightening your margin of error from ±10% to
-  ±5% nearly triples the fieldwork. Raising confidence from 90% to 95% costs about a third more.
-  If the budget is fixed, loosening $E$ buys back far more cores than dropping confidence.
-- **Area matters at first, then stops.** Going 1 ha → 5 ha → 50 ha → 500 ha gives roughly
-  **41 → 60 → 67 → 68** cores. Sample size climbs while the area is small relative to the plot
-  size, then flattens out. **Doubling a large meadow does not double your cores** — you're
-  estimating a *mean*, and pinning down a mean depends on variability, not on the size of the
-  field.
-
-> **Why "~3×" and not "4×"?** In a large area the squared terms give a clean fourfold: halving
-> $E$ takes *n* from 68 to 271. In a 5 ha inlet there are only 500 possible plots, so the
-> **finite-population correction** — the $(N-1)$ term — pulls the requirement back to about 3×.
-> The smaller your study area, the more it dampens these effects.
-
-<details>
-<summary>📐 <b>Show the math — the sample-size formula and its symbols</b></summary>
-
-<br>
-
-For a continuous variable like carbon stock:
-
-$$n \geq \frac{z^2\, N\, CV^2}{(N-1)\,E^2 + z^2\, CV^2}, \qquad CV=\frac{s}{\bar{x}}$$
-
-For a **proportion** parameter instead (e.g. % of cores containing a peat horizon, % meadow still vegetated), swap in the proportion form — use $p = 0.5$ when you have no prior, since it gives the largest, most conservative $n$:
-
-$$n \geq \frac{z^2\, N\, p\,q}{(N-1)\,E^2 p^2 + z^2\, p\, q}, \qquad q = 1-p$$
-
-**Inputs you supply:**
-
-| Input | What it is | Where it comes from |
-|---|---|---|
-| $N$ | Max possible plots = total study area ÷ plot footprint | Your Step 1 boundary |
-| $1-\alpha$ | Confidence level → sets $z$ (1.645 → 90%, 1.96 → 95%) | You choose (usually 90% or 95%) |
-| $E$ | Acceptable margin of error | You choose (e.g. ±10%) |
-| $\bar{x}$ | Expected mean carbon | Prior study, regional map, or pilot data |
-| $s$ | Expected standard deviation | Prior study, regional map, or pilot data |
-
-**Symbol crosswalk to the UNFCCC A6.4 tool** (if you're cross-referencing the [UNFCCC A6.4 Sampling & Surveys tool](Sampling-Design-Eng-2026.pdf) or its calculator):
-
-| This guide | UNFCCC tool | Meaning |
-|---|---|---|
-| $z$ | $Z_{\alpha/2}$ | z-multiplier set by confidence level |
-| $E$ | $e_{abs}$ | target **relative** precision (0.10 = ±10% of the mean) |
-| $s$ | $SD$ | expected standard deviation (your prior) |
-| $\bar{x}$ | mean | expected mean (your prior) |
-| $CV$ | $CV$ | coefficient of variation, $s/\bar{x}$ |
-| $N$ | $N$ | population size (see note below) |
-| $n$ | $n$ | number of plots/cores to collect |
-
-> **Note on $N$ — this is where the two calculators differ.** The core formula is identical in the WWF-Canada area-based calculator and the UNFCCC A6.4 tool. They only differ in how $N$ is obtained: the WWF tool derives it from **total area ÷ plot size**, while the UNFCCC tool takes a **population count** ($N$) directly. Because $(N-1)$ barely moves the result once $N$ is large, both converge on the same answer — which is exactly why area "doesn't matter" above.
-
-</details>
-
-### See it for yourself
-
-The quickest way to build intuition is to open the calculator (or the
-[Blue Carbon Hub visualizer](https://blue-carbon-hub.projects.earthengine.app/)) and change **one
-knob at a time**, watching *n* respond:
 
 <table>
 <tr>
 <td width="45%">
 
-> 📸 **[SCREENSHOT/GIF NEEDED]** — margin-of-error comparison: the calculator at **±20% vs ±10%**, side by side, with the *n* readout circled (~17 vs ~68) to show the ~4× jump.
+> 📸 **[SCREENSHOT NEEDED]** — the sample allocation tool with these inputs entered and the resulting core count visible.
 
 </td>
 <td width="55%">
 
-> 📸 **[SCREENSHOT/GIF NEEDED]** — variability comparison: a **smooth vs patchy meadow** at the same target precision, showing *n* roughly quadruple as CV goes 0.5 → 1.0.
+**Their inputs:**
+
+- **Total area** (Step 1) — 50,000 m² → at 100 m² per plot, $N$ = **500** possible plots
+- **Confidence level** — 90% ($z = 1.645$)
+- **Margin of error** — ±20% ($E = 0.20$)
+- **Prior mean and SD** — ≈ 120 Mg C ha⁻¹, SD ≈ 60, from Janousek et al. (2025) → $CV = 0.5$
+
+**Result: 23 cores.**
 
 </td>
 </tr>
 </table>
 
-### The calculator
+</details>
 
-The formula above is provided as a spreadsheet calculator.
+### 🛠 Your turn
+
+You can use the **📄 [Sample Allocation Calculator](BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx)**, or stick with the spatial tool in the **🗺 [Blue Carbon Hub app library](https://blue-carbon-hub.projects.earthengine.app/)**.
 
 <table>
 <tr>
@@ -603,131 +423,41 @@ The formula above is provided as a spreadsheet calculator.
 </td>
 <td width="55%">
 
-Provide an area size, allowable error, and precision, and the spreadsheet estimates the number of samples to collect.
+Enter an area, a margin of error, and a confidence level; the sheet returns the number of plots.
+
+This is the **Sample Allocation Calculator** named in Step 3 of the [Sampling Design guide](Sampling-Design-Eng-2026.pdf) (p.16), which uses the central limit theorem to estimate the minimum number of plots needed to hit a target precision for a large area.
+
+**Sheet 1** returns the total *n* for the whole study area. **Sheet 2** splits that *n* across the strata from Step 2, proportional to area — used in Step 5.
 
 </td>
 </tr>
 </table>
 
-<table>
-<tr>
-<td width="45%">
+**The two tools will not always agree.** For the Tsawwassen inlet the spreadsheet returned **17** samples, while the spatial tool suggested **23**. The difference comes from the spatial tool having more information about the site: here it accounted for the two stratified areas, so it could allocate cores between them rather than treating the meadow as uniform. More information about a site generally means a more efficient design.
 
-<img width="100%" alt="Sample allocation calculator — with study area boundary and regional estimates" src="https://github.com/user-attachments/assets/1cf7295f-9143-4637-84dc-b6daab789f85">
+The quickest way to build intuition is to open the calculator — or the [Blue Carbon Hub visualizer](https://blue-carbon-hub.projects.earthengine.app/) — and change **one knob at a time**, watching *n* respond. [Appendix A4](#a4--what-actually-drives-sample-size) has the full comparison if you'd rather read it than run it.
 
-</td>
-<td width="55%">
-
-A model is only as useful as the information you give it. Here we use the same formula but provide more: a study area boundary (a more precise measure of area) and a regional estimate for the mean and standard deviation of carbon stock.
-
-</td>
-</tr>
-</table>
-
-
-**📄 [`SampleDesign_SampleAllocationCalculator_WithStrata.xlsx`](SampleDesign_SampleAllocationCalculator_WithStrata.xlsx)**
-
-This is the **"Sample Design Sample Allocation Calculator"** named directly in the
-Sampling Design guide's Step 3:
-
-> "This framework uses the central limit theorem to estimate the minimum number of
-> plots needed to meet a desired level of accuracy and precision for estimating the
-> carbon stock of a large area."
-
-> "For example, if the study area is 10,000 km² and the allowable error is 10%, 43 plots will need to be set up."
-
-For more information, please see WWF-Canada, *[Carbon Measurement: Sampling Design](Sampling-Design-Eng-2026.pdf)* (2026), p.16.
-
-The spreadsheet has three sheets:
-
-#### Sheet 1 — Sample Allocation Calculator
-Estimates the total number of plots/cores (*n*) for the whole study area.
-
-| Input | Meaning |
-|-------|---------|
-| Size of total study area (m²) | The area you want to characterise |
-| Margin of error | Acceptable relative error (e.g. `0.2` = ±20%) |
-| Confidence level (alpha) | Precision level (e.g. `0.1` → 90% confidence) |
-| Carbon mean & standard deviation | Your **prior** — see below |
-
-**Output:** number of plots *n* needed to hit the target precision.
-
-> 🎯 **Where the mean and SD come from — this is an educated guess, and that's fine.**
-> The calculator needs to know roughly how much carbon is there and how variable it is
-> *before* you've measured anything. That's a chicken-and-egg problem, and the answer is a
-> **prior**: a rough estimate from existing information, used only to size the campaign.
-> The sheet offers two sources, in order of preference:
->
-> | Source | Use when | How good is it? |
-> |---|---|---|
-> | **Your own data** — measured mean and SD from a pilot, a previous survey, or nearby cores | You have local measurements | Best. Local variability is what actually drives *n*. |
-> | **Regional defaults** — the provided WWF-Canada carbon-map values | You have nothing local | Workable starting point. Regional averages usually *understate* local patchiness, so pad the SD. |
->
-> You are not committing to these numbers — nothing in your final result depends on them.
-> They only decide how many cores to plan for. After the campaign you check the precision
-> you *actually* achieved (see below), which is what gets reported.
->
-> ⚠️ **A note on the word "Tier."** The sheet labels these prior sources "Tier 1" and
-> "Tier 2." That numbering refers **only to where your prior came from** and is unrelated
-> to the IPCC Tier 1/2/3 methodological tiers used in national greenhouse gas inventory
-> reporting. If you work with IPCC guidance, read these labels as "prior source," not as a
-> statement about method quality.
-
-#### Sheet 2 — Sample Allocation per Strata
-Splits the total *n* across **strata** (sub-areas — e.g. dense vs. sparse meadow,
-depth zones) in proportion to each stratum's area, with a **minimum of 5 plots per
-stratum**. Enter each stratum's size and the sheet returns the proportion and the
-number of plots to allocate — the same proportional-allocation principle the guide
-describes for stratified-random sampling (see Step 5):
-
-> "Allocate (Step 3 'Sample allocation') plots proportionally based on the size of each
-> study site (e.g., a 50ha area will have twice as many plots as a 25ha area)."
->
-> — WWF-Canada, *[Carbon Measurement: Sampling Design](Sampling-Design-Eng-2026.pdf)* (2026), p.17
-
-<!-- TODO (Cathal): the intro above says the workbook has THREE sheets, but only Sheet 1 and Sheet 2 are documented. Add a "Sheet 3" description here, or change "three sheets" to "two sheets". -->
-
-
-### After the campaign: did you actually hit your precision target?
-
-Sample-size planning uses *expected* variability. Once real cores come back, the observed spread can differ — so before trusting the estimate, check the **achieved** precision against your target. The calculator's post-survey check cells do this for you: they compute a **relative margin of error (RME)** from your actual cores and compare it to the target $E$ you planned for. If RME is at or below your target, the estimate meets its reliability criterion and you're done.
-
-<details>
-<summary>📐 <b>Show the math — achieved precision (RME)</b></summary>
-
-<br>
-
-For a mean parameter:
-
-$$\text{RME} = \frac{z \cdot SE}{\bar{x}}, \qquad SE = \sqrt{\left(1-\tfrac{n}{N}\right)\frac{s^2}{n}}$$
-
-where $s$ and $\bar{x}$ are now the *sample* standard deviation and mean, and $\text{RME}$ (relative margin of error) is compared to your target $E$.
-
-</details>
-
-**If you miss it:** work down the ladder — scrutinize the raw data for outliers or skew, then post-stratify, then add cores; only as a last resort, report the conservative confidence bound (the interval end that *understates* carbon) so the estimate is defensible.
-
-<!-- TODO (Cathal): a small screenshot/GIF of the calculator's "check precision after survey" cells (SRS-Mean rows for SE, t-value, relative precision) would slot in well here. -->
+> 🚧 **[PLACEHOLDER — rebuilt calculator workbook]**
+> A reorganised and expanded version of this workbook is in development, built on the [UNFCCC A6.4 Sampling & Surveys](Sampling-Design-Eng-2026.pdf) formulation. It will replace the file linked above; this block is where its description and sheet-by-sheet guide will go.
 
 > [!WARNING]
 > **⚠️ A common mistake.** *"I collected 10 cores, so I have a carbon estimate."*
 >
-> You have an estimate — but not necessarily a **defensible** one. A carbon number without a
-> margin of error can't be compared to another site, to a future survey, or to a target. The
-> sample size is what buys you the interval, and the interval is what makes the number usable.
+> You have an estimate — but not necessarily a **defensible** one. A carbon number without a margin of error can't be compared to another site, to a future survey, or to a target. The sample size is what buys you the interval, and the interval is what makes the number usable.
 
 > [!TIP]
 > **✅ Before moving on, you should have:**
 > - A **target margin of error** and **confidence level** you can justify
 > - A **prior** for mean carbon and its variability, and a note of where it came from
-> - A **required number of cores** from the calculator
-> - That number **padded for recovery losses** — the count you'll actually plan to collect
+> - A **required number of cores** from the calculator or the spatial tool
+>
+> After the field season, you'll come back and check whether you actually hit that precision target — see [Appendix A8](#a8--after-the-campaign-did-you-hit-your-target).
 
 ---
 
-## Step 5: Where to sample? — Sample distribution
+## Step 5 — Decide where the samples go
 
-*Where exactly do the cores go?*
+*Exactly where do I core?*
 
 <table>
 <tr>
@@ -738,13 +468,31 @@ where $s$ and $\bar{x}$ are now the *sample* standard deviation and mean, and $\
 </td>
 <td width="55%">
 
-There are different strategies for distributing samples, aptly referred to as "sampling strategies."
-
-These include convenient, linear, grid, and stratified sampling.
+There are four common strategies for distributing samples. Which one fits depends on how much you already know about the site.
 
 </td>
 </tr>
 </table>
+
+| Strategy | When to use it |
+|---|---|
+| **Random** | Plots placed randomly across the study area. Random is typically the default when the area is uniform or there's no prior data. |
+| **Systematic** | Plots at regular intervals. This method guarantees even coverage, but is most appropriate when you know the variation across the site is quite even. |
+| **Stratified-random** | Strata first, then plots randomly assigned within each. This is the most accurate and cost-effective strategy. |
+| **Convenience/practical** | Plots wherever is accessible. While not statistically rigorous, it is useful for a low-cost initial assessment. |
+
+> See WWF-Canada, *[Measuring Carbon in Coastal Sediments](../Coastal-Blue-Carbon-Field-Guide-FINAL.pdf)* (2026), p.6.
+
+### How does the total split across a boundary that has been stratified?
+
+Each stratum gets a share of *n* **proportional to its area**, so a stratum covering half the meadow gets roughly half the cores.
+
+More details of the allocation formula can be found in [Appendix A7](#a7--proportional-allocation-across-strata).
+
+> "Allocate plots proportionally based on the size of each study site (e.g., a 50ha area will have twice as many plots as a 25ha area)."
+> — WWF-Canada, *[Carbon Measurement: Sampling Design](Sampling-Design-Eng-2026.pdf)* (2026), p.17
+
+### For eelgrass specifically
 
 <table>
 <tr>
@@ -755,119 +503,51 @@ These include convenient, linear, grid, and stratified sampling.
 </td>
 <td width="55%">
 
-For eelgrass, some considerations include how the eelgrass might vary relative to the shore, both parallel and perpendicular.
+Eelgrass varies differently *parallel* to shore than *perpendicular* to it — depth, exposure and sediment all change as you move offshore.
+
+The field guide therefore recommends transects that **run parallel to the shoreline**, aligned with sediment depth, with a random or probability-based grid within each site and at least two replicates per site.
 
 </td>
 </tr>
 </table>
 
-Rather than scattering cores at random, the meadow is divided into **strata** and
-samples are allocated across them (Sheet 2 above). Stratifying by features that drive
-carbon variability — meadow density, water depth, sediment type — gives a more precise
-estimate for the same number of cores and ensures no part of the site is missed.
-
-**How the total $n$ is split across strata.** Once Step 4 gives you a total sample size $n$, each stratum receives a share proportional to its area — a stratum covering half the meadow gets roughly half the cores. Two practical adjustments (both built into the calculator's Stratified tabs): round each share **up** to a whole core, and enforce a **minimum of 5 cores per stratum** so even small strata yield a usable estimate. These two rules mean the strata totals usually sum to slightly more than $n$ — that headroom is a feature, not an error.
-
 <details>
-<summary>📐 <b>Show the math — proportional allocation</b></summary>
+<summary><b>📊 Worked example</b> &nbsp;·&nbsp; <i>where the Tsawwassen cores went</i></summary>
 
 <br>
 
-$$n_h = \frac{g_h}{N}\times n$$
-
-where $g_h$ is the size of stratum $h$ and $N$ is the total study area.
-
-</details>
-
-The guide names four sampling strategies for deciding *where* plots go; which one fits
-depends on how much you already know about the site:
-
-| Strategy | When to use it |
-|---|---|
-| **Random** | Plots placed randomly across the study area — the default when the area is uniform or there's no prior data. |
-| **Systematic** | Plots at regular intervals — guarantees even coverage, but only when variation across the site is already known. |
-| **Stratified-random** | Study area divided into strata first, then plots randomly assigned within each — most accurate and cost-effective when variability is known. **This is the strategy used here.** |
-| **Convenience/practical** | Plots placed wherever is accessible — not statistically rigorous, but useful for a low-cost initial assessment. |
-
-For more information, please see WWF-Canada, *[Measuring Carbon in Coastal Sediments](../Coastal-Blue-Carbon-Field-Guide-FINAL.pdf)* (2026), p.6.
-
-For eelgrass specifically, the field guide recommends a shoreline-aligned transect layout:
-
-> Seagrass meadows should be sampled along transects that run parallel to the shoreline and align with the depth of the sediment. Within each site, a random or probability-based grid sampling strategy is recommended, with at least two replicates per site.
-
-
-> 🎥 **CHECK OUT THE VIDEO** — *"Site Selection and Required Materials"* · [workshop playlist](https://www.youtube.com/playlist?list=PLLsjpJMfNDP5w78ZJNDUvMj1VoRG_qSwd) *(swap in the direct video link)*
-
----
-
-## Companion tools — WWF-Canada Blue Carbon Sampling Design Tools
-
-The area-based calculator here is part of a broader set of sampling-design tools
-developed previously for blue carbon work:
-
-- **Interactive tool:** [Blue Carbon Hub sampling-design app](https://blue-carbon-hub.projects.earthengine.app/)
-- **Source code:** [WWF-Canada-SKI/Carbon-Measurement — Sampling Design Tools](https://github.com/WWF-Canada-SKI/Carbon-Measurement/tree/main/Blue%20Carbon/Sampling%20Design%20Tools)
-
-<table>
-<tr>
-<td width="50%">
-
-<img width="100%" alt="Blue Carbon Hub sampling-design tool — drawing and stratifying a study area" src="images/Screenshot%202026-07-21%20at%2010.46.13.png">
-
-</td>
-<td width="50%">
-
-<img width="100%" alt="Blue Carbon Hub sampling-design tool — stratified sample allocation results" src="images/Screenshot%202026-07-21%20at%2010.47.16.png">
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-The sample size visualizer shows how you can reveal the "true carbon" using sampling.
-How many samples are required to reach a goal can vary based on the adjustable
-parameters listed.
-
-</td>
-<td width="50%">
-
-This sampling tool helps implement this in a practical way, allowing the user to adjust
-these parameters over a user-defined study area. The user can choose if/how they want
-to divide up (stratify) their study area, and allocate their samples.
-
-</td>
-</tr>
-</table>
-
----
-## Worked example — planning the Tsawwassen campaign
-
-> [!NOTE]
-> **📊 See a demonstrated worked example here.** Back to the team we met at the top of this
-> section — here they work through all five steps for their own site, arriving at a number of
-> cores and a set of coordinates.
->
-> **→ [Read the full planning walkthrough](../Worked_Example/02_Project_Planning.md)**
->
-> The fieldwork that follows is in [Section 3](../03_Field_Methods/); the analysis of what they
-> collected is in [Section 4](../04_Data_Interpretation/).
-
-<details>
-<summary><b>📊 Their answers at a glance</b></summary>
-
-<br>
-
-| Step | Their decision |
-|---|---|
-| 1 — Study area | A **5 ha inlet** (50,000 m²), traced roughly from imagery |
-| 2 — Stratify | **Two strata** — denser meadow, sparser fringe |
-| 3 — Carbon pool | **Sediment**, cored to refusal |
-| 4 — Sample size | **≈ 60 cores** needed; **≈ 86** planned to collect after padding |
-| 5 — Locations | Allocated proportionally by stratum area, minimum 5 per stratum |
+Their **23** cores were allocated across the two strata **proportionally by area**, with the 5-core minimum applied. Locations were generated as shoreline-parallel transects within each stratum and exported as coordinates for the field team.
 
 **→ [See how they got there](../Worked_Example/02_Project_Planning.md)**
 
 </details>
+
+### 🛠 Your turn
+
+<table>
+<tr>
+<td width="45%">
+
+<img width="100%" alt="Blue Carbon Hub sampling-design tool — stratified sample allocation results" src="images/Screenshot%202026-07-21%20at%2010.47.16.png">
+
+</td>
+<td width="55%">
+
+**Tool: [Blue Carbon Hub sampling-design app](https://blue-carbon-hub.projects.earthengine.app/)**
+
+Feed it your strata from Step 2 and your *n* from Step 4. It allocates the cores between strata and generates sampling locations you can export and load onto a GPS.
+
+**Source code:** [WWF-Canada-SKI/Carbon-Measurement — Sampling Design Tools](https://github.com/WWF-Canada-SKI/Carbon-Measurement/tree/main/Blue%20Carbon/Sampling%20Design%20Tools)
+
+</td>
+</tr>
+</table>
+
+> [!TIP]
+> **✅ Before moving on, you should have:**
+> - A **sampling strategy** chosen and justified
+> - A **per-stratum core allocation**
+> - A **coordinate list** of sampling locations, exported and loadable onto a GPS
 
 ---
 
@@ -879,23 +559,230 @@ Before heading into the field, check you can answer all six:
   ☑  Study area boundary defined            → Step 1
   ☑  Strata identified (or ruled out)       → Step 2
   ☑  Carbon pool selected                   → Step 3
-  ☑  Sample size calculated and padded      → Step 4
+  ☑  Sample size calculated                 → Step 4
   ☑  Sampling locations generated           → Step 5
   ☑  Data sheets printed and ready          → Section 3
 ```
 
-If any line is still open, it is cheaper to close it now than after a field season.
+<details>
+<summary><b>📊 The Tsawwassen plan at a glance</b></summary>
 
-**Next: [Section 3 — Field Methods →](../03_Field_Methods/)** — collecting the cores your plan
-just specified.
+<br>
+
+| Step | Their decision |
+|---|---|
+| 1 — Study area | A **5 ha inlet** (50,000 m²), traced roughly from imagery |
+| 2 — Stratify | **Two strata** — denser meadow, sparser fringe |
+| 3 — Carbon pool | **Sediment**, cored to refusal |
+| 4 — Sample size | **23** cores at ±20%, 90% confidence |
+| 5 — Locations | Allocated proportionally by stratum area, minimum 5 per stratum |
+
+**→ [Read the full planning walkthrough](../Worked_Example/02_Project_Planning.md)**
+
+</details>
+
+You now have everything a field team needs: a boundary, strata, a carbon pool and depth, a core count, and a list of coordinates. Every decision above was made so that the numbers coming back from the lab can be defended — you know how precise they will be, and why.
+
+What remains is the fieldwork itself. **Section 3** covers what to bring, how to take a sediment core that survives the trip home, how to record it, and the handling and labelling that keeps a core usable once it leaves the meadow.
+
+**Next: [Section 3 — Field Methods →](../03_Field_Methods/)** — collecting the cores your plan just specified.
+
+---
+---
+
+# Appendix A — A brief lesson in sampling logic
+
+*and the derivations that drive this work*
+
+Steps 1–5 don't require any of this. But if you want to know why the calculator behaves the way it does, or you need to defend a sample size to a reviewer, it's all here — in the order the ideas actually build on each other.
+
+| | | Used in |
+|---|---|---|
+| [A1](#a1--what-an-estimate-actually-is) | What an estimate actually is | Background |
+| [A2](#a2--working-backwards-from-precision-to-sample-size) | Working backwards: from precision to sample size | Step 4 |
+| [A3](#a3--cochrans-correction-why-big-areas-stop-needing-more-cores) | Cochran's correction | Step 4 |
+| [A4](#a4--what-actually-drives-sample-size) | What actually drives sample size | Step 4 |
+| [A5](#a5--the-proportion-form) | The proportion form | Step 4 |
+| [A6](#a6--symbol-crosswalk-to-the-unfccc-a64-tool) | Symbol crosswalk to the UNFCCC A6.4 tool | Step 4 |
+| [A7](#a7--proportional-allocation-across-strata) | Proportional allocation across strata | Step 5 |
+| [A8](#a8--after-the-campaign-did-you-hit-your-target) | After the campaign: did you hit your target? | Step 4 |
+
+---
+
+### A1 — What an estimate actually is
+
+*The machinery behind the [Background](#background--what-sampling-is-and-why-it-works) section.*
+
+You core a subset of plots and average them. That average, $\bar{x}$, is your estimate of the meadow's true mean carbon.
+
+How far off might it be? That depends on two things: how much the plots differ from each other (the standard deviation, $s$) and how many you took ($n$). Combined, they give the **standard error of the mean**:
+
+$$SE = \frac{s}{\sqrt{n}}$$
+
+The $\sqrt{n}$ is the whole story of sampling economics. Four times the cores buys you *twice* the precision — never four times.
+
+The **margin of error** scales that standard error by a multiplier set by your confidence level:
+
+$$E \cdot \bar{x} = z\,\frac{s}{\sqrt{n}}$$
+
+where $z = 1.282$ at 80% confidence, $1.645$ at 90%, and $1.96$ at 95%. Writing $E$ as a *relative* quantity (a fraction of the mean) is what lets you say "±20%" without knowing the answer in advance.
+
+---
+
+### A2 — Working backwards: from precision to sample size
+
+*The machinery behind [Step 4](#step-4--decide-how-many-samples).*
+
+Everything in A1 runs in reverse. If you know the precision you want, you can solve for the $n$ that delivers it.
+
+Start from the margin-of-error definition and solve for $n$:
+
+$$E \cdot \bar{x} = z\,\frac{s}{\sqrt{n}} \qquad \Longrightarrow \qquad n = \left(\frac{z \cdot s}{E \cdot \bar{x}}\right)^{2}$$
+
+Then replace $s/\bar{x}$ with the **coefficient of variation**, $CV$:
+
+$$n = \left(\frac{z \cdot CV}{E}\right)^{2}, \qquad CV = \frac{s}{\bar{x}}$$
+
+Expressing variability as a $CV$ makes the result **scale-free** — it no longer depends on whether carbon is measured in Mg C ha⁻¹, g cm⁻³, or anything else. A meadow with $CV = 0.5$ needs the same number of cores whether it holds 40 or 400 Mg C ha⁻¹.
+
+Notice what's squared: **$z$, $CV$ and $E$**. That single fact explains almost everything in A4.
+
+This is the **infinite-population** form. It assumes your study area could hold unlimited plots — which no real site can.
+
+---
+
+### A3 — Cochran's correction: why big areas stop needing more cores
+
+*The machinery behind [Step 4](#step-4--decide-how-many-samples).*
+
+A 5 ha inlet at 100 m² per plot holds exactly 500 possible plot locations. Sampling theory gives you credit for how much of that you've covered — 17 cores is about 3% of every plot there is, and tightening to ±10% takes you to 60 cores, or 12%. Cochran's **finite-population correction** accounts for it:
+
+$$n \geq \frac{z^2\, N\, CV^2}{(N-1)\,E^2 + z^2\, CV^2}$$
+
+where $N$ = study area ÷ plot footprint.
+
+**One modelling choice everything depends on:** each core is taken to represent a **plot, not a pinprick**. This workshop uses a **10 × 10 m plot (100 m²)** per core, which is what converts an area into $N$. Change the plot size and every number downstream shifts.
+
+As $N$ grows, $(N-1)E^2$ dominates the denominator and the correction fades — the formula converges on the infinite-population form in A2. That's why the effect of area **plateaus**: it matters when plots are genuinely scarce, and stops mattering once they aren't.
+
+---
+
+### A4 — What actually drives sample size
+
+*The machinery behind [Step 4](#step-4--decide-how-many-samples). If you read one appendix section, read this one.*
+
+Four inputs dominate, and two of them sit **squared** in the formula.
+
+All numbers below are anchored on the settings used throughout this workshop, and typical of coastal MMRV work: a **5 ha inlet** ($N$ = 500 plots), **±20% margin of error**, **90% confidence**, $CV$ = 0.5 → **17 cores**. One knob turned at a time:
+
+```
+                                              cores needed (from 17)
+  Precision      ±20% → ±10%     ████████████████████████  60
+  Variability    CV 0.5 → 1.0    ████████████████████████  60
+  Confidence     90% → 95%       █████████                 23
+  Study area     5 ha → 50 ha    ███████                   17
+```
+
+| Knob | Turn it… | Effect on *n* | Why |
+|---|---|---|---|
+| **Margin of error, $E$** | tighter: ±20% → ±10% | **~3.5× more** (17 → 60) | $E$ is squared |
+| **Variability, $CV$** | patchier: 0.5 → 1.0 | **~3.5× more** (17 → 60) | also squared |
+| **Confidence** | stricter: 90% → 95% | **~35% more** (17 → 23) | $z$ is squared too, but 1.645 → 1.96 is a small step |
+| **Study area** | bigger: 5 ha → 50 ha | **no change** (17 → 17) | see below |
+
+Three things here routinely surprise people.
+
+**CV is the hidden driver.** It's squared, exactly like $E$ — so a meadow twice as patchy needs roughly **three and a half times** the cores. This is why a good variability prior matters more than almost any other input, and why you pad the SD when you're unsure. It is also the one input you don't control: the meadow is as variable as it is.
+
+**Precision is expensive; confidence is cheap.** Tightening $E$ from ±20% to ±10% more than triples the fieldwork. Raising confidence from 90% to 95% costs about a third more. **If the budget is fixed, loosening $E$ buys back far more cores than dropping confidence** — and a wider interval at 95% is usually easier to defend than a tight one at 90%.
+
+**Area barely matters, and at ±20% it doesn't matter at all.** Running 1 ha → 5 ha → 50 ha → 500 ha gives **15 → 17 → 17 → 17** cores. A meadow a hundred times larger needs the same number of cores. You're estimating a *mean*, and pinning down a mean depends on variability, not on the size of the field. This is the single most counter-intuitive result in sampling design, and the one most worth being able to explain to a funder: **a bigger site is not a more expensive survey.**
+
+> **Why "~3.5×" and not "4×"?** In a large area the squared terms give a clean fourfold: at 500 ha, halving $E$ takes *n* from 17 to 68. In a 5 ha inlet there are only 500 possible plots, so the finite-population correction from [A3](#a3--cochrans-correction-why-big-areas-stop-needing-more-cores) pulls it back to about 3.5×. **The smaller your study area, the more it dampens all four effects.**
+
+---
+
+### A5 — The proportion form
+
+*The machinery behind [Step 4](#step-4--decide-how-many-samples), when the thing you're estimating isn't a mean.*
+
+Everything above estimates a **continuous** variable — carbon stock. Some questions are instead about a **proportion**: what fraction of cores contain a peat horizon, what percentage of the meadow is still vegetated. Those use a parallel formula:
+
+$$n \geq \frac{z^2\, N\, p\,q}{(N-1)\,E^2 p^2 + z^2\, p\, q}, \qquad q = 1-p$$
+
+where $p$ is the expected proportion. **Use $p = 0.5$ when you have no prior** — it maximises $p\,q$ and therefore returns the largest, most conservative $n$.
+
+---
+
+### A6 — Symbol crosswalk to the UNFCCC A6.4 tool
+
+*Useful if you're cross-referencing the [UNFCCC A6.4 Sampling & Surveys tool](Sampling-Design-Eng-2026.pdf) or its calculator.*
+
+| This guide | UNFCCC tool | Meaning |
+|---|---|---|
+| $z$ | $Z_{\alpha/2}$ | z-multiplier set by confidence level |
+| $E$ | $e_{abs}$ | target **relative** precision (0.20 = ±20% of the mean) |
+| $s$ | $SD$ | expected standard deviation (your prior) |
+| $\bar{x}$ | mean | expected mean (your prior) |
+| $CV$ | $CV$ | coefficient of variation, $s/\bar{x}$ |
+| $N$ | $N$ | population size — see note |
+| $n$ | $n$ | number of plots/cores to collect |
+
+> **Where the two calculators differ — and it's only one thing.** The formula is identical. They differ in how $N$ is obtained: the WWF-Canada area-based calculator derives it from **total area ÷ plot size**, while the UNFCCC tool takes a **population count** directly. Because $(N-1)$ barely moves the result once $N$ is large, both converge on the same answer — which is exactly the plateau described in [A4](#a4--what-actually-drives-sample-size).
+
+---
+
+### A7 — Proportional allocation across strata
+
+*The machinery behind [Step 5](#step-5--decide-where-the-samples-go).*
+
+Each stratum receives a share of the total $n$ proportional to its area:
+
+$$n_h = \frac{g_h}{N}\times n$$
+
+where $g_h$ is the size of stratum $h$ and $N$ is the total study area.
+
+Then two practical rules are applied on top: round each $n_h$ **up** to a whole core, and raise any stratum below **5 cores** to 5. Both push the total above $n$ — deliberately. Rounding down or allowing a 2-core stratum would leave you unable to estimate variance within that stratum at all.
+
+---
+
+### A8 — After the campaign: did you hit your target?
+
+*The machinery behind the check you run once [Step 4](#step-4--decide-how-many-samples)'s cores come back.*
+
+Sample-size planning uses *expected* variability. Real cores may be more or less variable than your prior assumed, so before trusting the estimate, check the **achieved** precision against the target you set.
+
+Recompute precision from what you actually measured:
+
+$$\text{RME} = \frac{z \cdot SE}{\bar{x}}, \qquad SE = \sqrt{\left(1-\tfrac{n}{N}\right)\frac{s^2}{n}}$$
+
+Here $s$ and $\bar{x}$ are the **sample** standard deviation and mean — measured, not assumed. The $\left(1-\tfrac{n}{N}\right)$ term is the finite-population correction from [A3](#a3--cochrans-correction-why-big-areas-stop-needing-more-cores), reappearing in its standard-error form.
+
+Compare the **relative margin of error (RME)** to the target $E$ you set in Step 4:
+
+- **RME ≤ E** → the estimate meets its reliability criterion. Report it.
+- **RME > E** → the meadow was patchier than your prior assumed.
+
+The calculator's post-survey cells do this for you.
+
+**If you miss the target,** work down the ladder in order:
+
+1. **Scrutinize the raw data** — outliers, skew, a mis-recorded core
+2. **Post-stratify** — is there structure you didn't account for?
+3. **Add cores**
+4. **As a last resort**, report the conservative confidence bound — the interval end that *understates* carbon — so the estimate stays defensible
+
+> 📸 **[SCREENSHOT NEEDED]** — the calculator's post-survey precision cells (SRS-Mean rows: SE, t-value, relative precision).
+
+This comparison — not the planned sample size — is what you report and what a reviewer will check.
 
 ---
 
 ## In this section
 
-- [`SampleDesign_SampleAllocationCalculator_WithStrata.xlsx`](SampleDesign_SampleAllocationCalculator_WithStrata.xlsx) — the Cochran's-formula calculator.
-- [`Sampling-Design-Eng-2026.pdf`](Sampling-Design-Eng-2026.pdf) — the WWF-Canada sampling-design guide.
-- `images/` — screenshots of the calculator and planning materials.
+- [`BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx`](BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx) — the sample-size and allocation calculator
+- [`Sampling-Design-Eng-2026.pdf`](Sampling-Design-Eng-2026.pdf) — the WWF-Canada sampling-design guide
+- `images/` — screenshots of the calculator and planning materials
 
 <details>
 <summary><b>📋 Slide/screenshot layout template — copy/paste this to add an image</b></summary>
@@ -903,13 +790,10 @@ just specified.
 Each image is a two-column block: the image on the left and a description on the right.
 To add one, copy the block below and:
 
-1. In GitHub's editor, click inside the left cell (between the blank lines) and **paste
-   or drag your image** — or paste the image URL into `src="…"`.
-2. Type your description in the right cell (plain text, **markdown**, links, and lists
-   all work).
+1. In GitHub's editor, click inside the left cell (between the blank lines) and **paste or drag your image** — or paste the image URL into `src="…"`.
+2. Type your description in the right cell (plain text, **markdown**, links, and lists all work).
 
-Keep the blank lines inside the cells — they're what let GitHub render the pasted
-image and formatted text.
+Keep the blank lines inside the cells — they're what let GitHub render the pasted image and formatted text.
 
 ```html
 <table>
@@ -929,3 +813,7 @@ Paste your description here.
 ```
 
 </details>
+
+---
+
+[← 1 — Background](../01_Background/) · [Back to main guide](../README.md) · Next: [3 — Field Methods →](../03_Field_Methods/)

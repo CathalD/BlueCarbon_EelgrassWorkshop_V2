@@ -243,9 +243,9 @@ do this, there are 4 basic steps:
 The first two steps are the workshop's two core jobs (see the [main guide](../README.md)):
 
 - **Making the data useful** (step 1) — *before* collecting anything, design the sampling so
-  the data you'll gather actually answers your team's questions. That's
+  the data you'll gather aligns with the answers to your team's questions. That's
   [Section 2 — Project Planning](../02_Project_Planning/).
-- **Collecting the data** (step 2) — obtain the cores that fill the sheet, using best practices.
+- **Collecting the data** (step 2) — Taking sediment cores and recording information required to obtain the data,
   That's [Section 3 — Field Methods](../03_Field_Methods/).
 
 Steps 3 and 4 — analysing the samples and calculating carbon — are

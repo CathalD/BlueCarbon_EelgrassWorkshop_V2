@@ -117,12 +117,18 @@ dense — concentration wins over density.
 
 ## Did the campaign work?
 
-The plan called for **±10% at 90% confidence**. The twelve cores delivered **±8.2%**.
+The plan called for **±20% at 90% confidence**. The twelve cores delivered **±8.2%**.
 
 **The target was met.** That is the number the team reports, and it is the number a
 reviewer will check first.
 
-Worth seeing why twelve cores were enough when the plan asked for many more:
+Worth seeing why twelve cores were enough when the plan asked for many more. The comparison
+below is drawn at **±10%** — a tighter target than this campaign's ±20% — because the
+contrast between the three bases is easier to read when the numbers are larger:
+
+<!-- TODO (Cathal): these three figures are pipeline output computed at E = 0.10. If you
+     want them restated at the campaign's own ±20% target, re-run the workflow and paste
+     the new values in. The ordering (and the teaching point) is unchanged either way. -->
 
 | Basis for the variability | Implied cores at ±10% |
 |---|---|

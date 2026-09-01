@@ -112,8 +112,8 @@ more carbon stored per square metre. The sheet does this arithmetic for every sl
 ## Some resources to find in this workshop
 
 - [`BlueCarbon_EelgrassPPT_FinalV1.pptx`](01_Background/BlueCarbon_EelgrassPPT_FinalV1.pptx) — the full workshop slide deck ([PDF version](01_Background/BlueCarbon_EelgrassPPT_FinalV1.pdf)).
-- [`SampleDesign_SampleAllocationCalculator_WithStrata.xlsx`](02_Project_Planning/SampleDesign_SampleAllocationCalculator_WithStrata.xlsx) — the sample-size calculator.
-- [`Eelgrass_Carbon_Datasheet_v2.pdf`](Eelgrass_Carbon_Datasheet_v2.pdf) — the field datasheet.
+- [`BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx`](02_Project_Planning/BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx) — the sample-size calculator.
+- [`Eelgrass_Carbon_Datasheet_v2.pdf`](03_Field_Methods/Eelgrass_Carbon_Datasheet_v2.pdf) — the field datasheet.
 - **Coastal Blue Carbon Field Guide** — [PDF](Coastal-Blue-Carbon-Field-Guide-FINAL.pdf) · [companion video playlist](https://www.youtube.com/playlist?list=PLLsjpJMfNDP5w78ZJNDUvMj1VoRG_qSwd).
 - [`04_Data_Interpretation/DataAnalysisWorkflow/`](04_Data_Interpretation/DataAnalysisWorkflow/) — the complete R analysis pipeline and report.
 - **Ecosystem Carbon Accumulation Visualizer** — [cathald.github.io/CarbonAccumulationVisualizer](https://cathald.github.io/CarbonAccumulationVisualizer/)

@@ -552,10 +552,10 @@ A pre-rendered report — [`DataAnalysisWorkflow/eelgrass_carbon_report.html`](D
 | Carbon stock 0–50 cm (partly modelled) | 51.0 ± 2.1 Mg C/ha |
 | After combining with the regional prior | 30.6 ± 1.4 Mg C/ha *(prior earned 3% of the weight)* |
 | Site total, 0–25 cm | **154 Mg C** over 5.0 ha |
-| Precision achieved | ±8.2% at 90% confidence — **target met** |
+| Precision achieved | ±8.2% at 90% confidence against a ±20% target — **target met** |
 | Salt marsh vs eelgrass | 2.6 : 1 per m² to 25 cm (p < 0.001) |
 
-Twelve cores met a ±10% target that the planning stage had sized at roughly 100 cores.
+Twelve cores met a ±20% target that the planning stage had sized at 23 cores.
 The difference is **stratification**: most of the variation at this site is *between* marsh
 and eelgrass rather than within either, and the design absorbed it before the statistics had
 to deal with it.
@@ -635,10 +635,10 @@ as measured is not.
 
 **3. The precision you achieved — whether it is good enough to act on.**
 This is the number most reports omit and most reviewers ask for. The worked example achieved
-**±8.2% at 90% confidence** against a **±10%** target, so the target was **met** — and that
+**±8.2% at 90% confidence** against a **±20%** target, so the target was **met** — and that
 sentence, not the point estimate, is what tells a reader the survey did its job.
 
-Twelve cores were enough for a target the planning stage had sized at roughly a hundred.
+Twelve cores were enough for a target the planning stage had sized at 23 cores.
 That gap is worth understanding, because it is the strongest argument for stratifying:
 planning necessarily used a **regional** estimate of variability, which mixes together
 differences within a meadow and differences between meadows. At this site most of the
