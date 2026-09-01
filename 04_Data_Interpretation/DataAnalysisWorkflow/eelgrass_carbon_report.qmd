@@ -1,0 +1,208 @@
+---
+title: "Eelgrass Carbon Stock"
+date: today
+engine: knitr
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    embed-resources: true
+    theme: cosmo
+    fig-width: 8
+    fig-height: 5
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+#| include: false
+# This report RENDERS the pipeline — it does not reimplement it. Every number
+# below comes from the same scripts you run with source("run_pipeline.R"), so
+# the report and the console can never disagree.
+library(dplyr); library(ggplot2); library(knitr)
+invisible(capture.output(suppressMessages({
+  source("run_pipeline.R")
+})))
+mg <- function(x) x * 10          # kg C/m² -> Mg C/ha
+site_total <- function(e) e$estimate * sum(STRATUM_AREAS_M2) / 1000
+```
+
+**Site:** `r SITE_NAME`
+
+## The headline
+
+```{r headline}
+data.frame(
+  Quantity = c(
+    sprintf("Carbon stock to %d cm (measured)", PRIMARY_DEPTH_CM),
+    sprintf("Carbon stock to %.0f cm (partly modelled)", DEEP_DEPTH_CM),
+    "After combining with the regional prior",
+    sprintf("Site total to %d cm", PRIMARY_DEPTH_CM),
+    "Precision achieved",
+    "Precision target"),
+  Value = c(
+    sprintf("%.1f ± %.1f Mg C/ha", mg(est_primary$estimate), mg(est_primary$se)),
+    sprintf("%.1f ± %.1f Mg C/ha", mg(est_deep$estimate),    mg(est_deep$se)),
+    sprintf("%.1f ± %.1f Mg C/ha", posterior$mean, posterior$sd),
+    sprintf("%.0f Mg C over %.1f ha", site_total(est_primary),
+            sum(STRATUM_AREAS_M2) / 10000),
+    sprintf("±%.1f%% at %.0f%% confidence", 100 * (est_primary$ci[1,2] -
+            est_primary$estimate) / est_primary$estimate, 100 * CONF_LEVEL),
+    sprintf("±%.0f%% — %s", 100 * TARGET_MARGIN,
+            if (posterior$passes) "met" else "NOT met"))
+) |> kable(align = "lr")
+```
+
+`r if (!posterior$passes) sprintf("The campaign did not reach its precision target. That is a result, not a failure — it says the interval is too wide to manage by, and the analysis below shows what would close it.")`
+
+## What was collected
+
+`r nrow(core_totals)` cores across `r n_distinct(core_totals$stratum)` strata, `r nrow(cores)` sediment slices.
+
+```{r cores-table}
+core_totals |>
+  transmute(Core = core_id, Stratum = stratum,
+            `Stock 0-25 cm (kg C/m²)` = round(stock_primary, 2),
+            `Stock 0-50 cm (kg C/m²)` = round(stock_deep, 2),
+            `% modelled` = round(pct_modelled, 1)) |>
+  kable(align = "llrrr")
+```
+
+```{r profiles, fig.height=4.5}
+p_soc
+```
+
+## Compaction
+
+A percussion corer compresses sediment: you recover a shorter core than the
+hole you made. Correcting for it restores the original depths — and must leave
+the carbon unchanged, because the tube holds exactly what came out of the
+ground. The depths stretch by the compaction factor and the bulk density
+thins by the same factor, so the two cancel.
+
+```{r compaction}
+cores |>
+  distinct(core_id, compaction_factor) |>
+  left_join(cores |> group_by(core_id) |>
+              summarise(base = max(depth_bottom_cm), .groups = "drop"),
+            by = "core_id") |>
+  transmute(Core = core_id,
+            `Compaction factor` = round(compaction_factor, 3),
+            `In-situ depth (cm)` = round(base, 1)) |>
+  kable(align = "lrr")
+```
+
+## Putting cores on common depths
+
+Cores reach different depths and were sliced at different thicknesses, so they
+are splined onto standard intervals with a mass-preserving spline
+(`mpspline2`). Below the base of a core the profile is **modelled**, not
+measured, using an asymptotic curve with a non-zero recalcitrant floor.
+
+Every interval records how much of it is measured rather than modelled, and
+stocks are apportioned by that fraction — so a core ending at 26 cm contributes
+only its real 4% to the 25–50 cm interval.
+
+```{r harmonized, fig.height=5}
+p_harmonized
+```
+
+The deep figure is reported to **`r sprintf("%.0f", DEEP_DEPTH_CM)` cm**, the
+deepest depth every core supports. Cores that went deeper are not credited for
+it; that is the price of one comparable number.
+
+## The estimate
+
+Each stratum's mean is weighted by its **area**, not by how many cores landed
+in it, using a design-based stratified estimator (`survey`) with a finite
+population correction.
+
+```{r estimate, fig.height=4}
+p_stratified
+```
+
+```{r strata-table}
+as.data.frame(by_stratum) |>
+  transmute(Stratum = STRATUM_LABELS[stratum],
+            `Mean 0-25 cm (kg C/m²)` = round(stock_primary, 2),
+            `SE` = round(se.stock_primary, 2)) |>
+  kable(align = "lrr", row.names = FALSE)
+```
+
+The interval rests on **`r degf(design)` degrees of freedom**. With this few
+cores it is wide, and no amount of analysis narrows it — only more cores, or a
+looser target, will.
+
+## Combining with what was already known
+
+The planning stage used a prior to size the campaign. That prior is still true
+afterwards, so it is used again here as evidence — a weighted average, where
+each source contributes in proportion to its precision.
+
+The prior comes from `r PRIOR_N` *Zostera marina* cores across
+`r PRIOR_N_ESTUARIES` estuaries in the Janousek et al. (2025) synthesis,
+filtered to sites that resemble this one and **excluding this site's own
+cores**, which appear in that synthesis and would otherwise be counted twice.
+
+```{r update, fig.height=4.5}
+p_update
+```
+
+```{r update-table}
+data.frame(
+  Source = c("Prior (sites like this one)", "Evidence (these cores)",
+             "Posterior (combined)"),
+  `Mg C/ha` = c(sprintf("%.1f ± %.1f", PRIOR_MEAN, PRIOR_SD_MEAN),
+                sprintf("%.1f ± %.1f", mg(est_primary$estimate), mg(est_primary$se)),
+                sprintf("%.1f ± %.1f", posterior$mean, posterior$sd)),
+  Weight = c(sprintf("%.0f%%", 100 * posterior$prior_weight),
+             sprintf("%.0f%%", 100 * (1 - posterior$prior_weight)), "—"),
+  check.names = FALSE) |> kable(align = "lrr")
+```
+
+The prior earned **`r sprintf("%.0f%%", 100 * posterior$prior_weight)`** of the
+weight. `r if (posterior$prior_weight < 0.2) "Most of the answer comes from the fieldwork, which is what a campaign of this size should produce."`
+
+## What to be careful about
+
+- **The deep number is partly modelled.** Below each core's base the profile is
+  an extrapolation, and the per-core modelled share is in the table above.
+- **`r degf(design)` degrees of freedom** is very few. The confidence interval
+  is honest but wide, and the between-stratum comparison has low power — a
+  non-significant result there is not evidence the strata are equal.
+- **Stratum areas drive the site total.** They come from `STRATUM_AREAS_M2` in
+  `00_config.R`; if those are placeholders, so is the total.
+- **The prior assumes independence.** It excludes this site's own cores. If you
+  move this workflow to another meadow, check `PRIOR_EXCLUDE_ESTUARY` again.
+- **No map here.** Mapping where the carbon sits needs far more cores than
+  this — see `06_advanced_spatial.R`.
+
+## Methods
+
+```{r methods}
+data.frame(
+  Step = c("Compaction", "Depth harmonization", "Below-core profile",
+           "Stratified estimation", "Prior", "Combination"),
+  Method = c("Depth stretch with matching bulk-density correction",
+             "Mass-preserving (equal-area) spline",
+             "Asymptotic model with a non-zero recalcitrant floor",
+             "Design-based stratified mean with finite population correction",
+             "Similarity-matched subset of a regional core synthesis",
+             "Normal-Normal precision-weighted update"),
+  Source = c("from scratch — matches the digital data sheet",
+             "**mpspline2** — Bishop et al. (1999); Malone et al. (2009)",
+             "base **stats** `SSasymp` — shape after Kindeberg et al. (2019)",
+             "**survey** — Lumley (2004, 2010); Cochran (1977)",
+             "Janousek et al. (2025), figshare 28127486",
+             "from scratch — Gelman et al. (2013) sec. 2.5")
+) |> kable(align = "lll")
+```
+
+---
+
+*Generated `r format(Sys.Date())` from the pipeline in this folder. Every
+number above is produced by `run_pipeline.R`; this report contains no separate
+calculation.*
