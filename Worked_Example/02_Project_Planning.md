@@ -118,7 +118,9 @@ worth it.*
 | Lab results and carbon estimates | [Part 4 — Data Interpretation](../04_Data_Interpretation/) |
 | The completed data sheet | [`Eelgrass_Carbon_DigitalData_Example.xlsx`](Eelgrass_Carbon_DigitalData_Example.xlsx) |
 
-> **Note on scale.** The plan above sizes a full campaign at ~86 cores. The analysis carried
-> through Part 4 uses **6 cores** — a reduced set, sized to keep the worked example legible
-> while demonstrating every step of the workflow. Treat the Part 4 numbers as a demonstration
-> of method, not as a completed campaign.
+> **Note on scale.** The plan above sizes a full campaign at **23 cores**. The team collected
+> **6** in their first season and intend to return for the rest — which is the ordinary shape
+> of a first field campaign, not a failure. [Part 4](../04_Data_Interpretation/) analyses
+> those six and reports the precision they actually achieved against the ±20% target, rather
+> than presenting an under-powered result as a finished one. Treat the Part 4 numbers as a
+> demonstration of method on a first season's data.

@@ -8,8 +8,12 @@
 
 This folder holds the **completed** version of the workshop's worked example, so you can
 see what a finished project looks like before (or while) you do your own. It follows a
-single plot — **`WWF-01`** at Tsawwassen Beach, BC — with **twelve cores**: six in **salt
-marsh** (`WWF-01-A/C/D/G/H/I`) and six in **eelgrass** (`WWF-01-B/E/F/J/K/L`).
+single plot — **`WWF-01`** at Tsawwassen Beach, BC — with **six cores**: three in **salt
+marsh** (`WWF-01-A/C/D`) and three in **eelgrass** (`WWF-01-B/E/F`).
+
+The plan called for 23 cores; the team got six into the cooler in their first season. That
+gap is the normal condition of a first campaign, not a failure — and the workflow is built
+to report an under-powered result honestly rather than dress it up.
 
 The idea is simple: **work alongside this example, and apply the blank templates to your
 own site.**
@@ -53,13 +57,13 @@ weighted by each stratum's area:
 
 | | Result |
 |---|---|
-| Carbon stock 0–25 cm | **30.9 ± 1.4 Mg C/ha** |
-| Site total over 5 ha | **154 Mg C** |
-| Precision achieved | ±8.2% at 90% confidence — target met |
+| Carbon stock 0–25 cm | **31.4 ± 2.7 Mg C/ha** |
+| Site total over 5 ha | **157 Mg C** |
+| Precision achieved | ±18.6% at 90% confidence against a ±20% target — target met |
 | Salt marsh vs eelgrass | **2.6 : 1** per m² to 25 cm |
 
 Whole-core totals — every slice, to whatever depth each core reached — average
-**10.0 kg C/m²** in the marsh and **2.2 kg C/m²** in the eelgrass, a ~4.6 : 1 contrast. That
+**10.33 kg C/m²** in the marsh and **2.23 kg C/m²** in the eelgrass, a ~4.6 : 1 contrast. That
 is a different quantity from the 25 cm figure above, because the marsh cores are roughly
 twice as long; the two are not comparable until standardised to a common depth, which is
 what the workflow does. In both cases the marsh's higher carbon concentration outweighs its
