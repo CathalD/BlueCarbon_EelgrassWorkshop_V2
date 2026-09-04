@@ -16,23 +16,22 @@
 
 This section of the workshop focuses on **collecting the data** in the field. Once the sampling design is set
 ([Section 2](../02_Project_Planning/)), it's time for the field team to collect **sediment
-cores** at the planned locations. Here we cover the necessary equipment, tips for consistent
+cores**. Here we cover the necessary equipment, tips for consistent
 coring, compaction measurement, and completing the
-[**field data sheet**](Eelgrass_Carbon_Datasheet_v2.pdf) (blank, printable copies are in
+[**field data sheet**](../Eelgrass_Carbon_Datasheet_v2.pdf) (blank, printable copies are in
 [`datasheets/`](datasheets/); see [Field data sheet](#field-data-sheet), below).
 
 The method shown is push (also known as percussion) coring with a PVC pipe, a cost-effective method that is commonly used in coastal ecosystems. Note that equipment requirements are
 similar for both salt marsh and seagrass ecosystems, and the methods may need to be adapted for
 the conditions you are working in.
 
-**Important note when coring underwater.** The videos show coring in tidal marsh ecosystems, *above* the water table, whereas seagrass/eelgrass ecosystems tend to be fully covered by the tides, especially areas further from the coast, where coring takes place **underwater**. The good news: the method is essentially the same, with **one additional piece of equipment** to take those underwater samples (see [Equipment](#equipment), below).
+**Important note when coring underwater.** The videos show coring in tidal marsh ecosystems, *above* the water table, whereas seagrass/eelgrass ecosystems tend to be fully covered by the tides, especially in areas further from the coast, where coring takes place **underwater**. The good news: the method is essentially the same, with **one additional piece of equipment** to take those underwater samples (see [Equipment](#equipment), below).
 
 ### Sources for this section
 
 This section follows WWF-Canada's field guide
 *[Measuring Carbon in Coastal Sediments](../Coastal-Blue-Carbon-Field-Guide-FINAL.pdf)* (2026) —
-specifically **Part 2: Obtaining Sediment Cores**, pp. 8–14 — together with the accompanying
-video playlists:
+together with the accompanying video playlists:
 
 > 🎥 [*"Introduction to Sediment Cores"* — workshop playlist](https://www.youtube.com/playlist?list=PLLsjpJMfNDP5w78ZJNDUvMj1VoRG_qSwd)
 >
@@ -206,11 +205,6 @@ sharply.
 Let the data sheet guide what you need to capture. Fill in the top section now: date and
 time, site conditions, weather, and tidal conditions — plus the core's latitude/longitude.
 
-Optional environmental variables can also be recorded here — **water depth**, **stratum**,
-and anything else that varies across the site. These are not required to calculate a carbon
-stock, but the analysis in [Section 4](../04_Data_Interpretation/) uses `stratum` for the
-stratified estimate, so record it if your design has strata.
-
 </td>
 <td width="45%">
 
@@ -220,9 +214,6 @@ stratified estimate, so record it if your design has strata.
 </tr>
 </table>
 
-It is important to collect samples to the depth of refusal, as this is the only way to
-measure the true carbon stock of the ecosystem. If sampling to the depth of refusal is not
-achieved, it is likely that the carbon stock will be poorly estimated.
 
 > 🎥 **Watch:** [*"Core Depths"*](https://www.youtube.com/watch?v=A2es2qv3bPE&list=PLLsjpJMfNDP5w78ZJNDUvMj1VoRG_qSwd&index=3) — video **#3** in the workshop playlist.
 
@@ -276,9 +267,9 @@ latitude/longitude.
 
 *How much did the sediment squash?*
 
-> 💡 **Reduce compaction before you have to measure it.** The less the sediment squashes, the
+> 💡 **Reduce compaction before you measure it.** The less the sediment is squished, the
 > less correction the analysis has to apply. Use the **bevelled edge** of the corer to *cut*
-> through the top layer of sediment — the fibrous mat of roots and rhizomes — rather than
+> through the top layer of sediment that contains the fibrous roots, rather than
 > forcing through it. A gentle **twisting motion** while inserting helps the bevel slice
 > cleanly.
 
@@ -291,8 +282,7 @@ latitude/longitude.
 </td>
 <td width="55%">
 
-As the PVC pipe is hammered into the ground, the sediment can become compacted, and this must
-be measured — it's the input the analysis uses to **decompact** the core later.
+As the PVC pipe is hammered into the ground, the sediment can become compacted. This can be accounted for when analyzing the data, but must be measured.
 
 With the tube fully inserted, measure the distance from the top of the PVC tube to the
 sediment surface on both the **outside** and the **inside** of the tube. The difference
@@ -305,15 +295,13 @@ the tube.
 
 #### Two ways to get there
 
-Whichever method you use, you are after the **same two numbers** — the two the data
-sheet asks for, and the only two the analysis needs:
+Whichever method you use, you are after the **same two numbers** 
 
 - **Depth of corer inserted** — how far the tube went into the sediment (penetration)
 - **Length of core extracted** — how much sediment you actually recovered
 
 Either way, the **difference between the inside and outside measurements is the
-compaction** — and both routes land on the same two data sheet fields, which the
-analysis reads as `outside_depth_cm` (penetration) and `inside_depth_cm` (recovery).
+compaction**
 
 <table>
 <tr>
@@ -325,8 +313,6 @@ Mark ruler graduations on the outside of the tube before you start. When the tub
 driven in, read the graduation at the sediment surface: that is the **depth of corer
 inserted**. After extrusion, measure the recovered core directly: that is the **length
 of core extracted**.
-
-*Simplest in the field, and the method the videos show.*
 
 </td>
 <td width="50%">
@@ -342,8 +328,6 @@ depth of corer inserted = tube length − outside distance
 length of core extracted = tube length − inside distance
 ```
 
-*Useful underwater, where the tube's graduations may not be readable.*
-
 </td>
 </tr>
 </table>
@@ -354,14 +338,10 @@ length of core extracted = tube length − inside distance
 
 <img width="100%" alt="Method A — reading graduations on the tube at the sediment surface, then measuring the recovered core" src="method_a_graduations.svg">
 
-**Method A** — graduation read at the sediment surface, then the recovered core measured.
-
 </td>
 <td width="50%">
 
 <img width="100%" alt="Method B — measuring inside and outside distances from the top of the tube" src="https://github.com/user-attachments/assets/b9c176ca-1a37-45ea-a7ec-e4d122b07c08">
-
-**Method B** — inside vs. outside distance from the tube top.
 
 </td>
 </tr>
@@ -399,7 +379,6 @@ respective fields. These two numbers are what the analysis uses to decompact the
 
 <img width="100%" alt="Digging around the tube to release suction before extraction" src="https://github.com/user-attachments/assets/2435b917-edda-464a-b363-e06d8ccecdad">
 
-**Digging to release suction** — often the difference between a full core and a lost one.
 
 </td>
 <td width="55%">
@@ -520,7 +499,7 @@ This step has four short companion videos:
 </p>
 
 *Instructions for a do-it-yourself extrusion device using common plumbing elements found at
-your local home hardware store. Ensure the proportions match those of the PVC pipe you are
+your local hardware store. Ensure the proportions match those of the PVC pipe you are
 using.*
 
 <p align="center">
@@ -554,7 +533,7 @@ if section 2 ends at 5 cm, section 3 starts at 5 cm, and so on.
 
 ## Field data sheet
 
-The workshop data sheet is included: **[`Eelgrass_Carbon_Datasheet_v2.pdf`](Eelgrass_Carbon_Datasheet_v2.pdf)**
+The workshop data sheet is included: **[`Eelgrass_Carbon_Datasheet_v2.pdf`](../Eelgrass_Carbon_Datasheet_v2.pdf)**
 (blank copies for printing can also live in [`datasheets/`](datasheets/)). It captures
 exactly the fields the analysis expects:
 
@@ -586,7 +565,7 @@ exactly the fields the analysis expects:
 
 ## In this section
 
-- [`Eelgrass_Carbon_Datasheet_v2.pdf`](Eelgrass_Carbon_Datasheet_v2.pdf) — the workshop field data sheet.
+- [`Eelgrass_Carbon_Datasheet_v2.pdf`](../Eelgrass_Carbon_Datasheet_v2.pdf) — the workshop field data sheet.
 - [`datasheets/`](datasheets/) — blank/printable data sheets.
 - [`Making a soil core extractor doc.pdf`](Making%20a%20soil%20core%20extractor%20doc.pdf) — DIY extrusion device build instructions.
 - [`method_a_graduations.svg`](method_a_graduations.svg) — Method A compaction diagram (reading graduations on the tube).
