@@ -27,7 +27,14 @@ Legend: 📸 image/screenshot needed · 🔗 link needed · ✍️ writing neede
 - [ ] 📸 A small screenshot/GIF of the calculator's **"check precision after survey"** cells (SE / t-value / relative precision rows) to sit under the post-survey RME section.
 - [ ] 📸 **Margin-of-error comparison** (new "See it for yourself" block in Step 4): calculator at ±20% vs ±10% side by side, *n* readout circled (~17 vs ~68).
 - [ ] 📸 **Variability comparison** (same block): a smooth vs patchy meadow at the same target precision, showing *n* roughly quadruple as CV goes 0.5 → 1.0.
-- [ ] ❓ Worked example precision target: currently standardised to **±10% → ~68 cores → ~98 padded** throughout. Confirm this is the intended target (an earlier draft had ±20% / ~38, which isn't internally consistent — see the inline comment).
+- [x] ✅ Worked example precision target: **resolved — ±20% at 90% confidence**, matching the default in the GEE sampling tool (`DEFAULT_MARGIN_OF_ERROR: 20`, `DEFAULT_CONFIDENCE: 90`). Standardised across Part 2, the worked example, and `00_config.R` (`TARGET_MARGIN <- 0.20`). Campaign sized at **23 cores** (spatial tool, site priors); the spreadsheet's uniform-area figure is 17.
+
+- [ ] 🔄 **Re-render the report and figures.** The prose figures in Part 4 are now the
+  six-core pipeline output, but the build artifacts still carry the old `TARGET_MARGIN`
+  of 0.10: `eelgrass_carbon_report.html` reads "Precision target ±10% — NOT met", which is
+  now "±20% — met". Re-run `source("run_pipeline.R")` then
+  `quarto::quarto_render("eelgrass_carbon_report.qmd")`, and refresh
+  `outputs/prior_to_posterior.png`.
 
 ## Part 3 — Field Methods (`03_Field_Methods/README.md`)
 

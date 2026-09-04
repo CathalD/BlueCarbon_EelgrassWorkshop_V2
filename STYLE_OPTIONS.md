@@ -192,8 +192,8 @@ instructions and not theory.
 > **Worked example — Tsawwassen Beach, BC.** One team, followed from planning to results.
 > Full version in [`Worked_Example/`](Worked_Example/). Follow the shape, not the numbers.
 
-**Step 4 — How many samples.** With a 5 ha inlet, ±10% at 90% confidence and CV 0.5, the
-calculator returns **≈ 60 cores**, padded to ~86 for recovery losses.
+**Step 4 — How many samples.** With a 5 ha inlet, ±20% at 90% confidence and CV 0.5, the
+calculator returns **≈ 17 cores**; the team planned on the spatial tool's **23**.
 
 ## W2 — Boxed with a running label
 
@@ -203,8 +203,8 @@ calculator returns **≈ 60 cores**, padded to ~86 for recovery losses.
 
 ###### 🔬 WORKED EXAMPLE · TSAWWASSEN BEACH, BC · *one team's answers*
 
-**Step 4 — How many samples.** With a 5 ha inlet, ±10% at 90% confidence and CV 0.5, the
-calculator returns **≈ 60 cores**, padded to ~86 for recovery losses.
+**Step 4 — How many samples.** With a 5 ha inlet, ±20% at 90% confidence and CV 0.5, the
+calculator returns **≈ 17 cores**; the team planned on the spatial tool's **23**.
 
 </td>
 </tr>
@@ -214,8 +214,8 @@ calculator returns **≈ 60 cores**, padded to ~86 for recovery losses.
 
 > ###### WORKED EXAMPLE · TSAWWASSEN BEACH, BC
 >
-> **Step 4 — How many samples.** With a 5 ha inlet, ±10% at 90% confidence and CV 0.5, the
-> calculator returns **≈ 60 cores**, padded to ~86 for recovery losses.
+> **Step 4 — How many samples.** With a 5 ha inlet, ±20% at 90% confidence and CV 0.5, the
+> calculator returns **≈ 17 cores**; the team planned on the spatial tool's **23**.
 
 ---
 ---

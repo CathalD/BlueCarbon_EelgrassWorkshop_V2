@@ -25,9 +25,9 @@ After sampling, three steps take you from bagged samples to a reportable carbon 
 | 3 | **Report and use the results** | *How do I communicate and act on it?* | [Section 3](#3-reporting-and-using-the-results) |
 
 > 🧭 **The worked example.** Throughout this section, the grey **📊 dropdowns** show what one
-> real team did — twelve cores from a small inlet at **Tsawwassen Beach, BC** (plot `WWF-01`),
-> six in **salt marsh** and six in **eelgrass**. Open them to see the numbers; skip them to
-> read the method straight through.
+> real team did — six cores from a small inlet at **Tsawwassen Beach, BC** (plot `WWF-01`),
+> three in **salt marsh** and three in **eelgrass**. Open them to see the numbers; skip them
+> to read the method straight through.
 >
 > **→ [Read the full analysis walkthrough](../Worked_Example/04_Data_Interpretation.md)**
 
@@ -438,7 +438,7 @@ stock, not either input alone.
 ### The worked example, end to end
 
 <details>
-<summary><b>📊 All twelve Tsawwassen cores through the spreadsheet</b></summary>
+<summary><b>📊 All six Tsawwassen cores through the spreadsheet</b></summary>
 
 <br>
 
@@ -447,17 +447,11 @@ stock, not either input alone.
 | WWF-01-A | Salt marsh | 6 | 65 | 0.671 | 3.01 | 10.61 |
 | WWF-01-C | Salt marsh | 6 | 72 | 0.652 | 3.24 | 11.98 |
 | WWF-01-D | Salt marsh | 6 | 58 | 0.756 | 2.36 | 8.41 |
-| WWF-01-G | Salt marsh | 6 | 62 | 0.691 | 2.85 | 9.90 |
-| WWF-01-H | Salt marsh | 6 | 55 | 0.765 | 2.31 | 8.04 |
-| WWF-01-I | Salt marsh | 6 | 68 | 0.656 | 3.15 | 11.19 |
 | WWF-01-B | Eelgrass | 5 | 30 | 1.266 | 0.65 | 2.16 |
 | WWF-01-E | Eelgrass | 5 | 35 | 1.172 | 0.90 | 3.21 |
 | WWF-01-F | Eelgrass | 4 | 26 | 1.357 | 0.42 | 1.33 |
-| WWF-01-J | Eelgrass | 5 | 32 | 1.286 | 0.60 | 2.17 |
-| WWF-01-K | Eelgrass | 4 | 27 | 1.329 | 0.48 | 1.58 |
-| WWF-01-L | Eelgrass | 5 | 33 | 1.222 | 0.74 | 2.64 |
 
-Salt marsh averages **10.02 kg C/m²** and eelgrass **2.18 kg C/m²** — roughly a **4.6 : 1**
+Salt marsh averages **10.33 kg C/m²** and eelgrass **2.23 kg C/m²** — roughly a **4.6 : 1**
 contrast, driven by the marsh's much higher carbon concentration more than offsetting its
 lower bulk density. The eelgrass mean sits comfortably inside the published range for Pacific
 Canadian eelgrass quoted above.
@@ -465,7 +459,7 @@ Canadian eelgrass quoted above.
 </details>
 
 These are **whole-core** totals, and core depth differs by a factor of nearly three across
-the twelve cores — so they are **not directly comparable to each other** until they are
+the six cores — so they are **not directly comparable to each other** until they are
 standardised to a common depth, which is what
 [`03_harmonize_depths.R`](DataAnalysisWorkflow/03_harmonize_depths.R) is for. The workflow's
 headline number is a stock to **25 cm**, the depth every core reached.
@@ -548,17 +542,22 @@ A pre-rendered report — [`DataAnalysisWorkflow/eelgrass_carbon_report.html`](D
 
 | | Result |
 |---|---|
-| Carbon stock 0–25 cm (measured) | **30.9 ± 1.4 Mg C/ha** |
-| Carbon stock 0–50 cm (partly modelled) | 51.0 ± 2.1 Mg C/ha |
-| After combining with the regional prior | 30.6 ± 1.4 Mg C/ha *(prior earned 3% of the weight)* |
-| Site total, 0–25 cm | **154 Mg C** over 5.0 ha |
-| Precision achieved | ±8.2% at 90% confidence — **target met** |
-| Salt marsh vs eelgrass | 2.6 : 1 per m² to 25 cm (p < 0.001) |
+| Carbon stock 0–25 cm (measured) | **31.4 ± 2.7 Mg C/ha** |
+| Carbon stock 0–50 cm (partly modelled) | 51.5 ± 3.8 Mg C/ha |
+| After combining with the regional prior | 30.4 ± 2.6 Mg C/ha *(prior earned 11% of the weight)* |
+| Site total, 0–25 cm | **157 Mg C** over 5.0 ha |
+| Precision achieved | ±18.6% at 90% confidence against a ±20% target — **target met** |
+| Salt marsh vs eelgrass | 2.6 : 1 per m² to 25 cm |
 
-Twelve cores met a ±10% target that the planning stage had sized at roughly 100 cores.
-The difference is **stratification**: most of the variation at this site is *between* marsh
-and eelgrass rather than within either, and the design absorbed it before the statistics had
-to deal with it.
+*(± is the standard error; the achieved precision applies the t-multiplier at 4 degrees of
+freedom.)*
+
+Six cores against a plan that called for 23 cleared the ±20% target — but only just, at
+±18.6%, on **4 degrees of freedom**. That margin is the honest headline here. Two things
+made it possible: stratification, because most of the variation at this site is *between*
+marsh and eelgrass rather than within either, so the design absorbed it before the estimator
+saw it; and a ±20% target rather than a tighter one. At ±10% the same six cores would have
+missed, which is what the earlier draft of this page reported.
 
 **→ [Read the full analysis walkthrough](../Worked_Example/04_Data_Interpretation.md)**
 
@@ -622,42 +621,45 @@ The pipeline gives you four numbers, and they answer different questions. Readin
 order is the whole story of the campaign.
 
 **1. The measured stock — what you actually found.**
-For the worked example, **30.9 ± 1.4 Mg C/ha** to 25 cm, or **154 Mg C** across the 5 ha
+For the worked example, **31.4 ± 2.7 Mg C/ha** to 25 cm, or **157 Mg C** across the 5 ha
 inlet. This is the number to lead with, because every core measured to that depth. It is
 directly comparable with the published seagrass literature, which mostly reports 0–25 cm.
 
 **2. The deeper stock — what you found plus what you inferred.**
-**51.0 ± 2.1 Mg C/ha** to 50 cm. Below the base of each core the profile is *modelled*, not
+**51.5 ± 3.8 Mg C/ha** to 50 cm. Below the base of each core the profile is *modelled*, not
 measured, and the per-core modelled share is reported alongside it — 0% for the salt-marsh
-cores, which reached 55–72 cm, and 20–39% for the eelgrass cores, which stopped at 26–35 cm.
+cores, which reached 58–72 cm, and 20–39% for the eelgrass cores, which stopped at 26–35 cm.
 A number that is 39% modelled is still useful; a number that is 39% modelled and presented
 as measured is not.
 
 **3. The precision you achieved — whether it is good enough to act on.**
 This is the number most reports omit and most reviewers ask for. The worked example achieved
-**±8.2% at 90% confidence** against a **±10%** target, so the target was **met** — and that
+**±18.6% at 90% confidence** against a **±20%** target, so the target was **met** — and that
 sentence, not the point estimate, is what tells a reader the survey did its job.
 
-Twelve cores were enough for a target the planning stage had sized at roughly a hundred.
-That gap is worth understanding, because it is the strongest argument for stratifying:
-planning necessarily used a **regional** estimate of variability, which mixes together
-differences within a meadow and differences between meadows. At this site most of the
-variation turned out to be **between** the marsh and the eelgrass — and the design had
-already separated those, so the estimator never had to absorb it.
+It was met narrowly, on six cores against a plan of 23, and the margin is worth
+understanding. Planning necessarily used a **regional** estimate of variability, which mixes
+together differences within a meadow and differences between meadows, and so asks for more
+cores than a well-stratified site actually needs — at Tsawwassen most of the variation is
+**between** the marsh and the eelgrass, and the design separated those before the estimator
+saw them. Pulling the other way, three cores per stratum leaves only **4 degrees of
+freedom**, which is very few: the interval is honest but wide, and the marsh-versus-eelgrass
+comparison has low power. A ±10% target would have been missed on this data.
 
 > If you miss your target, that is not a failed survey. It is a survey that has told you what
 > the next one needs to look like, and the workflow prints how many cores would close the
 > gap. The failure mode is reporting a point estimate as though the target had been met.
 
 **4. The combined estimate — what you know, given everything.**
-**30.6 ± 1.4 Mg C/ha** after combining with the regional prior, which earned **3%** of the
-weight. That the prior earns so little is itself the finding: twelve cores from this meadow
-outweigh 82 cores from comparable meadows, because the prior describes *meadows like this
-one* while your cores describe *this one*. Had you collected three cores instead of twelve,
-the prior would have carried far more, and the estimate would have leaned on it accordingly —
-which is exactly when you most want it there.
+**30.4 ± 2.6 Mg C/ha** after combining with the regional prior, which earned **11%** of the
+weight. How much weight the prior earns is itself a finding, and it moves with your sample
+size: six cores from this meadow cannot outweigh 82 cores from comparable meadows the way a
+full campaign would, so the prior carries more here — 11% — than it would have at 23 cores.
+That is the mechanism working as intended: the prior leans in hardest exactly when your own
+data is thinnest, and steps back as you collect more. Most of the answer still comes from
+the fieldwork, which is what a campaign of this size should produce.
 
-**What the numbers cannot tell you.** None of this is a map. With twelve cores you have an
+**What the numbers cannot tell you.** None of this is a map. With six cores you have an
 average for the meadow and a comparison between two strata — you do not have "where the
 carbon is", and any figure implying otherwise is over-claiming. That question needs an
 order of magnitude more cores.

@@ -10,7 +10,7 @@ them, weighted by how much each can be trusted, is the best available estimate
 — and it shows you exactly how much more sampling would buy.
 
 **Site:** Tsawwassen Beach, BC — *worked teaching example* (constructed core
-data; the prior is real). 12 cores, 64 sediment samples.
+data; the prior is real). 6 cores, 32 sediment samples.
 
 ---
 
@@ -136,7 +136,7 @@ can never disagree.
 
 ## What is deliberately not here
 
-**A map of where the carbon is.** Twelve cores cannot support one. An empirical
+**A map of where the carbon is.** Six cores cannot support one. An empirical
 variogram is not identifiable below roughly 30 point-pairs, and in the worked
 example every environmental covariate separates the two strata perfectly — a
 model built on them restates the stratum rather than predicting anything.

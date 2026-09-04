@@ -210,7 +210,7 @@ PLANNING_CV <- 0.68
 # Set during planning (Part 2, Step 4) and checked after the campaign.
 # Stated here so 04 can PASS/FAIL against it instead of leaving the
 # comparison to the reader.
-TARGET_MARGIN     <- 0.10   # ±10% of the mean
+TARGET_MARGIN     <- 0.20   # ±20% of the mean
 TARGET_CONFIDENCE <- 0.90   # at 90% confidence
 
 # ── Inference settings ───────────────────────────────────────────────────────

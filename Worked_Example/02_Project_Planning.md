@@ -68,24 +68,28 @@ They calculated the required number of cores from:
 |---|---|---|
 | Total area | **50,000 m²** (5 ha) | Step 1 boundary |
 | Plot area | **100 m²** (10 × 10 m) | design choice → $N$ = 500 possible plots |
-| Confidence level | **90%** → $z = 1.645$ | chosen by the team |
-| Margin of error | **±10%** ($E = 0.10$) | chosen by the team |
+| Confidence level | **90%** → $z = 1.645$ | the tool's default |
+| Margin of error | **±20%** ($E = 0.20$) | the tool's default |
 | Prior mean | **≈ 120 Mg C ha⁻¹** | regional WWF-Canada carbon map |
 | Prior SD | **≈ 60** | regional WWF-Canada carbon map |
 | → $CV$ | **0.5** | $60 / 120$ |
 
-Running these through the calculator gives **≈ 60 cores**.
+The spreadsheet calculator, which treats the inlet as one uniform area, returns **17 cores**.
+The [GEE sampling tool](../02_Project_Planning/Sampling%20Design%20Tools/), given the same
+precision target plus the site-specific priors and the two strata from Step 2, returns
+**23 cores**. The team planned on **23** — the stratification-aware number, and the more
+conservative of the two.
 
 Padding for ~70% usable-sample recovery — attrition, lost cores, damaged samples — they planned
-to collect **≈ 86**.
+to collect **≈ 33**.
 
-**Result:** 60 cores of usable data required; 86 planned for collection.
+**Result:** 23 cores of usable data required; ~33 planned for collection.
 
 ---
 
 ## Step 5 — Where to sample
 
-They allocated those ~86 cores **proportionally across the two strata** — a meadow twice the
+They allocated those 23 cores **proportionally across the two strata** — a meadow twice the
 area of the fringe gets roughly twice the cores — keeping a **minimum of 5 per stratum**.
 
 <img width="60%" alt="Allocating samples across strata over the study area" src="../02_Project_Planning/images/download%20(6).gif">
@@ -96,8 +100,8 @@ area of the fringe gets roughly twice the cores — keeping a **minimum of 5 per
 
 ## Summary of what to expect
 
-*Given a 5 ha inlet and a target of ±10% at 90% confidence, plan for roughly **60 cores of
-usable data** (about **86 collected** after padding), split proportionally between the dense and
+*Given a 5 ha inlet and a target of ±20% at 90% confidence, plan for roughly **23 cores of
+usable data** (about **33 collected** after padding), split proportionally between the dense and
 sparse strata.*
 
 *If the meadow turns out patchier than the CV prior assumed, expect to either add cores or
@@ -114,7 +118,9 @@ worth it.*
 | Lab results and carbon estimates | [Part 4 — Data Interpretation](../04_Data_Interpretation/) |
 | The completed data sheet | [`Eelgrass_Carbon_DigitalData_Example.xlsx`](Eelgrass_Carbon_DigitalData_Example.xlsx) |
 
-> **Note on scale.** The plan above sizes a full campaign at ~86 cores. The analysis carried
-> through Part 4 uses **6 cores** — a reduced set, sized to keep the worked example legible
-> while demonstrating every step of the workflow. Treat the Part 4 numbers as a demonstration
-> of method, not as a completed campaign.
+> **Note on scale.** The plan above sizes a full campaign at **23 cores**. The team collected
+> **6** in their first season and intend to return for the rest — which is the ordinary shape
+> of a first field campaign, not a failure. [Part 4](../04_Data_Interpretation/) analyses
+> those six and reports the precision they actually achieved against the ±20% target, rather
+> than presenting an under-powered result as a finished one. Treat the Part 4 numbers as a
+> demonstration of method on a first season's data.

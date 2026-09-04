@@ -1,6 +1,6 @@
 # Pipeline data — Tsawwassen worked example
 
-The three core CSVs hold **twelve cores** (six salt marsh, six eelgrass) across 64 sediment
+The three core CSVs hold **six cores** (three salt marsh, three eelgrass) across 32 sediment
 slices, and follow the column layout of the **digital data sheet**
 ([`Worked_Example/Eelgrass_Carbon_DigitalData_Example.xlsx`](../../../Worked_Example/Eelgrass_Carbon_DigitalData_Example.xlsx)).
 They are what the R scripts read. To use your own site, replace them with an export of your
@@ -45,11 +45,10 @@ invisible error.
 
 ---
 
-> ⚠️ **The spreadsheet holds the original six cores, the CSVs hold twelve.**
+> ✅ **The CSVs and the worked-example spreadsheet hold the same six cores.**
 > [`Eelgrass_Carbon_DigitalData_Example.xlsx`](../../../Worked_Example/Eelgrass_Carbon_DigitalData_Example.xlsx)
-> has not been extended with cores G–L. The CSVs are what the workflow reads, so the analysis
-> is unaffected — but if you open the spreadsheet expecting to find all twelve, you will not.
-> Extending it means replicating its formula rows for six more cores.
+> and the CSVs here are both `WWF-01-A` through `WWF-01-F`, so the sheet can be exported
+> straight into `data/` and the workflow will reproduce the same numbers.
 
 The core dataset is a **constructed teaching example** (Tsawwassen Beach, BC) — realistic
 but not field-measured. See [`Worked_Example/`](../../../Worked_Example/).
