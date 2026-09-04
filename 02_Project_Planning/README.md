@@ -24,7 +24,7 @@
 
 Answering these is what a **sampling design** aims to achieve. It turns a carbon question into a field plan: a number of cores, and a set of sampling coordinates.
 
-This section covers the five steps of a sampling design. Work through them and you'll leave with a plan for the field.
+This section covers the five steps of a sampling design.
 
 | # | Step | Answers |
 |---|------|---------|
@@ -42,14 +42,14 @@ This section covers the five steps of a sampling design. Work through them and y
 <tr>
 <td width="50%">
 
-**🗺 [Blue Carbon Hub sampling-design app](https://blue-carbon-hub.projects.earthengine.app/)** — the spatial tool. Draw your boundary, stratify it, place your samples on a map.
+**🗺 [Blue Carbon Hub sampling-design app](https://blue-carbon-hub.projects.earthengine.app/view/blue-carbon-sampling-plan-tool)**  A spatial tool; draw your boundary, stratify it, place your samples on a map.
 
 *Used in Steps 1, 2 and 5.*
 
 </td>
 <td width="50%">
 
-**📄 [Sample Allocation Calculator](BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx)** — the numbers tool. Give it an area, a precision target and a rough prior; it returns a core count.
+**📄 [Sample Allocation Calculator](BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx)** A simple spreadsheet for estimating sample size.
 
 *Used in Step 4.*
 
@@ -57,11 +57,11 @@ This section covers the five steps of a sampling design. Work through them and y
 </tr>
 </table>
 
-If you want to know how the calculator returns the number it does and dive deeper into the math behind the tools, look to [**Appendix A**](#appendix-a--a-brief-lesson-in-sampling-logic), at the bottom of this page, where we go through how sample size is estimated before sampling — and how to check whether the sampling met your goals afterwards.
+If you want to know how the calculator returns the number it does and dive deeper into the math behind the tools, look to [**Appendix A**](#appendix-a--a-brief-lesson-in-sampling-logic), at the bottom of this page, where we go through how sample size is estimated before sampling, and how to check whether the sampling met your goals afterwards.
 
 ---
 
-## Background — what sampling is, and why it works
+## Background: What sampling is, and why it works
 
 Measuring every square metre of an entire ecosystem isn't always feasible. So we measure a **small portion** of it and use that to estimate the whole. Because an estimate built from a portion will never be exactly right every single time, we also want to know the probability that the estimate reflects the actual value. This is called **probability-based sampling**.
 
@@ -87,8 +87,8 @@ The more samples you take, the closer your estimate is likely to be to the true 
 | Component | | What it tells you |
 |---|---|---|
 | **Estimate** | $\bar{x}$ | The average carbon value across your sampled plots. |
-| **Confidence level** | $1-\alpha$ | How often this procedure would capture the true value if repeated. At 95% confidence, about 95 out of every 100 intervals built this way contain the true value. |
-| **Margin of error** | $E$ | How precise that estimate is — the distance from the estimate to the edge of the interval, usually given relative to the mean (e.g. ±10%). |
+| **Confidence level** | $1-\alpha$ | How often this procedure would capture the true value if repeated. At 95% confidence, about 95 out of every 100 samples would fall within this range of values. |
+| **Margin of error** | $E$ | How precise that estimate is, or in words, the distance from the estimate to the edge of the interval, usually given relative to the mean (e.g. ±10%). |
 
 > Put together: *"mean carbon = 100 ±10, at 95% confidence."*
 
@@ -132,7 +132,7 @@ On the right, we see how each sample on the map is combined together to estimate
 
 - Sampling estimates what's impractical to measure directly.
 - The same process that produces an estimate can also tell you whether differences *within* or *between* sites are statistically significant.
-- And it runs **backwards**: fix the precision you want, and it returns the number of cores needed to get there. That's Step 4 — the reversal itself is [Appendix A2](#a2--working-backwards-from-precision-to-sample-size).
+- And it runs **backwards**: fix the precision you want, and it returns the number of cores needed to get there. That's Step 4, see [Appendix A2](#a2--working-backwards-from-precision-to-sample-size).
 
 ---
 
@@ -204,7 +204,7 @@ They opened the sampling-design tool and traced what they could see on recent im
 </td>
 <td width="55%">
 
-**Tool: [Blue Carbon Hub sampling-design app](https://blue-carbon-hub.projects.earthengine.app/)**
+**Tool: [Blue Carbon Hub sampling-design app](https://blue-carbon-hub.projects.earthengine.app/view/blue-carbon-sampling-plan-tool)**
 
 Draw a simple polygon over your area of interest — in the tool, in Google Earth Engine, or in whatever GIS you already use. Or import a pre-defined boundary if one exists.
 
@@ -313,7 +313,7 @@ For an eelgrass carbon project, the pool that matters most is the **sediment**. 
 
 <br>
 
-**Sediment**, cored **to refusal** rather than to a fixed depth — so each core captures the full accumulated profile at that location rather than a truncated slice.
+**Sediment**, cored **to refusal** rather than to a fixed depth so each core captures the full accumulated profile at that location.
 
 </details>
 
@@ -328,11 +328,9 @@ For an eelgrass carbon project, the pool that matters most is the **sediment**. 
 </td>
 <td width="55%">
 
-Write down the pool you're measuring — for this workshop, **sediment**.
+See [Section 3 — Field Methods](../03_Field_Methods/) for how to measure expected sediment depth with a metal rod
 
-Then decide on depth: a **target core depth**, or a decision to **core to refusal**. Either is defensible; what matters is that it's consistent across the campaign and recorded.
-
-See [Section 3 — Field Methods](../03_Field_Methods/) for how that decision plays out with a corer in hand.
+or watch this video
 
 > 🎥 *[VIDEO — "Site Selection and Required Materials"]* · [workshop playlist](https://www.youtube.com/playlist?list=PLLsjpJMfNDP5w78ZJNDUvMj1VoRG_qSwd)
 
@@ -351,7 +349,7 @@ See [Section 3 — Field Methods](../03_Field_Methods/) for how that decision pl
 
 *How many cores meet my project goal?*
 
-This is the step that sets how many samples are required to answer the questions you have. Too few cores and your estimate carries too much uncertainty to make confident decisions. Too many and you spend resources collecting data you didn't need, which could have gone towards other efforts.
+This is the step that sets how many samples are required to meet your goals. Too few cores and your estimate carries too much uncertainty to make confident decisions. Too many and you spend resources collecting data you didn't need, which could have gone towards other efforts.
 
 To get there, you define three things, and the calculator returns an estimate of the number of samples.
 
@@ -364,22 +362,18 @@ To get there, you define three things, and the calculator returns an estimate of
 
 ### Where the prior comes from
 
-The calculator needs a rough idea of how much carbon is there and how variable it is *before* you've measured anything. That's a **prior**: a starting estimate used only to size the campaign. It is never reported as a result, and nothing in your final numbers depends on it.
+The calculator needs a rough idea of how much carbon is there and how variable it is *before* you've measured anything. That's a **prior**, a rough estimate to start from.
 
 Two sources, in order of preference:
 
 | | Source | Use when |
 |---|---|---|
-| **1** | **A pilot study** — mean and standard deviation from a handful of your own cores, an earlier survey, or nearby sites | You can get a few cores before the main campaign. This is the better option: local variability is what actually drives sample size. |
-| **2** | **Regional values** — published stocks from comparable ecosystems. By default we use the regional averages for coastal blue carbon ecosystems reported in Janousek et al. (2025) | You have nothing local to work from. |
+| **1** | **A pilot study** — mean and standard deviation from a handful of your own cores, an earlier survey, or nearby sites | You can get a few cores before from a pilot study or from nearby locations. This is the better option: local variability is what actually drives sample size. |
+| **2** | **Regional values** — published stocks from comparable ecosystems. By default we use the regional averages for coastal blue carbon ecosystems reported in Janousek et al. (2025) | You have no prior site data to go off. |
 
 > [!NOTE]
-> **Pad the standard deviation when using regional values.** The Janousek et al. dataset's central finding is that blue carbon stocks along this coast are driven mainly by **local rather than regional** factors. A regional average therefore tends to *understate* how patchy any individual meadow is — and variability is the single largest driver of sample size ([Appendix A4](#a4--what-actually-drives-sample-size)). Rounding the SD upward gives you a safety margin at exactly the input where being wrong is most expensive.
->
+> The sample design tool uses open coastal blue carbon data for the Pacific Northwest from:
 > Janousek, C. N., Krause, J. R., Drexler, J. Z., Buffington, K. J., Poppe, K. L., Peck, E., et al. (2025). Blue carbon stocks along the Pacific coast of North America are mainly driven by local rather than regional factors. *Global Biogeochemical Cycles*, 39, e2024GB008239. [doi:10.1029/2024GB008239](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2024GB008239)
-
-> [!NOTE]
-> **What matters most for sample size.** [Appendix A4](#a4--what-actually-drives-sample-size) sets out the full formula and shows why some of these inputs move the answer far more than others.
 
 <details>
 <summary><b>📊 Worked example</b> &nbsp;·&nbsp; <i>what the Tsawwassen team calculated</i></summary>
@@ -390,7 +384,7 @@ Two sources, in order of preference:
 <tr>
 <td width="45%">
 
-> 📸 **[SCREENSHOT NEEDED]** — the sample allocation tool with these inputs entered and the resulting core count visible.
+> **[SCREENSHOT NEEDED]**
 
 </td>
 <td width="55%">
@@ -412,7 +406,7 @@ Two sources, in order of preference:
 
 ### 🛠 Your turn
 
-You can use the **📄 [Sample Allocation Calculator](BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx)**, or stick with the spatial tool in the **🗺 [Blue Carbon Hub app library](https://blue-carbon-hub.projects.earthengine.app/)**.
+You can use the **📄 [Sample Allocation Calculator](BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx)**, or stick with the spatial tool in the **🗺 [Blue Carbon Hub app library](https://blue-carbon-hub.projects.earthengine.app/view/blue-carbon-sampling-plan-tool)**.
 
 <table>
 <tr>
@@ -437,13 +431,6 @@ This is the **Sample Allocation Calculator** named in Step 3 of the [Sampling De
 
 The quickest way to build intuition is to open the calculator — or the [Blue Carbon Hub visualizer](https://blue-carbon-hub.projects.earthengine.app/) — and change **one knob at a time**, watching *n* respond. [Appendix A4](#a4--what-actually-drives-sample-size) has the full comparison if you'd rather read it than run it.
 
-> 🚧 **[PLACEHOLDER — rebuilt calculator workbook]**
-> A reorganised and expanded version of this workbook is in development, built on the [UNFCCC A6.4 Sampling & Surveys](Sampling-Design-Eng-2026.pdf) formulation. It will replace the file linked above; this block is where its description and sheet-by-sheet guide will go.
-
-> [!WARNING]
-> **⚠️ A common mistake.** *"I collected 10 cores, so I have a carbon estimate."*
->
-> You have an estimate — but not necessarily a **defensible** one. A carbon number without a margin of error can't be compared to another site, to a future survey, or to a target. The sample size is what buys you the interval, and the interval is what makes the number usable.
 
 > [!TIP]
 > **✅ Before moving on, you should have:**
@@ -488,9 +475,6 @@ There are four common strategies for distributing samples. Which one fits depend
 Each stratum gets a share of *n* **proportional to its area**, so a stratum covering half the meadow gets roughly half the cores.
 
 More details of the allocation formula can be found in [Appendix A7](#a7--proportional-allocation-across-strata).
-
-> "Allocate plots proportionally based on the size of each study site (e.g., a 50ha area will have twice as many plots as a 25ha area)."
-> — WWF-Canada, *[Carbon Measurement: Sampling Design](Sampling-Design-Eng-2026.pdf)* (2026), p.17
 
 ### For eelgrass specifically
 
@@ -581,11 +565,11 @@ Before heading into the field, check you can answer all six:
 
 </details>
 
-You now have everything a field team needs: a boundary, strata, a carbon pool and depth, a core count, and a list of coordinates. Every decision above was made so that the numbers coming back from the lab can be defended — you know how precise they will be, and why.
+You now have everything a field team needs: a boundary, strata, a carbon pool and depth, a core count, and a list of coordinates. 
 
-What remains is the fieldwork itself. **Section 3** covers what to bring, how to take a sediment core that survives the trip home, how to record it, and the handling and labelling that keeps a core usable once it leaves the meadow.
+What remains is the fieldwork itself. **Section 3** covers what to bring, how to take a sediment core, how to record information on the data sheet, and the handling and labelling the samples.
 
-**Next: [Section 3 — Field Methods →](../03_Field_Methods/)** — collecting the cores your plan just specified.
+**Next: [Section 3 — Field Methods →](../03_Field_Methods/)**
 
 ---
 ---
