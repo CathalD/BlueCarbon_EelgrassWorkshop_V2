@@ -85,7 +85,7 @@ test_that("a slice deeper than the recorded core length is flagged; a copied sli
 })
 
 test_that("a slice crossing an increment boundary is split by overlap and carbon is conserved", {
-  # Ported from the CommunityCarbonMap prototype's interval test: layers 0-10, 10-20, 20-25 cm
+  # Ported from the research prototype's interval test: layers 0-10, 10-20, 20-25 cm
   # with carbon densities 10, 20, 40 mg C/cm3 -> 0-15 cm holds 10*10 + 20*5, 15-30 holds 20*5 + 40*5.
   dens <- c(10, 20, 40) / 1000                                    # g C/cm3
   s <- slice_rows("A", c(0, 10, 20, 25), bd = 1, oc = 100 * dens) # BD 1 so OC% = 100 * density
