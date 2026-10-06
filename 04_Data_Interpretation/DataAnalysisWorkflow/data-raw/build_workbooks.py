@@ -429,6 +429,13 @@ def cowichan(wb, ins, log, smp, loi_rows):
     dia = 7.6  # Douglas et al. (2022): acrylic tubes, 7.6 cm diameter
     area = math.pi * (dia / 2) ** 2
     ins.cell(loi_rows["Corer internal diameter (cm)"], 2).value = dia
+    smp["A3"] = ("WORKED EXAMPLE — Cowichan Estuary. Depths, carbon values and the bulk density behind column M are "
+                 "PUBLISHED measurements (Douglas et al. 2022, via Janousek et al. 2025). Dry weights in column M are "
+                 "RECONSTRUCTED from that bulk density for teaching; they are not original lab weighings.")
+    smp["A3"].font = openpyxl.styles.Font(bold=True, color="9C4A00", size=10)
+    smp["A3"].alignment = openpyxl.styles.Alignment(wrap_text=True, vertical="center")
+    smp.merge_cells("A3:AA3")
+    smp.row_dimensions[3].height = 28
     ins.cell(loi_rows["LOI intercept"], 2).value = -0.197
     ins.cell(loi_rows["LOI slope"], 2).value = 0.320
     ins.cell(loi_rows["LOI intercept"], 3).value = ("Example: local calibration from the 16 slices in these cores "

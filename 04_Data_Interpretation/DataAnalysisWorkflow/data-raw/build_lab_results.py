@@ -23,6 +23,24 @@ BOX = Border(left=thin, right=thin, top=thin, bottom=thin)
 HEAD = PatternFill("solid", fgColor="DCE6F1")
 CALC = PatternFill("solid", fgColor="F2F2F2")
 NOTE = PatternFill("solid", fgColor="FFF2CC")
+# Provenance key: every value on the Results tab is one of these.
+PUBLISHED = PatternFill("solid", fgColor="D9EAD3")       # published measurement
+RECON = PatternFill("solid", fgColor="FCE5CD")           # reconstructed teaching value
+ILLUS = PatternFill("solid", fgColor="E6E0F0")           # illustrative detail
+KEY = [(PUBLISHED, "Published measurement (Douglas et al. 2022)"),
+       (RECON, "Reconstructed teaching value — dry mass back-calculated from published bulk density"),
+       (ILLUS, "Illustrative detail — lab ID, date, comments; not real"),
+       (CALC, "Calculated on this sheet")]
+
+
+def write_key(ws, row, cols=(1, 4, 9, 13)):
+    """One row of coloured swatches, so any crop of the table header carries the key."""
+    for (fill, text), c in zip(KEY, cols):
+        cell = ws.cell(row, c, text)
+        cell.fill = fill; cell.border = BOX
+        cell.font = Font(size=9, bold=True)
+        cell.alignment = Alignment(wrap_text=True, vertical="center")
+    ws.row_dimensions[row].height = 30
 
 
 def cowichan_rows():
@@ -71,6 +89,14 @@ def build():
         cell.font = Font(bold=True); cell.fill = HEAD; cell.border = BOX
         cell.alignment = Alignment(wrap_text=True, vertical="top")
     ws.row_dimensions[h].height = 60
+    write_key(ws, h - 1)
+    ws.merge_cells(start_row=h - 1, start_column=1, end_row=h - 1, end_column=3)
+    ws.merge_cells(start_row=h - 1, start_column=4, end_row=h - 1, end_column=8)
+    ws.merge_cells(start_row=h - 1, start_column=9, end_row=h - 1, end_column=12)
+    ws.merge_cells(start_row=h - 1, start_column=13, end_row=h - 1, end_column=15)
+    # provenance of each column: P published, R reconstructed, I illustrative, C calculated
+    prov = {1: ILLUS, 2: PUBLISHED, 3: ILLUS, 4: PUBLISHED, 5: PUBLISHED, 6: CALC, 7: PUBLISHED, 8: RECON,
+            9: CALC, 13: PUBLISHED, 14: PUBLISHED, 15: ILLUS}
     for i, r in enumerate(cowichan_rows()):
         row = h + 1 + i
         vals = [f"EL-{1001 + i}", f"{r['core']}-{r['sample']:02d}", "2026-08-04", r["top"], r["bot"],
@@ -81,8 +107,8 @@ def build():
         for c, v in enumerate(vals, start=1):
             cell = ws.cell(row, c, v)
             cell.border = BOX
-            if c in (6, 9):
-                cell.fill = CALC
+            if c in prov and v is not None:
+                cell.fill = prov[c]
         ws.cell(row, 9).number_format = "0.000"
         ws.cell(row, 8).number_format = "0.00"
     last = h + len(cowichan_rows())
@@ -97,6 +123,7 @@ def build():
     rd["A1"] = "Reading a lab results sheet — and moving it into the digital data sheet"
     rd["A1"].font = Font(bold=True, size=13)
     rd["A2"] = "Each row of the Results tab is one slice. Match it to Sheet 3 of the digital data sheet by Core ID and Sample ID."
+    write_key(rd, 3, cols=(1, 2, 3, 4))
     rows = [
         ("On the results sheet", "Goes to (digital data sheet, Sheet 3)", "Check before you copy"),
         ("Client sample ID (e.g. COW-S5-01)", "Column A Core ID (COW-S5) and column B Sample ID (1)",
@@ -115,17 +142,18 @@ def build():
         ("Drying temperature", "Note it in the workbook (Sheet 3 notes or Sheet 2 core notes)",
          "60–65 °C is usual for carbon. Material dried at 105 °C can lose some organic matter."),
     ]
-    for i, (a, b, c) in enumerate(rows, start=4):
+    for i, (a, b, c) in enumerate(rows, start=5):
         for j, v in enumerate((a, b, c), start=1):
             cell = rd.cell(i, j, v)
             cell.border = BOX
             cell.alignment = Alignment(wrap_text=True, vertical="top")
-            if i == 4:
+            if i == 5:
                 cell.font = Font(bold=True); cell.fill = HEAD
-    n = 4 + len(rows) + 1
+    n = 5 + len(rows) + 1
     rd.cell(n, 1, "Three things to look for on any results sheet").font = Font(bold=True)
     tips = ["1. Bulk density divided by slice thickness. If the lab divides dry mass by the corer's cross-section "
-            "only (π r²), a 2 cm slice comes out twice as dense as it is. Values above about 1.8 g/cm³ are a warning sign.",
+            "only (π r²), a 2 cm slice comes out twice as dense as it is. Check the formula whenever values look "
+            "unusual for your sediment — dense sands can genuinely exceed 1.8 g/cm³ (several Cowichan slices reach 2.0).",
             "2. Units. Masses in g or kg, carbon as % or as a fraction (0–1), and whether the units changed between reports.",
             "3. What 'C' means. Total carbon is not organic carbon. If the sheet does not say inorganic carbon was removed, ask."]
     for k, t in enumerate(tips, start=n + 1):
@@ -134,7 +162,7 @@ def build():
         cell.fill = NOTE
         rd.merge_cells(start_row=k, start_column=1, end_row=k, end_column=3)
         rd.row_dimensions[k].height = 32
-    for c, w in enumerate([34, 52, 70], start=1):
+    for c, w in enumerate([34, 52, 70, 30], start=1):
         rd.column_dimensions[L(c)].width = w
     wb.save(OUT)
     print("written", OUT)
