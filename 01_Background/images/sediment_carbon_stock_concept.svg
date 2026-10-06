@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" width="900" height="430" font-family="Helvetica, Arial, sans-serif">
+  <!-- opaque background so the figure reads the same in light and dark GitHub themes -->
+  <rect x="0" y="0" width="900" height="430" fill="#ffffff"/>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1f7a4d"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#b5402a"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8a7a55"/></marker>
+  </defs>
+
+  <!-- water and sediment -->
+  <rect x="20" y="40" width="560" height="190" fill="#eaf7fb"/>
+  <text x="32" y="62" font-size="12" fill="#0f4c66">water and air</text>
+  <rect x="20" y="230" width="560" height="180" fill="#e2d5b7"/>
+  <line x1="20" y1="230" x2="580" y2="230" stroke="#8a7a55" stroke-width="2"/>
+  <text x="32" y="400" font-size="12" fill="#8a7a55">sediment</text>
+
+  <!-- eelgrass blades -->
+  <g stroke="#2c9a5f" stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M150 230 C145 180 160 140 150 95"/>
+    <path d="M165 230 C175 185 190 160 205 120"/>
+    <path d="M135 230 C120 190 110 165 100 125"/>
+    <path d="M300 230 C296 190 305 160 300 120"/>
+    <path d="M314 230 C326 195 338 175 350 140"/>
+    <path d="M286 230 C276 200 266 180 258 150"/>
+  </g>
+  <!-- roots -->
+  <g stroke="#8a7a55" stroke-width="1.6" fill="none">
+    <path d="M150 232 C140 250 130 258 118 266"/><path d="M152 232 C156 252 166 262 178 270"/>
+    <path d="M300 232 C292 250 282 258 270 266"/><path d="M302 232 C308 252 318 262 330 270"/>
+  </g>
+
+  <!-- carbon in: uptake -->
+  <path d="M230 52 L230 112" stroke="#1f7a4d" stroke-width="2.5" fill="none" marker-end="url(#g)"/>
+  <text x="240" y="70" font-size="12.5" font-weight="bold" fill="#1f7a4d">carbon in</text>
+  <text x="240" y="86" font-size="11.5" fill="#1b1f23">CO₂ taken up as plants</text>
+  <text x="240" y="100" font-size="11.5" fill="#1b1f23">photosynthesise (uptake)</text>
+
+  <!-- carbon out -->
+  <path d="M420 200 L470 120" stroke="#b5402a" stroke-width="2.5" fill="none" marker-end="url(#r)"/>
+  <text x="430" y="104" font-size="12.5" font-weight="bold" fill="#b5402a">carbon out</text>
+  <text x="430" y="120" font-size="11.5" fill="#1b1f23" dx="48">respiration, decay,</text>
+  <text x="478" y="134" font-size="11.5" fill="#1b1f23">erosion and export</text>
+
+  <!-- burial into the stock -->
+  <path d="M225 236 L225 300" stroke="#8a7a55" stroke-width="2.5" fill="none" marker-end="url(#b)"/>
+  <text x="238" y="262" font-size="12.5" font-weight="bold" fill="#8a7a55">buried</text>
+  <text x="238" y="278" font-size="11.5" fill="#1b1f23">dead leaves, roots and trapped</text>
+  <text x="238" y="292" font-size="11.5" fill="#1b1f23">particles — kept for a long time</text>
+  <text x="238" y="306" font-size="11.5" fill="#1b1f23">(sequestration)</text>
+
+  <!-- a core with slices -->
+  <rect x="470" y="222" width="42" height="168" fill="#cbb98f" stroke="#3d4b5c" stroke-width="2.2"/>
+  <g stroke="#3d4b5c" stroke-width="1">
+    <line x1="470" y1="250" x2="512" y2="250"/><line x1="470" y1="278" x2="512" y2="278"/>
+    <line x1="470" y1="306" x2="512" y2="306"/><line x1="470" y1="334" x2="512" y2="334"/>
+    <line x1="470" y1="362" x2="512" y2="362"/>
+  </g>
+  <text x="491" y="214" text-anchor="middle" font-size="11" fill="#3d4b5c">core</text>
+
+  <!-- what the workshop measures -->
+  <rect x="610" y="230" width="270" height="180" rx="10" fill="#e8f3ec" stroke="#1f7a4d" stroke-width="1.6"/>
+  <text x="626" y="258" font-size="14" font-weight="bold" fill="#1f7a4d">What this workshop measures</text>
+  <text x="626" y="284" font-size="12.5" fill="#1b1f23">The <tspan font-weight="bold">sediment organic carbon</tspan></text>
+  <text x="626" y="302" font-size="12.5" fill="#1b1f23"><tspan font-weight="bold">stock</tspan>: the carbon stored in the</text>
+  <text x="626" y="320" font-size="12.5" fill="#1b1f23">sediment now, to a stated depth.</text>
+  <text x="626" y="350" font-size="11.5" fill="#57606a">Not the plants, not the water, and</text>
+  <text x="626" y="366" font-size="11.5" fill="#57606a">not a rate: how fast carbon is added</text>
+  <text x="626" y="382" font-size="11.5" fill="#57606a">needs dated cores.</text>
+  <path d="M520 306 L606 306" stroke="#1f7a4d" stroke-width="1.6" stroke-dasharray="5 4" fill="none"/>
+
+  <!-- title -->
+  <text x="610" y="70" font-size="16" font-weight="bold" fill="#1b1f23">Carbon in, carbon out,</text>
+  <text x="610" y="92" font-size="16" font-weight="bold" fill="#1b1f23">carbon stored</text>
+  <text x="610" y="118" font-size="12" fill="#57606a">The stock grows when more carbon is</text>
+  <text x="610" y="134" font-size="12" fill="#57606a">buried than is lost, and shrinks when</text>
+  <text x="610" y="150" font-size="12" fill="#57606a">losses win. Conceptual, not to scale.</text>
+</svg>

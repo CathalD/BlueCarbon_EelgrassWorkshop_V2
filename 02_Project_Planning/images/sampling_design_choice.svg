@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 300" width="920" height="300" font-family="Helvetica, Arial, sans-serif">
+  <!-- opaque background so the figure reads the same in light and dark GitHub themes -->
+  <rect x="0" y="0" width="920" height="300" fill="#ffffff"/>
+  <text x="20" y="28" font-size="16" font-weight="bold" fill="#1b1f23">Where the cores go decides what you can report</text>
+
+  <!-- panel frames -->
+  <g fill="#eaf7fb" stroke="#0f4c66" stroke-width="1.3">
+    <rect x="20" y="48" width="200" height="150" rx="6"/>
+    <rect x="245" y="48" width="200" height="150" rx="6"/>
+    <rect x="470" y="48" width="200" height="150" rx="6"/>
+  </g>
+  <rect x="695" y="48" width="200" height="150" rx="6" fill="#f6f1e4" stroke="#8a7a55" stroke-width="1.3"/>
+
+  <!-- random -->
+  <g fill="#1b1f23">
+    <circle cx="48" cy="72" r="4"/><circle cx="120" cy="64" r="4"/><circle cx="182" cy="90" r="4"/><circle cx="74" cy="118" r="4"/>
+    <circle cx="150" cy="128" r="4"/><circle cx="196" cy="160" r="4"/><circle cx="40" cy="170" r="4"/><circle cx="106" cy="176" r="4"/>
+    <circle cx="160" cy="185" r="4"/><circle cx="92" cy="88" r="4"/>
+  </g>
+  <!-- systematic -->
+  <g fill="#1b1f23">
+    <circle cx="275" cy="70" r="4"/><circle cx="345" cy="70" r="4"/><circle cx="415" cy="70" r="4"/>
+    <circle cx="275" cy="123" r="4"/><circle cx="345" cy="123" r="4"/><circle cx="415" cy="123" r="4"/>
+    <circle cx="275" cy="176" r="4"/><circle cx="345" cy="176" r="4"/><circle cx="415" cy="176" r="4"/>
+  </g>
+  <!-- stratified random -->
+  <path d="M470 120 C520 100 600 140 670 110 L670 198 L470 198 Z" fill="#c9e7d4" stroke="none"/>
+  <text x="478" y="190" font-size="10.5" fill="#1f7a4d">dense</text>
+  <text x="478" y="64" font-size="10.5" fill="#0f4c66">sparse</text>
+  <g fill="#1b1f23">
+    <circle cx="510" cy="80" r="4"/><circle cx="600" cy="72" r="4"/><circle cx="645" cy="95" r="4"/><circle cx="550" cy="100" r="4"/>
+    <circle cx="500" cy="150" r="4"/><circle cx="540" cy="172" r="4"/><circle cx="585" cy="150" r="4"/><circle cx="620" cy="178" r="4"/>
+    <circle cx="655" cy="150" r="4"/><circle cx="565" cy="186" r="4"/><circle cx="520" cy="130" r="4"/>
+  </g>
+  <!-- convenience -->
+  <path d="M700 190 C760 160 800 150 890 140" stroke="#8a7a55" stroke-width="2" stroke-dasharray="6 4" fill="none"/>
+  <text x="790" y="190" font-size="10.5" fill="#8a7a55">access path</text>
+  <g fill="#1b1f23">
+    <circle cx="720" cy="175" r="4"/><circle cx="745" cy="168" r="4"/><circle cx="770" cy="158" r="4"/><circle cx="800" cy="150" r="4"/>
+    <circle cx="835" cy="146" r="4"/><circle cx="865" cy="142" r="4"/>
+  </g>
+
+  <!-- labels -->
+  <g font-size="13" font-weight="bold" fill="#1b1f23">
+    <text x="120" y="222" text-anchor="middle">Random</text>
+    <text x="345" y="222" text-anchor="middle">Systematic</text>
+    <text x="570" y="222" text-anchor="middle">Stratified random</text>
+    <text x="795" y="222" text-anchor="middle">Convenience</text>
+  </g>
+  <g font-size="11.5" fill="#57606a">
+    <text x="120" y="240" text-anchor="middle">anywhere, by chance</text>
+    <text x="345" y="240" text-anchor="middle">a grid, random start</text>
+    <text x="570" y="240" text-anchor="middle">by chance within each stratum</text>
+    <text x="795" y="240" text-anchor="middle">where it is easy to reach</text>
+  </g>
+  <path d="M20 262 L20 268 L670 268 L670 262" stroke="#1f7a4d" stroke-width="1.4" fill="none"/>
+  <text x="345" y="288" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f7a4d">Part 4, Option B: mean, total and a confidence interval</text>
+  <path d="M695 262 L695 268 L895 268 L895 262" stroke="#8a7a55" stroke-width="1.4" fill="none"/>
+  <text x="795" y="288" text-anchor="middle" font-size="12" font-weight="bold" fill="#8a7a55">exploratory estimate, no interval</text>
+</svg>

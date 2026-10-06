@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" width="900" height="420" font-family="Helvetica, Arial, sans-serif">
+  <!-- opaque background so the figure reads the same in light and dark GitHub themes -->
+  <rect x="0" y="0" width="900" height="420" fill="#ffffff"/>
+  <!-- scale: 6 px per cm, surface at y = 70 -->
+  <text x="30" y="30" font-size="16" font-weight="bold" fill="#1b1f23">Why the reporting depth comes first</text>
+  <text x="30" y="50" font-size="12.5" fill="#57606a">Stocks are reported in standard increments. A core can only measure the increments it reaches.</text>
+
+  <!-- increment bands across the figure -->
+  <g font-size="11.5" fill="#57606a">
+    <rect x="90" y="70" width="560" height="90" fill="#f3f6f8"/>
+    <rect x="90" y="160" width="560" height="90" fill="#ffffff"/>
+    <rect x="90" y="250" width="560" height="120" fill="#f3f6f8"/>
+    <text x="40" y="74">0 cm</text><text x="34" y="164">15 cm</text><text x="34" y="254">30 cm</text><text x="34" y="374">50 cm</text>
+    <text x="96" y="120">0–15 cm</text><text x="96" y="210">15–30 cm</text><text x="96" y="315">30–50 cm</text>
+  </g>
+  <line x1="90" y1="70" x2="650" y2="70" stroke="#8a7a55" stroke-width="2"/>
+  <text x="560" y="64" font-size="11.5" fill="#8a7a55">sediment surface</text>
+
+  <!-- reporting depth line -->
+  <line x1="90" y1="250" x2="650" y2="250" stroke="#0f4c66" stroke-width="2.2" stroke-dasharray="7 5"/>
+  <text x="560" y="244" font-size="12" font-weight="bold" fill="#0f4c66">reporting depth</text>
+
+  <!-- core 1: 20 cm -->
+  <rect x="230" y="70" width="46" height="120" fill="#cbb98f" stroke="#3d4b5c" stroke-width="2"/>
+  <text x="253" y="270" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b1f23">20 cm core</text>
+  <rect x="230" y="190" width="46" height="60" fill="none" stroke="#b5402a" stroke-width="1.6" stroke-dasharray="4 3"/>
+  <text x="253" y="230" text-anchor="middle" font-size="16" fill="#b5402a">?</text>
+
+  <!-- core 2: 35 cm -->
+  <rect x="420" y="70" width="46" height="210" fill="#cbb98f" stroke="#3d4b5c" stroke-width="2"/>
+  <text x="443" y="300" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b1f23">35 cm core</text>
+
+  <!-- verdicts -->
+  <rect x="680" y="80" width="200" height="110" rx="8" fill="#fbeae6" stroke="#b5402a" stroke-width="1.4"/>
+  <text x="692" y="102" font-size="12.5" font-weight="bold" fill="#b5402a">20 cm core</text>
+  <text x="692" y="122" font-size="11.5" fill="#1b1f23">measures 0–15 cm fully.</text>
+  <text x="692" y="140" font-size="11.5" fill="#1b1f23">0–30 cm is only a scenario:</text>
+  <text x="692" y="158" font-size="11.5" fill="#1b1f23">a third of it must be</text>
+  <text x="692" y="176" font-size="11.5" fill="#1b1f23">estimated below the core.</text>
+
+  <rect x="680" y="210" width="200" height="90" rx="8" fill="#e8f3ec" stroke="#1f7a4d" stroke-width="1.4"/>
+  <text x="692" y="232" font-size="12.5" font-weight="bold" fill="#1f7a4d">35 cm core</text>
+  <text x="692" y="252" font-size="11.5" fill="#1b1f23">measures 0–15 and 0–30 cm</text>
+  <text x="692" y="270" font-size="11.5" fill="#1b1f23">fully. The 0–30 cm stock is</text>
+  <text x="692" y="288" font-size="11.5" fill="#1b1f23">measured, not estimated.</text>
+
+  <text x="90" y="400" font-size="12" fill="#1b1f23">Rule of thumb: every core should reach the reporting depth. Decide the depth before fieldwork, then core at least that deep.</text>
+</svg>
