@@ -1,0 +1,112 @@
+---
+title: "Going further, module 4 — what published cores add"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+params:
+  results: "../../outputs/module4/results.rds"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+r <- readRDS(params$results)
+fig <- function(f) knitr::include_graphics(file.path(r$figures, f))
+tab <- function(x, ...) knitr::kable(x, row.names = FALSE, ...)
+f1 <- function(x) ifelse(is.na(x), "—", formatC(x, format = "f", digits = 1))
+pc <- function(x) ifelse(is.na(x), "—", paste0(round(100 * x), "%"))
+t <- r$tab; pr <- r$prior; lo <- r$loeo_tab
+comb <- t[t$source == "Combined", ]
+```
+
+**`r r$project$title`**
+
+> **An optional extra, not part of Options A or B.** This is a *model-based* estimate: it
+> assumes your sampling units behave like a random draw from your meadow, and your meadow like
+> one more estuary from the published set. It does not replace the Option B estimate, and it is
+> no better than those assumptions.
+
+## 1. The question
+
+With only a few cores, how much do published eelgrass cores from other estuaries sharpen our
+estimate of the meadow's average sediment organic carbon over **0–`r r$D` cm**?
+
+## 2. The two sources
+
+**Published cores.** `r pr$n_cores` *Zostera marina* cores from `r pr$n_estuaries` estuaries
+(Janousek et al. 2025), measured to at least `r r$D` cm, carbon basis: *`r r$ref_label`*. Your
+own estuary (`r paste(r$settings$REFERENCE_EXCLUDE_ESTUARIES, collapse = ", ")`) and any core
+within `r r$settings$REFERENCE_EXCLUDE_WITHIN_M` m of yours are left out, so nothing is
+counted twice. Estuaries differ more than cores within an estuary do: estuary-to-estuary
+differences make up `r round(100 * pr$icc)`% of the variation. This spread is what keeps the
+prior wide.
+
+**Your cores.** `r nrow(r$units)` sampling unit(s) (`r r$settings$SAMPLING_UNIT`s), measured
+to `r r$D` cm. Only measured carbon is used here; nothing is extrapolated.
+
+```{r fig-prior, out.width = "75%"}
+fig("prior_estuaries.png")
+```
+
+## 3. The result
+
+```{r result}
+x <- data.frame(Source = t$source, "Mean (Mg C/ha)" = f1(t$estimate_Mg_ha),
+                "Interval (Mg C/ha)" = ifelse(is.na(t$low_Mg_ha), "—", paste0(f1(t$low_Mg_ha), "–", f1(t$high_Mg_ha))),
+                "Weight given to the published cores" = pc(t$weight_of_prior), check.names = FALSE)
+tab(x, caption = sprintf("%g%% intervals, 0–%g cm", 100 * r$conf, r$D))
+```
+
+```{r fig-borrow, out.width = "90%"}
+fig("borrow_strength.png")
+```
+
+The combined estimate is a weighted compromise between the two sources. The published cores
+received **`r pc(comb$weight_of_prior)`** of the weight; your cores received the rest. The
+interval for "your cores only" uses the spread among your own few cores, which is itself
+uncertain with so few. The combined interval instead uses how much cores typically differ within
+a meadow in the published set.
+
+## 4. Does it work? Checked on the published estuaries themselves
+
+Each reference estuary in turn played "your meadow". The prior was rebuilt without it, a few of
+its cores were drawn at random (200 times), and both methods were compared with the mean of the
+cores *not* drawn.
+
+```{r loeo}
+tab(data.frame("Cores taken" = lo$k, "Estuaries tested" = lo$estuaries,
+               "Combined: average error (Mg C/ha)" = f1(lo$combined_mean_abs_error),
+               "Combined: interval covered the truth" = pc(lo$combined_coverage),
+               "Local only: average error (Mg C/ha)" = f1(lo$local_mean_abs_error),
+               "Local only: interval covered the truth" = pc(lo$local_coverage), check.names = FALSE),
+    caption = sprintf("Target coverage is %g%%. With 0 cores the 'combined' row is the prior alone; with 1 core no local interval can be made.", 100 * r$conf))
+```
+
+```{r fig-loeo, out.width = "65%"}
+fig("leave_one_estuary_out.png")
+```
+
+`r k <- lo$k[!is.na(lo$local_mean_abs_error)]; better <- k[lo$combined_mean_abs_error[!is.na(lo$local_mean_abs_error)] < lo$local_mean_abs_error[!is.na(lo$local_mean_abs_error)]]; if (length(better) == length(k)) "Here, combining was closer than local cores alone at every number of cores tested." else if (length(better)) sprintf("Here, combining was closer than local cores alone with %s cores, but not with %s.", paste(better, collapse = " and "), paste(setdiff(k, better), collapse = " and ")) else "Here, combining was not closer than local cores alone at any number of cores tested."`
+
+**Reading this check honestly.** It uses only `r max(lo$estuaries)` estuaries, and fewer at the
+larger core counts, so it is a rough guide. "Truth" here is the mean of a few unseen cores. That
+is itself noisy, so coverage is expected to fall a little below the target even for a sound
+method. Coverage well below `r 100 * r$conf`% means the intervals are too narrow to rely on.
+
+## 5. What this does not include
+
+- Error in the LOI-to-carbon conversion, laboratory error, and compaction uncertainty.
+- Uncertainty in the prior's own spread, which is estimated from a handful of estuaries.
+- Any test of whether your meadow really resembles the published ones. Differences in sediment,
+  exposure or depth can make it unlike all of them.
+
+## 6. What it supports
+
+**Supports:** a second, model-based view of your meadow's average stock over 0–`r r$D` cm,
+showing how much a small set of cores can be informed by published data.
+
+**Does not support:** an area total on its own (use Option B for the area and the design), any
+claim of crediting-grade precision, or any statement about carbon accumulation. Modules 5 and 6
+(see the Going further README) take the same idea further. Each adds assumptions that need
+their own checks.
