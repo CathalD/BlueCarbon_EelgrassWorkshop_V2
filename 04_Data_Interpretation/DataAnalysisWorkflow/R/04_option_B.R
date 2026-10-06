@@ -124,6 +124,32 @@ curve_stocks <- function(curves, depths = c(15, 30, 50, 100)) {
   r
 }
 
+#' How far below its base a core may be extended. Following Janousek et al. (2025, §2.2), a stock
+#' to 30 cm is reported only for cores at least 20 cm long, to 50 cm for cores at least 35 cm, and to
+#' 100 cm for cores at least 75 cm (in-situ length). Shallower depths need the core to reach them.
+DEPTH_SUPPORT <- c("15" = 15, "30" = 20, "50" = 35, "100" = 75)
+
+#' For each standard depth: "measured" if every core reaches it, "estimated" if every core is long
+#' enough under DEPTH_SUPPORT (part of the stock is extrapolated), otherwise "not supported" — with
+#' the cores that are too short.
+depth_support <- function(curves, depths = c(15, 30, 50, 100)) {
+  bases <- tapply(curves$core_base_cm, curves$core_id, max)
+  do.call(rbind, lapply(depths, function(D) {
+    need <- DEPTH_SUPPORT[[as.character(D)]]
+    short <- names(bases)[bases < need - 1e-9]
+    data.frame(depth_cm = D, min_core_cm = need,
+               status = if (all(bases >= D - 1e-9)) "measured" else if (!length(short)) "estimated" else "not supported",
+               too_short = paste(short, collapse = ", "), stringsAsFactors = FALSE)
+  }))
+}
+
+#' The deepest standard depth every core measured (NA if a core is shorter than 15 cm).
+measured_common_depth <- function(curves, depths = c(15, 30, 50, 100)) {
+  ds <- depth_support(curves, depths)
+  m <- ds$depth_cm[ds$status == "measured"]
+  if (length(m)) max(m) else NA_real_
+}
+
 #' One value per sampling unit. With unit = "plot", cores sharing a Plot ID are averaged
 #' first: they are not independent samples of the area.
 unit_values <- function(stocks, depth_cm, unit = c("plot", "core")) {
@@ -185,10 +211,16 @@ INTERVAL_NOTE <- paste(
 #'   design = "srs"         — simple random (or systematic random) sampling of the whole area.
 #'   design = "stratified"  — random sampling within strata; areas weight the strata.
 #' Areas in m², stocks in Mg C/ha, totals in Mg C.
+#' The finite-population correction (1 − n/N) is used only when `plots_are_frame` is TRUE: when the
+#' sampling units were drawn without replacement from a defined set of N plots (area ÷ plot area),
+#' such as a grid of possible positions. Otherwise the area is treated as continuous and no
+#' correction is made (slightly wider intervals; the difference is negligible when n/N is small).
 estimate_area <- function(units, design = c("exploratory", "srs", "stratified"), area_m2 = NULL,
-                          strata_areas_m2 = NULL, plot_area_m2 = 100, conf = 0.90, target = 0.20) {
+                          strata_areas_m2 = NULL, plot_area_m2 = 100, conf = 0.90, target = 0.20,
+                          plots_are_frame = FALSE) {
   design <- match.arg(design)
-  res <- list(design = design, conf = conf, target = target, notes = character(0))
+  res <- list(design = design, conf = conf, target = target, notes = character(0),
+              fpc_used = isTRUE(plots_are_frame) && design != "exploratory")
   v <- units$stock_Mg_ha
   if (design %in% c("exploratory", "srs")) {
     if (is.null(area_m2)) stop("area_m2 is required for this design.")
@@ -206,10 +238,14 @@ estimate_area <- function(units, design = c("exploratory", "srs", "stratified"),
       return(res)
     }
     if (n < 2) { res$notes <- c(res$notes, "Only one sampling unit: no interval can be estimated."); return(res) }
-    N <- area_m2 / plot_area_m2
-    if (n > N) stop(sprintf("%d sampling units of %g m² cannot fit in %.0f m². Check PLOT_AREA_M2 and the boundary.",
-                            n, plot_area_m2, area_m2))
-    se <- sqrt((1 - n / N) * stats::var(v) / n)
+    fpc <- 1
+    if (res$fpc_used) {
+      N <- area_m2 / plot_area_m2
+      if (n > N) stop(sprintf("%d sampling units of %g m² cannot fit in %.0f m². Check PLOT_AREA_M2 and the boundary.",
+                              n, plot_area_m2, area_m2))
+      fpc <- 1 - n / N
+    }
+    se <- sqrt(fpc * stats::var(v) / n)
     tq <- stats::qt(1 - (1 - conf) / 2, df = n - 1)
     res$se_Mg_ha <- se; res$df <- n - 1
     res$ci_Mg_ha <- mean(v) + c(-1, 1) * tq * se
@@ -231,7 +267,7 @@ estimate_area <- function(units, design = c("exploratory", "srs", "stratified"),
   by$estimated_Mg_ha <- vapply(by$stratum, function(h) if (any(units$stratum == h))
     mean(units$estimated_Mg_ha[units$stratum == h]) else NA_real_, 0)
   Nh_all <- by$area_ha * 10000 / plot_area_m2
-  if (any(by$n_units > Nh_all))
+  if (res$fpc_used && any(by$n_units > Nh_all))
     stop("A stratum has more sampling units than plots of PLOT_AREA_M2 fit in its area: ",
          paste(by$stratum[by$n_units > Nh_all], collapse = ", "))
   sampled <- by$n_units > 0
@@ -257,12 +293,17 @@ estimate_area <- function(units, design = c("exploratory", "srs", "stratified"),
   # Established implementation: survey::svydesign (Lumley). Hand formula kept as a check.
   u <- units[units$stratum %in% b$stratum, ]
   u$N_h <- (strata_areas_m2[u$stratum]) / plot_area_m2
-  des <- survey::svydesign(ids = ~1, strata = ~stratum, fpc = ~N_h, data = u)
+  # Area weights are supplied as sampling weights (stratum area / units sampled), so the estimate is
+  # area-weighted whether or not the finite-population correction is used.
+  u$w <- (strata_areas_m2[u$stratum] / plot_area_m2) / as.numeric(nh[u$stratum])
+  des <- if (res$fpc_used) survey::svydesign(ids = ~1, strata = ~stratum, fpc = ~N_h, data = u) else
+    survey::svydesign(ids = ~1, strata = ~stratum, weights = ~w, data = u)
   sv <- survey::svymean(~stock_Mg_ha, des)
   df <- survey::degf(des)
   se <- as.numeric(survey::SE(sv))
   Nh <- b$area_ha * 10000 / plot_area_m2
-  se_hand <- sqrt(sum(W^2 * (1 - b$n_units / Nh) * b$sd_Mg_ha^2 / b$n_units))
+  fpc_h <- if (res$fpc_used) 1 - b$n_units / Nh else 1
+  se_hand <- sqrt(sum(W^2 * fpc_h * b$sd_Mg_ha^2 / b$n_units))
   if (abs(se - se_hand) > 1e-8 * max(1, se)) stop("Stratified SE disagrees with the hand formula — please report this.")
   if (abs(as.numeric(stats::coef(sv)) - res$mean_Mg_ha) > 1e-8 * max(1, res$mean_Mg_ha))
     stop("Stratified mean disagrees with the hand formula — please report this.")
@@ -342,4 +383,18 @@ plot_area_map <- function(boundary, cores, res, depth_cm, strata_polygons = NULL
          title = if (hypothetical) "Reporting area — HYPOTHETICAL boundary" else "Reporting area",
          caption = "One value per area or stratum. Points show where cores were taken;\nnothing is interpolated between them.") +
     theme_bw(base_size = 11) + theme(legend.position = "bottom", legend.direction = "vertical")
+}
+
+#' Measured vs estimated share of the mean, by reporting depth (only depths that were reported).
+plot_share_bar <- function(all_depths) {
+  d <- all_depths[!is.na(all_depths$mean_Mg_ha), ]
+  long <- rbind(data.frame(depth = d$depth, part = "measured", value = d$mean_Mg_ha * (1 - d$pct_estimated / 100)),
+                data.frame(depth = d$depth, part = "estimated below the cores", value = d$mean_Mg_ha * d$pct_estimated / 100))
+  long$depth <- factor(long$depth, levels = rev(unique(d$depth)))
+  long$part <- factor(long$part, levels = c("estimated below the cores", "measured"))
+  ggplot(long, aes(x = value, y = depth, fill = part)) + geom_col(width = 0.6) +
+    scale_fill_manual(values = c("measured" = "#2E7D32", "estimated below the cores" = "#C5CAE9")) +
+    labs(x = "Mean organic carbon stock (Mg C/ha)", y = NULL, fill = NULL,
+         title = "How much of each figure was measured") +
+    theme_bw(base_size = 11) + theme(legend.position = "bottom")
 }

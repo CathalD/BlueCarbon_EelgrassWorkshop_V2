@@ -32,6 +32,18 @@ test_that("reference stocks use measured slices only, and LOI below the equation
   expect_true(all(attr(harsh, "slices")$oc_pct >= 0))
 })
 
+test_that("without an LOI equation, Option A still compares on measured organic carbon", {
+  far <- data.frame(core_id = "far", latitude = 0, longitude = 0)
+  expect_message(refs <- reference_sets(15, far, c(intercept = NA, slope = NA), ref_dir = REF_DIR),
+                 "only the measured")
+  expect_equal(names(refs), "oc_measured")
+  expect_true(nrow(refs$oc_measured) > 0)
+  expect_message(h <- headline_first(refs, "oc_or_loi"), "not available")
+  expect_equal(names(h)[1], "oc_measured")
+  both <- reference_sets(15, far, loi, ref_dir = REF_DIR)
+  expect_equal(names(headline_first(both, "oc_measured")), c("oc_measured", "oc_or_loi"))
+})
+
 # ---- module 4 ----------------------------------------------------------------
 syn_ref <- function() {
   set.seed(1)

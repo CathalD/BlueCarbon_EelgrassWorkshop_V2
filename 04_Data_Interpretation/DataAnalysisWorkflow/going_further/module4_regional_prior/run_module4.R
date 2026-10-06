@@ -32,9 +32,14 @@ meas$measured_Mg_ha <- meas$stock_Mg_ha; meas$estimated_Mg_ha <- 0
 units <- unit_values(meas, D, unit = SAMPLING_UNIT)
 
 # ── The published side, then the combination and the check ──────────────────────
+basis <- REFERENCE_HEADLINE
+if (basis == "oc_or_loi" && any(is.na(wb$loi))) {
+  message("No LOI equation on the workbook, so the prior uses measured organic carbon only.")
+  basis <- "oc_measured"
+}
 ref <- reference_stocks(D, chk$cores, wb$loi, states = REFERENCE_STATES,
                         exclude_estuaries = REFERENCE_EXCLUDE_ESTUARIES,
-                        exclude_within_m = REFERENCE_EXCLUDE_WITHIN_M, carbon = REFERENCE_HEADLINE)
+                        exclude_within_m = REFERENCE_EXCLUDE_WITHIN_M, carbon = basis)
 prior <- regional_prior(ref, MODULE4_MIN_ESTUARIES)
 tab <- borrow_strength(ref, units$stock_Mg_ha, conf = CONF_LEVEL, min_estuaries = MODULE4_MIN_ESTUARIES)
 loeo <- loeo_check(ref, conf = CONF_LEVEL, min_estuaries = MODULE4_MIN_ESTUARIES)
@@ -48,7 +53,7 @@ ggsave(file.path(out, "prior_estuaries.png"), plot_prior_estuaries(ref, prior, D
 ggsave(file.path(out, "leave_one_estuary_out.png"), plot_loeo(loeo_tab), width = 6, height = 4, dpi = 150)
 
 saveRDS(list(project = PROJECT, D = D, units = units, ref = ref, prior = prior, tab = tab, loeo_tab = loeo_tab,
-             conf = CONF_LEVEL, reference_headline = REFERENCE_HEADLINE, ref_label = REFERENCE_LABELS[[REFERENCE_HEADLINE]],
+             conf = CONF_LEVEL, reference_headline = basis, ref_label = REFERENCE_LABELS[[basis]],
              settings = list(REFERENCE_STATES = REFERENCE_STATES, REFERENCE_EXCLUDE_ESTUARIES = REFERENCE_EXCLUDE_ESTUARIES,
                              REFERENCE_EXCLUDE_WITHIN_M = REFERENCE_EXCLUDE_WITHIN_M, SAMPLING_UNIT = SAMPLING_UNIT),
              figures = normalizePath(out)), file.path(out, "results.rds"))

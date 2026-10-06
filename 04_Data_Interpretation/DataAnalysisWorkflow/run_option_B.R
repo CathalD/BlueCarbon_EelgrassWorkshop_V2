@@ -46,43 +46,72 @@ methods_used <- attr(curves, "methods")
 cinc <- curve_increments(curves)
 stocks <- curve_stocks(curves, depths = STANDARD_INCREMENTS[-1])
 
+# ── Which depths can be reported ───────────────────────────────────────────────
+support <- depth_support(curves)
+D_measured <- measured_common_depth(curves)
+if (is.na(D_measured)) stop("Some cores are shorter than 15 cm, the shallowest standard depth: ",
+                            paste(support$too_short[support$depth_cm == 15], collapse = ", "))
+# The headline is a depth every core measured; a deeper depth is a labelled scenario.
+D <- if (is.null(REPORT_DEPTH_CM)) D_measured else REPORT_DEPTH_CM
+if (support$status[support$depth_cm == D] == "not supported")
+  stop(sprintf("0–%g cm cannot be reported: cores %s are shorter than %g cm (see DEPTH_SUPPORT).", D,
+               support$too_short[support$depth_cm == D], support$min_core_cm[support$depth_cm == D]))
+if (D > D_measured) message(sprintf("Note: 0–%g cm is partly estimated below the cores; the measured common depth is 0–%g cm.",
+                                    D, D_measured))
+D_scen <- if (exists("SCENARIO_DEPTH_CM") && !is.null(SCENARIO_DEPTH_CM) && SCENARIO_DEPTH_CM > D) SCENARIO_DEPTH_CM else NA_real_
+
 # ── Step 2: one value per sampling unit, then the area estimate ─────────────────
-units <- unit_values(stocks, REPORT_DEPTH_CM, unit = SAMPLING_UNIT)
-res <- estimate_area(units, design = DESIGN, area_m2 = area_m2, strata_areas_m2 = STRATUM_AREAS_M2,
-                     plot_area_m2 = PLOT_AREA_M2, conf = CONF_LEVEL, target = TARGET_MARGIN)
-all_depths <- do.call(rbind, lapply(STANDARD_INCREMENTS[-1], function(D) {
-  u <- unit_values(stocks, D, unit = SAMPLING_UNIT)
-  e <- estimate_area(u, design = DESIGN, area_m2 = area_m2, strata_areas_m2 = STRATUM_AREAS_M2,
-                     plot_area_m2 = PLOT_AREA_M2, conf = CONF_LEVEL, target = TARGET_MARGIN)
-  data.frame(depth = sprintf("0–%g cm", D), mean_Mg_ha = e$mean_Mg_ha, total_Mg_C = e$total_Mg_C,
-             pct_estimated = e$pct_estimated,
-             ci_low_Mg_ha = if (is.null(e$ci_Mg_ha)) NA_real_ else e$ci_Mg_ha[1],
-             ci_high_Mg_ha = if (is.null(e$ci_Mg_ha)) NA_real_ else e$ci_Mg_ha[2])
+frame <- exists("PLOTS_ARE_SAMPLING_FRAME") && isTRUE(PLOTS_ARE_SAMPLING_FRAME)
+estimate_at <- function(depth) {
+  u <- unit_values(stocks, depth, unit = SAMPLING_UNIT)
+  list(units = u, res = estimate_area(u, design = DESIGN, area_m2 = area_m2, strata_areas_m2 = STRATUM_AREAS_M2,
+                                      plot_area_m2 = PLOT_AREA_M2, conf = CONF_LEVEL, target = TARGET_MARGIN,
+                                      plots_are_frame = frame))
+}
+head_est <- estimate_at(D); units <- head_est$units; res <- head_est$res
+scen <- if (!is.na(D_scen) && support$status[support$depth_cm == D_scen] != "not supported") estimate_at(D_scen) else NULL
+all_depths <- do.call(rbind, lapply(support$depth_cm, function(d) {
+  st <- support[support$depth_cm == d, ]
+  e <- if (st$status == "not supported") NULL else estimate_at(d)$res
+  data.frame(depth = sprintf("0–%g cm", d), depth_cm = d, status = st$status, too_short = st$too_short,
+             min_core_cm = st$min_core_cm,
+             mean_Mg_ha = if (is.null(e)) NA_real_ else e$mean_Mg_ha,
+             total_Mg_C = if (is.null(e)) NA_real_ else e$total_Mg_C,
+             pct_estimated = if (is.null(e)) NA_real_ else e$pct_estimated,
+             ci_low_Mg_ha = if (is.null(e) || is.null(e$ci_Mg_ha)) NA_real_ else e$ci_Mg_ha[1],
+             ci_high_Mg_ha = if (is.null(e) || is.null(e$ci_Mg_ha)) NA_real_ else e$ci_Mg_ha[2])
 }))
 
 # ── Write outputs ──────────────────────────────────────────────────────────────
 utils::write.csv(cinc, file.path(out, "increments_measured_estimated.csv"), row.names = FALSE)
 utils::write.csv(stocks, file.path(out, "core_stocks_to_depth.csv"), row.names = FALSE)
-utils::write.csv(units, file.path(out, sprintf("sampling_units_0_%gcm.csv", REPORT_DEPTH_CM)), row.names = FALSE)
+utils::write.csv(units, file.path(out, sprintf("sampling_units_0_%gcm.csv", D)), row.names = FALSE)
 utils::write.csv(all_depths, file.path(out, "area_estimate_all_depths.csv"), row.names = FALSE)
 ggsave(file.path(out, "carbon_curves.png"), plot_curves(curves), width = 6, height = 5, dpi = 150)
 ggsave(file.path(out, "area_map.png"),
-       plot_area_map(boundary, complete, res, REPORT_DEPTH_CM, strata_polygons, BOUNDARY_IS_HYPOTHETICAL),
+       plot_area_map(boundary, complete, res, D, strata_polygons, BOUNDARY_IS_HYPOTHETICAL),
        width = 6, height = 6.5, dpi = 150)
+ggsave(file.path(out, "measured_estimated_share.png"), plot_share_bar(all_depths), width = 6, height = 3, dpi = 150)
 
 settings_used <- list(WORKBOOK = WORKBOOK, DESIGN = DESIGN, BOUNDARY_FILE = BOUNDARY_FILE,
                       BOUNDARY_IS_HYPOTHETICAL = BOUNDARY_IS_HYPOTHETICAL, STRATUM_AREAS_M2 = STRATUM_AREAS_M2,
                       PLOT_AREA_M2 = PLOT_AREA_M2, SAMPLING_UNIT = SAMPLING_UNIT,
-                      REPORT_DEPTH_CM = REPORT_DEPTH_CM, CONF_LEVEL = CONF_LEVEL,
-                      TARGET_MARGIN = TARGET_MARGIN, EXTRAP_MIN_SLICES = EXTRAP_MIN_SLICES)
+                      REPORT_DEPTH_CM = D, MEASURED_DEPTH_CM = D_measured, SCENARIO_DEPTH_CM = D_scen,
+                      PLOTS_ARE_SAMPLING_FRAME = frame, CONF_LEVEL = CONF_LEVEL,
+                      TARGET_MARGIN = TARGET_MARGIN, EXTRAP_MIN_SLICES = EXTRAP_MIN_SLICES,
+                      DEPTH_SUPPORT = DEPTH_SUPPORT)
 saveRDS(list(project = PROJECT, settings = settings_used, chk = chk, checks = checks, inc = inc,
              curves = curves, methods_used = methods_used, cinc = cinc, stocks = stocks, units = units,
-             res = res, all_depths = all_depths, area_m2 = area_m2,
+             res = res, scenario = scen, support = support, all_depths = all_depths, area_m2 = area_m2,
              cross_check = cross_check_workbook(chk), figures = normalizePath(out)),
         file.path(out, "results.rds"))
 
-cat("\n", describe_estimate(res, REPORT_DEPTH_CM), "\n", sep = "")
+cat("\n", describe_estimate(res, D), "\n", sep = "")
+if (!is.null(scen)) cat("Deeper scenario — ", describe_estimate(scen$res, D_scen), "\n", sep = "")
 for (n in res$notes) cat("• ", n, "\n", sep = "")
+ns <- all_depths[all_depths$status == "not supported", ]
+for (k in seq_len(nrow(ns))) cat(sprintf("• 0–%g cm not reported: %s shorter than %g cm.\n",
+                                         ns$depth_cm[k], ns$too_short[k], ns$min_core_cm[k]))
 
 # ── Report ─────────────────────────────────────────────────────────────────────
 if (!requireNamespace("rmarkdown", quietly = TRUE) || !rmarkdown::pandoc_available()) {

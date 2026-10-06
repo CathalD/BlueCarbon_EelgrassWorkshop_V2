@@ -72,14 +72,18 @@ test_that("exploratory designs give no interval", {
   expect_match(r$notes, "Exploratory")
 })
 
-test_that("simple random sampling uses a t-interval with the finite-population correction", {
+test_that("simple random sampling: t-interval; finite-population correction only for a plot frame", {
   v <- c(20, 30, 40, 25)
   r <- estimate_area(units_of(v), "srs", area_m2 = 2000, plot_area_m2 = 100, conf = 0.90)
+  expect_false(r$fpc_used)
+  expect_equal(r$se_Mg_ha, sqrt(var(v) / 4))                              # continuous area: no correction
+  expect_equal(r$ci_Mg_ha, mean(v) + c(-1, 1) * qt(0.95, 3) * sqrt(var(v) / 4))
+  f <- estimate_area(units_of(v), "srs", area_m2 = 2000, plot_area_m2 = 100, conf = 0.90, plots_are_frame = TRUE)
   N <- 20; n <- 4
-  se <- sqrt((1 - n / N) * var(v) / n)
-  expect_equal(r$se_Mg_ha, se)
-  expect_equal(r$ci_Mg_ha, mean(v) + c(-1, 1) * qt(0.95, 3) * se)
-  expect_error(estimate_area(units_of(v), "srs", area_m2 = 300, plot_area_m2 = 100), "cannot fit")
+  expect_true(f$fpc_used)
+  expect_equal(f$se_Mg_ha, sqrt((1 - n / N) * var(v) / n))
+  expect_error(estimate_area(units_of(v), "srs", area_m2 = 300, plot_area_m2 = 100, plots_are_frame = TRUE), "cannot fit")
+  expect_silent(estimate_area(units_of(v), "srs", area_m2 = 300, plot_area_m2 = 100))   # no frame, no limit
 })
 
 test_that("stratified estimate weights strata by area (hand calculation and survey agree)", {
@@ -90,7 +94,10 @@ test_that("stratified estimate weights strata by area (hand calculation and surv
   expect_equal(r$mean_Mg_ha, sum(W * m))                       # not the plain mean of 6 units
   expect_false(isTRUE(all.equal(r$mean_Mg_ha, mean(u$stock_Mg_ha))))
   Nh <- c(10, 90); s2 <- c(var(c(10, 14, 12)), var(c(40, 50, 46)))
-  expect_equal(r$se_Mg_ha, sqrt(sum(W^2 * (1 - 3 / Nh) * s2 / 3)))
+  expect_equal(r$se_Mg_ha, sqrt(sum(W^2 * s2 / 3)))                         # continuous area (default)
+  f <- estimate_area(u, "stratified", strata_areas_m2 = areas, plot_area_m2 = 100, plots_are_frame = TRUE)
+  expect_equal(f$mean_Mg_ha, r$mean_Mg_ha)
+  expect_equal(f$se_Mg_ha, sqrt(sum(W^2 * (1 - 3 / Nh) * s2 / 3)))           # plot frame: corrected
   expect_equal(r$total_Mg_C, r$mean_Mg_ha * 1)
 })
 
@@ -111,4 +118,18 @@ test_that("boundary helpers", {
   sq <- data.frame(longitude = c(0, 0.001, 0.001, 0), latitude = c(0, 0, 0.001, 0.001))
   expect_equal(polygon_area_m2(sq$longitude, sq$latitude), (0.001 * pi / 180 * 6371008.8)^2, tolerance = 1e-6)
   expect_equal(point_in_polygon(c(0.0005, 0.002), c(0.0005, 0.0005), sq$longitude, sq$latitude), c(TRUE, FALSE))
+})
+
+test_that("depth support follows Janousek et al. (2025): 30 cm needs 20, 50 needs 35, 100 needs 75", {
+  chk <- chk_of(decaying_core("A", base = 20), decaying_core("B", base = 40))
+  ds <- depth_support(carbon_curves(chk))
+  st <- setNames(ds$status, ds$depth_cm)
+  expect_equal(st[["15"]], "measured")
+  expect_equal(st[["30"]], "estimated")          # A is 20 cm: long enough to extend to 30
+  expect_equal(st[["50"]], "not supported")      # A is shorter than 35 cm
+  expect_equal(ds$too_short[ds$depth_cm == 50], "A")
+  expect_equal(st[["100"]], "not supported")
+  expect_equal(measured_common_depth(carbon_curves(chk)), 15)
+  deep <- chk_of(decaying_core("C", base = 50))
+  expect_equal(measured_common_depth(carbon_curves(deep)), 50)
 })

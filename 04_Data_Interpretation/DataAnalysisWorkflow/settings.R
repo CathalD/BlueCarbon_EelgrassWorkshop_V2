@@ -59,11 +59,20 @@ STRATUM_AREAS_M2 <- NULL
 STRATA_FILE <- NULL
 
 # What one sampling unit represents, and what counts as one.
-PLOT_AREA_M2  <- 100      # 10 x 10 m plot (sets the finite-population correction)
+PLOT_AREA_M2  <- 100      # 10 x 10 m plot: the area one sampling unit represents
 SAMPLING_UNIT <- "plot"   # cores sharing a Plot ID are averaged before estimating
 
-# Reporting depth for the headline (cm): 15, 30, 50 or 100. All four are always tabulated.
-REPORT_DEPTH_CM <- 30
+# Reporting depth for the headline (cm): 15, 30, 50 or 100. Every supported depth is also tabulated.
+# NULL = the deepest standard depth (15, 30, 50, 100) that every core MEASURED — the headline.
+REPORT_DEPTH_CM <- NULL
+# A deeper depth shown as a clearly labelled scenario, partly estimated below the cores. It is only
+# reported if every core is long enough (Janousek et al. 2025: 20 cm for 30, 35 for 50, 75 for 100).
+SCENARIO_DEPTH_CM <- 30
+
+# Were the sampling units drawn from a defined set of plots (e.g. the sampling tool's grid of
+# possible core positions)? TRUE applies the finite-population correction; FALSE treats the area as
+# continuous. With hundreds of possible plots per core the two give practically the same interval.
+PLOTS_ARE_SAMPLING_FRAME <- FALSE
 
 # Precision you set at the planning stage (Part 2). Used only for random designs.
 CONF_LEVEL    <- 0.90

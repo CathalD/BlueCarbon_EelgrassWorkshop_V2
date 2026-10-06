@@ -25,5 +25,6 @@ BOUNDARY_IS_HYPOTHETICAL <- TRUE
 STRATA_FILE <- "data/synthetic/SYNTHETIC_strata.csv"
 STRATUM_AREAS_M2 <- c(dense = 35609, sparse = 20772, channel_edge = 5935)
 
-REPORT_DEPTH_CM <- 30
+REPORT_DEPTH_CM <- NULL       # every synthetic core reaches 30 cm, so the headline is measured
+SCENARIO_DEPTH_CM <- NULL
 OUTPUT_DIR_B <- file.path("outputs", "option_B_synthetic")

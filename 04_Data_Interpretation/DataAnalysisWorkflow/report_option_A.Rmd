@@ -64,9 +64,7 @@ depths, and only where a core reached the bottom of the increment. Cores are com
   thickness in the tube (cm) × 100. Bulk density = whole-slice dry mass ÷ slice volume, from the
   corer's internal diameter (`r f1(r$chk$corer_diameter_cm)` cm on the Instructions tab
   unless a core gives its own).
-- **Organic carbon:** `r round(100 * loi_share)`% of slices came from loss on ignition,
-  converted with OC% = `r r$chk$loi[["intercept"]]` + `r r$chk$loi[["slope"]]` × LOI%. The
-  rest are elemental organic carbon. Total carbon is never used as organic carbon.
+- **Organic carbon:** `r if (loi_share > 0) sprintf("%d%% of slices came from loss on ignition, converted with OC%% = %s + %s × LOI%%. The rest are elemental organic carbon.", round(100 * loi_share), r$chk$loi[["intercept"]], r$chk$loi[["slope"]]) else "every slice is elemental organic carbon; no LOI conversion was used."` Total carbon is never used as organic carbon.
 - **Compaction:** `r paste(sprintf("%s for %d core(s)", names(compaction), as.integer(compaction)), collapse = "; ")`.
   Compaction moves each slice to its in-situ depth; it never changes how much carbon the slice holds.
 - **Increments:** a slice that crosses an increment boundary is split in proportion to its
@@ -143,7 +141,7 @@ To keep the comparison fair, the reference set leaves out: your own estuary
 practice data can never be compared with itself); and any slice the synthesis marks as
 estimated rather than measured.
 
-Two reference sets are shown, because carbon was measured in two ways:
+`r if (length(r$refs) > 1) "Two reference sets are shown, because carbon was measured in two ways:" else "One reference set is shown: published cores with elemental organic carbon from studies that removed inorganic carbon."`
 
 ```{r refsets}
 rt <- r$ref_table
@@ -153,16 +151,16 @@ names(rt) <- c("Reference set", "Cores", "Estuaries", "Studies", "Min", "Lower q
 tab(rt, caption = sprintf("Organic carbon stock, 0–%g cm (Mg C/ha)", r$D))
 ```
 
-The headline set is **`r r$ref_labels[[headline]]`**. Its LOI values were converted with the
-same equation as your own LOI slices, so both sides of the comparison share the same
-conversion — but the conversion was fitted on your samples, and the published sediments may
-relate LOI to carbon differently. The measured-only set avoids that, but it is small.
+The headline set is **`r r$ref_labels[[headline]]`**. `r if (headline == "oc_or_loi") "Its LOI values were converted with the same equation as your own LOI slices, so both sides of the comparison share the same conversion — but the conversion was fitted on your samples, and the published sediments may relate LOI to carbon differently. The measured-only set avoids that, but it is small." else if (length(r$refs) == 1) "No LOI equation was entered on the workbook, so published LOI values are not converted and only directly measured organic carbon is compared." else "It uses only directly measured organic carbon, so no conversion is involved; the larger LOI-converted set is shown for context."`
 
 ```{r cmp}
 cm <- r$cmp
 cm$stock_Mg_ha <- ifelse(is.na(cm$stock_Mg_ha), "", f1(cm$stock_Mg_ha))
+pc <- grep("^percentile_", names(cm))
+short <- c(oc_or_loi = "OC + converted LOI", oc_measured = "measured OC only")
 names(cm) <- c("Core", sprintf("Stock 0–%g cm (Mg C/ha)", r$D), "Note",
-               "Percentile — headline set", "Percentile — measured OC only")
+               paste0("Percentile — ", short[sub("^percentile_", "", names(cm)[pc])],
+                      ifelse(seq_along(pc) == 1, " (headline)", "")))
 tab(cm)
 ```
 

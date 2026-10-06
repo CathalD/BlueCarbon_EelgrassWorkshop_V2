@@ -26,10 +26,10 @@ if (is.na(D)) stop("None of your cores reached 15 cm, the shallowest standard de
 refs <- reference_sets(D, chk$cores, wb$loi, states = REFERENCE_STATES,
                        exclude_estuaries = REFERENCE_EXCLUDE_ESTUARIES,
                        exclude_within_m = REFERENCE_EXCLUDE_WITHIN_M)
-refs <- refs[c(REFERENCE_HEADLINE, setdiff(names(refs), REFERENCE_HEADLINE))]   # headline first
+refs <- headline_first(refs, REFERENCE_HEADLINE)
 cmp <- compare_to_reference(cum, refs[[1]], D)
 names(cmp)[names(cmp) == "percentile"] <- paste0("percentile_", names(refs)[1])
-cmp[[paste0("percentile_", names(refs)[2])]] <- compare_to_reference(cum, refs[[2]], D)$percentile
+for (k in names(refs)[-1]) cmp[[paste0("percentile_", k)]] <- compare_to_reference(cum, refs[[k]], D)$percentile
 region <- if (is.null(REFERENCE_STATES)) "the Pacific coast" else paste(REFERENCE_STATES, collapse = " + ")
 ref_table <- do.call(rbind, lapply(names(refs), function(k)
   cbind(reference_set = REFERENCE_LABELS[[k]], reference_summary(refs[[k]]))))

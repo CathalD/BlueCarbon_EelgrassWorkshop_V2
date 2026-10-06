@@ -100,9 +100,28 @@ reference_stocks <- function(depth_cm, community_cores, loi, ref_dir = "data/ref
 }
 
 #' Both reference sets, so they can be shown side by side.
+#' Both reference sets, so they can be shown side by side. Without an LOI equation on the
+#' workbook (e.g. every slice is elemental OC) only the measured-OC set can be built, and that
+#' is all that is returned.
 reference_sets <- function(depth_cm, community_cores, loi, ...) {
-  list(oc_or_loi = reference_stocks(depth_cm, community_cores, loi, carbon = "oc_or_loi", ...),
-       oc_measured = reference_stocks(depth_cm, community_cores, loi, carbon = "oc_measured", ...))
+  out <- list()
+  if (!any(is.na(loi))) {
+    out$oc_or_loi <- reference_stocks(depth_cm, community_cores, loi, carbon = "oc_or_loi", ...)
+  } else {
+    message("No LOI equation on the workbook's Instructions tab, so only the measured-organic-carbon ",
+            "reference set is used.")
+  }
+  out$oc_measured <- reference_stocks(depth_cm, community_cores, loi, carbon = "oc_measured", ...)
+  out
+}
+
+#' The headline set: the one asked for in settings, if it could be built.
+headline_first <- function(refs, wanted) {
+  if (!wanted %in% names(refs)) {
+    message("Reference set '", wanted, "' is not available; using '", names(refs)[1], "' as the headline.")
+    wanted <- names(refs)[1]
+  }
+  refs[c(wanted, setdiff(names(refs), wanted))]
 }
 
 REFERENCE_LABELS <- c(oc_or_loi   = "Measured OC + LOI converted with your equation",
@@ -208,6 +227,9 @@ plot_reference <- function(refs, cmp, depth_cm, region_label) {
                 nrow(refs[[k]]), length(unique(refs[[k]]$Estuary))), "")
   d <- do.call(rbind, lapply(names(refs), function(k)
     if (nrow(refs[[k]])) data.frame(set = lab[[k]], stock_Mg_ha = refs[[k]]$stock_Mg_ha) else NULL))
+  if (is.null(d))
+    return(ggplot() + annotate("text", x = 0, y = 0, label = sprintf(
+      "No published cores match at 0–%g cm with these settings.", depth_cm)) + theme_void())
   d$set <- factor(d$set, levels = lab)
   mine <- cmp[!is.na(cmp$stock_Mg_ha) & cmp$note == "", ]
   ggplot() +

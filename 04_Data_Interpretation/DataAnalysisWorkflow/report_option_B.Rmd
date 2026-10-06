@@ -12,8 +12,8 @@ params:
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 r <- readRDS(params$results)
-P <- r$project; S <- r$settings; res <- r$res
-D <- S$REPORT_DEPTH_CM
+P <- r$project; S <- r$settings; res <- r$res; scen <- r$scenario
+D <- S$REPORT_DEPTH_CM; Dm <- S$MEASURED_DEPTH_CM; Ds <- S$SCENARIO_DEPTH_CM
 fig <- function(f) knitr::include_graphics(file.path(r$figures, f))
 tab <- function(x, ...) knitr::kable(x, row.names = FALSE, ...)
 f1 <- function(x) ifelse(is.na(x), "", formatC(x, format = "f", digits = 1))
@@ -23,12 +23,27 @@ design_text <- c(
   srs = "**Simple random sampling** (or systematic sampling with a random start) across the whole area.",
   stratified = "**Stratified random sampling** — random placement within each stratum; strata are weighted by their area.")[[res$design]]
 n_cores <- sum(r$chk$cores$status == "Complete")
+hyp <- isTRUE(S$BOUNDARY_IS_HYPOTHETICAL)
+result_line <- function(e, depth) {
+  x <- sprintf("Mean %s Mg C/ha over %s ha: about %s Mg C in the top %g cm of sediment%s.",
+               f1(e$mean_Mg_ha), f1(e$area_ha), f0(e$total_Mg_C), depth,
+               if (hyp) " (hypothetical area)" else "")
+  if (!is.null(e$ci_Mg_ha))
+    x <- paste(x, sprintf("%g%% interval: %s–%s Mg C/ha, or %s–%s Mg C in total (±%s%% of the mean; the planning target was ±%s%%, which was %s).",
+                          100 * e$conf, f1(e$ci_Mg_ha[1]), f1(e$ci_Mg_ha[2]), f0(e$ci_total_Mg_C[1]),
+                          f0(e$ci_total_Mg_C[2]), f0(100 * e$relative_margin), f0(100 * e$target),
+                          if (e$relative_margin <= e$target) "met" else "not met"))
+  else if (e$design == "exploratory")
+    x <- paste(x, sprintf("Range among the %d sampling units: %s–%s Mg C/ha. This range is descriptive; it is not a confidence interval.",
+                          e$n_units, f1(e$range[1]), f1(e$range[2])))
+  x
+}
 ```
 
 **`r r$project$title`**
 
 ```{r banner, results = "asis"}
-if (isTRUE(S$BOUNDARY_IS_HYPOTHETICAL))
+if (hyp)
   cat("> ⚠️ **Teaching example.** The reporting boundary in this report is **hypothetical** — drawn to",
       "show how the calculation works, not a mapped meadow. The area, the total and anything that",
       "depends on them describe no real place.\n")
@@ -46,7 +61,7 @@ if (grepl("SYNTHETIC", toupper(P$title)))
 | | |
 |---|---|
 | Area and habitat | `r P$area_habitat` |
-| Reporting boundary | `r basename(S$BOUNDARY_FILE)` — `r f1(r$area_m2 / 1e4)` ha`r if (isTRUE(S$BOUNDARY_IS_HYPOTHETICAL)) " (**hypothetical**)" else ""` |
+| Reporting boundary | `r basename(S$BOUNDARY_FILE)` — `r f1(r$area_m2 / 1e4)` ha`r if (hyp) " (**hypothetical**)" else ""` |
 | Survey dates | `r P$survey_dates` |
 | Sampling design | `r P$design` |
 | Sampling unit | one `r S$SAMPLING_UNIT` (`r S$PLOT_AREA_M2` m²); cores sharing a Plot ID are averaged first |
@@ -55,33 +70,76 @@ if (grepl("SYNTHETIC", toupper(P$title)))
 
 `r design_text`
 
-## 3. Carbon pool and depth
+## 3. The estimate — 0–`r D` cm`r if (D <= Dm) ", fully measured" else ", partly estimated"`
 
-**Sediment organic carbon** only, from the surface to **`r D` cm** (in situ). This is a stock —
-the carbon in the sediment now — not a rate of accumulation and not removal of carbon from the
-atmosphere.
+**Sediment organic carbon** only. This is a stock — the carbon in the sediment now — not a rate of
+accumulation and not removal of carbon from the atmosphere. `r if (D <= Dm) sprintf("Every core reached %g cm, so this figure is **measured**: nothing below the base of any core is in it.", D) else sprintf("Not every core reached %g cm; %s%% of this figure is estimated below the cores.", D, f0(res$pct_estimated))`
 
-Every core is shorter than some of the depths reported, so part of each stock is **estimated**
-below the base of the core. How much:
+**`r result_line(res, D)`**
 
-```{r pct}
-ad <- r$all_depths
-x <- data.frame(Depth = ad$depth, "Mean (Mg C/ha)" = f1(ad$mean_Mg_ha),
-                "Measured" = paste0(f0(100 - ad$pct_estimated), "%"),
-                "Estimated below the cores" = paste0(f0(ad$pct_estimated), "%"), check.names = FALSE)
-tab(x, caption = "Share of the area mean that was measured and estimated, by reporting depth")
+```{r units}
+u <- r$units
+u <- data.frame(Unit = u$unit_id, Stratum = u$stratum, Cores = u$n_cores,
+                Measured = f1(u$measured_Mg_ha), Estimated = f1(u$estimated_Mg_ha), Total = f1(u$stock_Mg_ha))
+tab(u, caption = sprintf("Sampling units, 0–%g cm (Mg C/ha)", D))
 ```
 
-## 4. How it was calculated
+```{r strata}
+if (!is.null(res$by_stratum)) {
+  b <- res$by_stratum
+  tab(data.frame(Stratum = b$stratum, "Area (ha)" = f1(b$area_ha), "Sampling units" = b$n_units,
+                 "Mean (Mg C/ha)" = ifelse(b$n_units > 0, f1(b$mean_Mg_ha), "not sampled"),
+                 "SD among units" = f1(b$sd_Mg_ha), check.names = FALSE),
+      caption = "By stratum. The area mean weights each sampled stratum by its area.")
+}
+```
+
+**What the interval includes.** `r if (!is.null(res$ci_Mg_ha)) paste("It describes how much the mean could differ because a different set of sampling units might have been drawn.", if (isTRUE(res$fpc_used)) "The sampling units were drawn from a defined set of plots, so the finite-population correction was applied." else "The area was treated as continuous (no finite-population correction).", "It does not include laboratory error, error in the LOI-to-carbon conversion, error in any estimated part below the cores, error in the boundary or stratum areas, or bias from cores that did not recover the full profile.") else "No interval is given for this design. A confidence interval assumes the sampling units were placed at random; these were not, so an interval calculated from them would not tell you how close the mean is to the area's true value."`
+
+```{r fig-map, out.width = "65%"}
+fig("area_map.png")
+```
+
+The map shows the reporting area, where the cores were taken and one value per area or
+stratum. Nothing is mapped between the points: the estimate is an area average, not a map of
+where the carbon is.
+
+```{r scen-head, results = "asis"}
+if (!is.null(scen)) cat(sprintf("\n## 4. A deeper scenario — 0–%g cm, partly estimated\n", Ds))
+```
+
+```{r scen, results = "asis"}
+if (!is.null(scen)) {
+  cat(sprintf("> **Scenario, not a measurement.** The cores stop above %g cm, so **%s%%** of this figure is estimated below them (see section 5). Report it only alongside the measured 0–%g cm figure, and say how much was estimated.\n\n",
+              Ds, f0(scen$res$pct_estimated), D))
+  cat("**", result_line(scen$res, Ds), "**\n", sep = "")
+}
+```
+
+```{r fig-share, out.width = "60%"}
+if (!is.null(scen)) fig("measured_estimated_share.png")
+```
+
+```{r notsup, results = "asis"}
+ns <- r$all_depths[r$all_depths$status == "not supported", ]
+if (nrow(ns)) {
+  cat("\n**Depths not reported.** Following Janousek et al. (2025), a stock is reported to 30 cm only for cores at least 20 cm long, to 50 cm for cores at least 35 cm and to 100 cm for cores at least 75 cm:\n\n")
+  for (k in seq_len(nrow(ns)))
+    cat(sprintf("- 0–%g cm — needs every core to reach %g cm; too short: %s.\n", ns$depth_cm[k], ns$min_core_cm[k], ns$too_short[k]))
+}
+```
+
+## 5. How was depth estimated?
+
+`r if (D <= Dm && is.null(scen)) "Nothing in the estimate above was extrapolated. This section shows how a deeper figure would be built, for reference." else ""`
 
 1. **The same checked core stocks as Option A.** Every slice passed the workbook's checks; cores
    that did not are left out (section 7).
-2. **A carbon curve for each core, 0–100 cm, in 1 cm steps.** Inside the measured core each cm
-   takes its slice's carbon, so the curve adds up to exactly the measured stock. Below the core,
-   carbon density is estimated — first with a decay curve fitted to that core, then one fitted to
-   all cores in its stratum, and if neither works, the mean of the deepest 5 cm held constant.
-3. **One value per sampling unit** at `r D` cm.
-4. **An area estimate that matches the design** (section 2).
+2. **A carbon curve for each core, in 1 cm steps.** Inside the measured core each cm takes its
+   slice's carbon, so the curve adds up to exactly the measured stock. Below the core, carbon
+   density is estimated — first with a decay curve fitted to that core, then one fitted to all cores
+   in its stratum, and if neither works, the mean of the deepest 5 cm held constant.
+3. **Only as deep as the cores allow** (section 4).
 
 ```{r methods}
 m <- r$methods_used
@@ -96,53 +154,15 @@ tab(m)
 fig("carbon_curves.png")
 ```
 
-```{r incs}
-ci <- r$cinc
-ci <- data.frame(Core = ci$core_id, Increment = ci$increment, Measured = f1(ci$measured_Mg_ha),
-                 Estimated = f1(ci$estimated_Mg_ha), Total = f1(ci$stock_Mg_ha),
-                 "% estimated" = f0(ci$pct_estimated), check.names = FALSE)
-tab(ci, caption = "Each core by standard increment (Mg C/ha)")
-```
-
-## 5. The estimate
-
-```{r units}
-u <- r$units
-u <- data.frame(Unit = u$unit_id, Stratum = u$stratum, Cores = u$n_cores,
-                Measured = f1(u$measured_Mg_ha), Estimated = f1(u$estimated_Mg_ha), Total = f1(u$stock_Mg_ha))
-tab(u, caption = sprintf("Sampling units, 0–%g cm (Mg C/ha)", D))
-```
-
-**`r describe <- sprintf("Mean %s Mg C/ha over %s ha: about %s Mg C in the top %g cm of sediment.", f1(res$mean_Mg_ha), f1(res$area_ha), f0(res$total_Mg_C), D); describe`**
-`r if (!is.null(res$ci_Mg_ha)) sprintf("%g%% interval: %s–%s Mg C/ha, or %s–%s Mg C in total (±%s%% of the mean; the planning target was ±%s%%, which was %s).", 100 * res$conf, f1(res$ci_Mg_ha[1]), f1(res$ci_Mg_ha[2]), f0(res$ci_total_Mg_C[1]), f0(res$ci_total_Mg_C[2]), f0(100 * res$relative_margin), f0(100 * res$target), if (res$relative_margin <= res$target) "met" else "not met") else if (res$design == "exploratory") sprintf("Range among the %d sampling units: %s–%s Mg C/ha. This range is descriptive; it is not a confidence interval.", res$n_units, f1(res$range[1]), f1(res$range[2])) else ""`
-
-```{r strata}
-if (!is.null(res$by_stratum)) {
-  b <- res$by_stratum
-  tab(data.frame(Stratum = b$stratum, "Area (ha)" = f1(b$area_ha), "Sampling units" = b$n_units,
-                 "Mean (Mg C/ha)" = ifelse(b$n_units > 0, f1(b$mean_Mg_ha), "not sampled"),
-                 "SD among units" = f1(b$sd_Mg_ha), check.names = FALSE),
-      caption = "By stratum. The area mean weights each sampled stratum by its area.")
-}
-```
-
 ```{r all}
 ad <- r$all_depths
-tab(data.frame(Depth = ad$depth, "Mean (Mg C/ha)" = f1(ad$mean_Mg_ha), "Total (Mg C)" = f0(ad$total_Mg_C),
+tab(data.frame(Depth = ad$depth,
+               Status = c(measured = "measured", estimated = "partly estimated", "not supported" = "not reported")[ad$status],
+               "Mean (Mg C/ha)" = f1(ad$mean_Mg_ha), "Total (Mg C)" = f0(ad$total_Mg_C),
                "Interval (Mg C/ha)" = ifelse(is.na(ad$ci_low_Mg_ha), "—", paste0(f1(ad$ci_low_Mg_ha), "–", f1(ad$ci_high_Mg_ha))),
                "% estimated" = f0(ad$pct_estimated), check.names = FALSE),
-    caption = "All standard depths. The deeper the depth, the more of the number is estimated rather than measured.")
+    caption = "Every standard depth, and whether it could be reported.")
 ```
-
-**What the interval includes.** `r if (!is.null(res$ci_Mg_ha)) paste("It describes how much the mean could differ because a different set of sampling units might have been drawn.", "It does not include laboratory error, error in the LOI-to-carbon conversion, error in the estimated part below the cores, error in the boundary or stratum areas, or bias from cores that did not recover the full profile.") else "No interval is given for this design. A confidence interval assumes the sampling units were placed at random; these were not, so an interval calculated from them would not tell you how close the mean is to the area's true value."`
-
-```{r fig-map, out.width = "65%"}
-fig("area_map.png")
-```
-
-The map shows the reporting area, where the cores were taken and one value per area or
-stratum. Nothing is mapped between the points: the estimate is an area average, not a map of
-where the carbon is.
 
 ## 6. Notes from the calculation
 
@@ -159,11 +179,12 @@ if (nrow(bad)) cat("- Left out because they did not pass the checks:", paste(spr
 if (!is.null(res$excluded_area_ha) && res$excluded_area_ha > 0)
   cat(sprintf("- %.2f ha in unsampled strata is excluded: the total covers %.2f ha, not the whole boundary.\n",
               res$excluded_area_ha, res$area_ha))
-cat(sprintf("- %s%% of the %g cm mean is estimated below the base of the cores, not measured.\n", f0(res$pct_estimated), D))
-cat("- The estimated part assumes carbon below each core behaves like the carbon just above its base (or follows the fitted curve). Deeper cores are the only way to test that.\n")
+if (!is.null(scen))
+  cat(sprintf("- The 0–%g cm scenario is %s%% estimated below the cores. It assumes carbon below each core behaves like the carbon just above its base (or follows the fitted curve); deeper cores are the only way to test that.\n",
+              Ds, f0(scen$res$pct_estimated)))
 if (any(r$chk$cores$compaction_basis == "assumed none"))
   cat("- Compaction was not measured on some cores and was assumed to be none.\n")
-if (isTRUE(S$BOUNDARY_IS_HYPOTHETICAL)) cat("- The boundary is hypothetical, so the area and total describe no real place.\n")
+if (hyp) cat("- The boundary is hypothetical, so the area and total describe no real place.\n")
 ```
 
 ## 8. What this supports, and what would help
@@ -171,7 +192,7 @@ if (isTRUE(S$BOUNDARY_IS_HYPOTHETICAL)) cat("- The boundary is hypothetical, so 
 ```{r supports, results = "asis"}
 if (res$design == "exploratory") {
   cat("**Supports:** a first, descriptive figure for the average sediment organic carbon in the area and its",
-      "approximate total, stated with its depth and how much of it was estimated.\n\n",
+      sprintf("approximate total over 0–%g cm.", D), "\n\n",
       "**Does not support:** a confidence interval, a claim about precision, a comparison over time, or",
       "any statement about carbon being removed from the atmosphere.\n\n",
       "**What would help:** cores placed with a random or stratified random design (Part 2), enough of them",
@@ -180,8 +201,8 @@ if (res$design == "exploratory") {
   cat("**Supports:** an estimate of the mean and total sediment organic carbon stock in the sampled area to",
       sprintf("%g cm,", D), "with an interval for sampling variation.\n\n",
       "**Does not support:** a map of where carbon is within the area, a rate of accumulation, or removal",
-      "of carbon from the atmosphere. The interval leaves out the sources listed in section 5.\n\n",
-      "**What would help:** cores that reach the reporting depth (to shrink the estimated share),",
-      "elemental organic carbon on a subset of slices to check the LOI conversion, and measured stratum areas.\n")
+      "of carbon from the atmosphere. The interval leaves out the sources listed in section 3.\n\n",
+      "**What would help:** cores that reach deeper standard depths, elemental organic carbon on a subset of",
+      "slices to check the LOI conversion, and measured stratum areas.\n")
 }
 ```
