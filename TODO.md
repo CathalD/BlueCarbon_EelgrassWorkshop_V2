@@ -22,80 +22,59 @@ Legend: 📸 image/screenshot needed · 🔗 link needed · ✍️ writing neede
 
 - [ ] 🔗 Step 1: Google Earth Engine boundary-drawing tool — replace *(link to be added)*.
 - [ ] 🔗 Step 2: remote-sensing / auto-stratification method — replace *(links to be added)*.
-- [ ] 🔗 Step 5 video callout: swap the playlist link for the **direct** *"Site Selection and Required Materials"* video URL.
+- [ ] 🔗 Step 3 video callout (*"Site Selection and Required Materials"*): swap the playlist link for the **direct** video URL. There is also an empty 🎥 callout in Step 2.
 - [ ] ❓ **Two sheets or three?** The intro says the calculator has *three sheets* but only Sheet 1 and Sheet 2 are documented. Either add a "Sheet 3" description or change the count to "two sheets."
 - [ ] 📸 A small screenshot/GIF of the calculator's **"check precision after survey"** cells (SE / t-value / relative precision rows) to sit under the post-survey RME section.
-- [ ] 📸 **Margin-of-error comparison** (new "See it for yourself" block in Step 4): calculator at ±20% vs ±10% side by side, *n* readout circled (~17 vs ~68).
-- [ ] 📸 **Variability comparison** (same block): a smooth vs patchy meadow at the same target precision, showing *n* roughly quadruple as CV goes 0.5 → 1.0.
-- [x] ✅ Worked example precision target: **resolved — ±20% at 90% confidence**, matching the default in the GEE sampling tool (`DEFAULT_MARGIN_OF_ERROR: 20`, `DEFAULT_CONFIDENCE: 90`). Standardised across Part 2, the worked example, and `00_config.R` (`TARGET_MARGIN <- 0.20`). Campaign sized at **23 cores** (spatial tool, site priors); the spreadsheet's uniform-area figure is 17.
-
-- [ ] 🔄 **Re-render the report and figures.** The prose figures in Part 4 are now the
-  six-core pipeline output, but the build artifacts still carry the old `TARGET_MARGIN`
-  of 0.10: `eelgrass_carbon_report.html` reads "Precision target ±10% — NOT met", which is
-  now "±20% — met". Re-run `source("run_pipeline.R")` then
-  `quarto::quarto_render("eelgrass_carbon_report.qmd")`, and refresh
-  `outputs/prior_to_posterior.png`.
+- [ ] 📸 **Margin-of-error comparison** (Step 4): calculator at ±20% vs ±10% side by side, *n* readout circled.
+- [ ] 📸 **Variability comparison** (Step 4): a smooth vs patchy meadow at the same target precision, showing *n* roughly quadruple as CV goes 0.5 → 1.0.
+- [ ] 🔗 `Sampling Design Tools/SamplingPlanTool_README.md` names `BlueCarbon_SampleAllocation_2026.xlsx`; the file is `BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx`.
+- [ ] ❓ **Detecting change over time.** Monitoring analysis is out of scope for this release (Part 2 explains what to keep so it stays possible). If repeat surveys become a goal, Part 2 would need a minimum-detectable-difference calculation at the design stage.
 
 ## Part 3 — Field Methods (`03_Field_Methods/README.md`)
 
+- [ ] ✍️ **Field data sheet (Google Doc `Soil_Carbon_Datasheet_v2`)** — add a *Corer internal diameter (cm)* box to Step 2 Core Notes, then re-export both PDFs into `datasheets/`. Example sheet: latitude `49.003354`, date as `2026-06-16`, Study Area `Tsawwassen Beach, BC (teaching example)`.
 - [ ] 📸 **NFLD corer photos** for the underwater / stop-cap section.
 - [ ] 📸 A real field photo in **each of the 5 coring steps** (left-hand cells currently say *[Paste field photo]*).
 - [ ] 📸 A workshop photo of the team coring / extruding, to anchor the "Extrude and section" step.
 - [ ] 🔗 **Core Depths** video (step 1): needs its own direct URL — the old link pointed at the same clip as "Site Selection." Currently linked to the playlist with the position flagged.
-- [ ] 🔗 **DIY extrusion-device blueprint PDF** — replace *(link to be added)*.
+- [ ] 📸 **Compaction method diagrams** (Step 3) — a blank two-panel table is in place: left cell for **Method A** (reading graduations on the tube), right cell for **Method B** (inside vs. outside distance from the tube top).
 
 ## Part 4 — Data Interpretation (`04_Data_Interpretation/README.md`)
 
+- [ ] 🔗 **Google Sheets copy of the digital data sheet** predates the 2026 revision (carbon type, slice checks, depth increments, corer diameter setting). Replace it with an upload of `files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx`.
 - [ ] 📸 Bagged samples next to the completed field data sheet ("arriving back from the field").
 - [ ] 📸 The digital data sheet with example rows filled in, showing typed vs. auto-calculated columns.
 - [ ] 📸 The example lab **submission** sheet, filled in.
-- [ ] 📸 An example lab **result** sheet, with notes on mapping columns onto `soc_g_kg` / `bulk_density_g_cm3`.
-- [ ] 📸 A rendered plot from the R pipeline (SOC depth profile or kriging map) + a screenshot of `eelgrass_carbon_report.html`.
+- [ ] 📸 A rendered Option A figure (profiles or comparison) and a screenshot of `report_option_A.html`.
 - [ ] 📸 An example summary figure / one-page results summary.
 - [ ] 📊 **Lab directory table** — add real labs: website, contact, analyses, cost per sample, "quoted on" date.
-- [ ] 📊 **Sandy eelgrass DBD row** in the bulk-density table — add your real NFLD/BC measured values.
-- [ ] ✍️ **Section 3 "Reporting and using the results"** — "Interpreting the numbers" and "Communicating with partners" are both *(to be written)*. This is the workshop's closing beat.
-- [ ] ✍️ Tidy the **References** into your preferred citation style; confirm the Boundary Bay reference.
+- [ ] ✍️ Tidy the **References** into your preferred citation style.
+- [ ] ❓ **Field Guide and Lab Guide corrections.** Part 4 lists where the workshop departs from the guides: the TC/OC note and "total ecosystem carbon" heading (p. 18), Eq 7, the bulk-density glossary entry, and the Lab Guide's × 0.5 LOI factor. Raise them with the guides' authors for the next edition.
 
-## R pipeline (`04_Data_Interpretation/DataAnalysisWorkflow/`)
+## Analysis workflow (`04_Data_Interpretation/DataAnalysisWorkflow/`)
 
-- [ ] 🔴 **Run the pipeline locally and confirm it executes.** R was not available in the environment where the rewrite was done, so the new `mpspline2` / `survey` / `gstat` code is written against documented APIs but **has not been executed**. Run `source("run_pipeline.R")` and fix anything that surfaces before circulating.
-- [ ] ⚠️ **Re-render the report.** `eelgrass_carbon_report.qmd`/`.html` still reflects the previous dataset, the old compaction schema, *and* the old estimator. It must be rebuilt against the current scripts — it's the first artifact a non-R reviewer opens.
-- [ ] 📊 **Set real `STRATUM_AREAS_M2`** in `00_config.R`. The worked example uses 1.8 ha marsh / 3.2 ha eelgrass as placeholders; these are the weights in the stratified estimator, so they drive the headline number.
-- [ ] 📊 **Replace the constructed covariates** (`water_depth_m`, `dist_to_shore_m`, `eelgrass_density`) in `core_locations.csv` with real values, or extract from rasters with `terra`.
-- [ ] ❓ Confirm `PRIMARY_DEPTH_CM = 25` is the right primary reporting depth (it's the depth all six example cores reached, and matches Röhr et al. 2018 / Fourqurean et al. 2012).
-- [ ] ❓ Confirm `UTM_EPSG` per site — 32610 (UTM 10N) for BC, 32621 (UTM 21N) for Newfoundland.
+- [ ] ❓ **Published LOI equation.** The blank workbook ships with no LOI equation (participants enter a local calibration). If a published seagrass equation is ever offered as a fallback, verify its coefficients against the primary source first. The Fourqurean et al. (2012) figure currently quoted in some materials could not be checked.
+- [ ] ✍️ **Going further, modules 5–6.** Port the hierarchical transfer model and the spatial prediction from the research prototype, starting from its lightest variant (ecosystem class plus the local update).
+- [ ] 📊 Option B worked example uses a **hypothetical** boundary. If a mapped Cowichan eelgrass boundary with open terms becomes available, swap it in (and keep the exploratory design, since the cores were not randomly placed).
+
+## Advanced material (`04_Data_Interpretation/DataAnalysisWorkflow/advanced/`)
+
+The earlier pipeline is kept for reference and is not part of the participant workflow. Its known
+issues are listed in `advanced/README.md`; fix them only if that material is brought back into use.
 
 ---
 
-## Reviewer-readiness — remaining judgement calls
-
-- [ ] 📸 **Compaction method diagrams** (Part 3, Step 3) — a blank two-panel table is in
-  place: left cell for **Method A** (reading graduations on the tube), right cell for
-  **Method B** (inside vs. outside distance from the tube top).
-- [ ] ❓ **Detecting change over time.** Between-stratum comparison is now covered (a
-  design-based t-test in `04`). If the project also needs to detect change between
-  *survey years*, that requires a minimum-detectable-difference calculation at the design
-  stage, which Part 2 does not currently cover. Add only if repeat monitoring is in scope.
-- [ ] ❓ **Confirm the 10 × 10 m plot assumption** (`PLOT_AREA_M2` in `00_config.R`).
-  Every sample-size number in Part 2 now derives from it — a 5 ha inlet holds 500 plots,
-  which is what brings the finite-population correction into play.
-
 ## Enhancements — implemented
 
-- [x] **Sample Size Visualizer to *show* the math** (Part 2): added a "What drives sample size?"
-  table with rough approximations (E, CV, confidence, area) and a "See it for yourself" block.
-  Remaining: supply the two comparison screenshots listed under Part 2 above.
+- [x] **Shared field → lab → checks → core-stock foundation** with two analysis options (Part 4):
+  Option A (core analysis and comparison with published eelgrass cores) and Option B (simple
+  extrapolation within a defined area, design-based).
+- [x] **Digital data sheet revised:** carbon type (OC / TC / LOI) with an explicit LOI equation; slice
+  and core checks that never turn a blank into a zero; standard depth increments; corer diameter set
+  once with a per-core override; workbook and R cross-checked.
+- [x] **Mock lab results sheet** with a guide to reading it.
+- [x] **Automated tests** of the calculations (`tests/testthat/`).
+- [x] **Sample Size Visualizer to *show* the math** (Part 2).
 - [x] **Reorganized Part 2** (A + B + C): roadmap table moved up front; sampling theory trimmed to
-  a short primer; all how-many-samples math consolidated into Step 4; steps rebuilt as uniform
-  side-by-side cards each opening with the question they answer.
-- [x] **Rebuilt the analysis on established packages** so methods are citable rather than
-  audited line-by-line: `mpspline2` (mass-preserving spline) for depth harmonization,
-  `survey` (design-based stratified estimation) replacing the pooled mean, `gstat` for
-  ordinary **and** regression kriging with a covariate-screening lesson.
-- [x] **Fixed the statistical defects** found in review: strata now drive the estimator;
-  inference runs on per-core totals rather than treating depth slices as independent;
-  the vacuous spline R²/RMSE diagnostics are gone; non-monotonic profiles are flagged,
-  never filtered; extrapolated share of stock is reported per stratum and per core.
-- [x] **Fixed the bugs:** `%||%` defined before use, `Untitled.R` → `run_pipeline.R`,
-  mislabelled "0-100 cm" output, CRS doc/code mismatch, stale data-dictionary examples.
+  a short primer; all how-many-samples math consolidated into Step 4.
+- [x] Worked-example precision target resolved: ±20% at 90% confidence, matching the GEE sampling tool defaults.

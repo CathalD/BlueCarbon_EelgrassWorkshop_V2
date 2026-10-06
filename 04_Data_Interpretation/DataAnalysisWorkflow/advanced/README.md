@@ -41,5 +41,11 @@ It was moved here unchanged. File paths inside the scripts assume the old layout
 - The compaction correction and its carbon-conservation check (`01_prepare_cores.R`).
 - The slice stock formula.
 - The asymptotic decay model (`stats::SSasymp`) used below the core base (`03_harmonize_depths.R`),
-  now fitted to carbon density rather than to SOC and bulk density separately.
-- The `survey` stratified design set-up (`04_estimate_stock.R`).
+  now fitted to carbon density rather than to SOC and bulk density separately, and accepted only
+  when it actually decays.
+- The `survey` stratified design set-up (`04_estimate_stock.R`), with one-unit and unsampled strata
+  handled explicitly.
+- The method-of-moments variance decomposition (`decompose_variance()` in `02_derive_prior.R`) and
+  the precision-weighted update (`05_combine_prior.R`), in the optional
+  [module 4](../going_further/). The prior is built from measured slices only, not from the
+  harmonised carbon densities this pipeline used.

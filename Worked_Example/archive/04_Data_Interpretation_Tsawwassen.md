@@ -1,12 +1,17 @@
+> 🗄️ **Archived.** This walkthrough used constructed Tsawwassen data and the earlier analysis pipeline
+> (now in `04_Data_Interpretation/DataAnalysisWorkflow/advanced/`). It is kept for reference only — the
+> current Part 4 follows the published Cowichan cores through the shared workflow and Options A and B.
+> See [Part 4](../../04_Data_Interpretation/) and the [archive note](README.md).
+
 # Worked example — Part 4: Analysing the Tsawwassen cores
 
 *How one team went from six bags of wet sediment to a defensible carbon number.*
 
-[← Worked example overview](README.md) · [Back to Part 4 — Data Interpretation](../04_Data_Interpretation/)
+[← Worked example overview](../README.md) · [Back to Part 4 — Data Interpretation](../../04_Data_Interpretation/)
 
 ---
 
-The team from [Part 2](02_Project_Planning.md) collected their cores. This is what
+The team from [Part 2](../02_Project_Planning.md) collected their cores. This is what
 happened to them next — one core followed all the way through, then the whole campaign.
 
 > ⚠️ **This is constructed teaching data.** The site and layout are realistic and the values
@@ -21,7 +26,7 @@ Six cores — three in **salt marsh** (`WWF-01-A/C/D`) and three in **eelgrass**
 (`WWF-01-B/E/F`) — arrived as 32 labelled bags, plus two field sheets: the *Plot &
 Core Log* and the *Sample Data* tab.
 
-The plan from [Part 2](02_Project_Planning.md) called for 23 cores. Weather and tides being
+The plan from [Part 2](../02_Project_Planning.md) called for 23 cores. Weather and tides being
 what they are, the team got six in their first season and intend to return for the rest.
 That is worth stating plainly, because it changes how the results below should be read —
 and the workflow is built to say so rather than quietly present an under-powered number as
@@ -143,7 +148,7 @@ its target has not failed either; it has costed the next season. What would be a
 reporting the point estimate as though the target had been met.
 
 Worth seeing what stratifying bought. Running the same Cochran formula from
-[Part 2](../02_Project_Planning/#appendix-a--a-brief-lesson-in-sampling-logic) at this
+[Part 2](../../02_Project_Planning/#appendix-a--a-brief-lesson-in-sampling-logic) at this
 campaign's own ±20% target, with the variability read off three different bases — the
 planning prior, these six cores treated as one population, and these six cores within their
 strata:
@@ -207,5 +212,5 @@ Four things they flagged in the report:
 ---
 
 **→ Run it yourself:** the analysis lives in
-[`04_Data_Interpretation/DataAnalysisWorkflow/`](../04_Data_Interpretation/DataAnalysisWorkflow/).
+[`04_Data_Interpretation/DataAnalysisWorkflow/`](../../04_Data_Interpretation/DataAnalysisWorkflow/).
 `source("run_pipeline.R")` reproduces every number on this page.
