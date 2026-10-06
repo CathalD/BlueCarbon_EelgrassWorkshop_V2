@@ -1,0 +1,209 @@
+---
+title: "Option A — our cores, and how they compare"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+params:
+  results: "outputs/option_A/results.rds"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+r <- readRDS(params$results)
+P <- r$project
+fig <- function(f) knitr::include_graphics(file.path(r$figures, f))
+tab <- function(x, ...) knitr::kable(x, row.names = FALSE, ...)
+f1 <- function(x) formatC(x, format = "f", digits = 1)
+complete <- r$chk$cores$status == "Complete"
+n_cores <- sum(complete)
+n_plots <- length(unique(r$chk$cores$plot_id[complete]))
+headline <- names(r$refs)[1]
+ref1 <- r$refs[[1]]
+loi_share <- mean(r$chk$slices$carbon_type[r$chk$slices$check == "OK"] == "LOI")
+compaction <- table(r$chk$cores$compaction_basis[complete])
+```
+
+**`r r$project$title`**
+
+> **What this report is.** A description of the cores that were measured, and where they sit
+> among published eelgrass cores. Each core describes the place it was taken. This report does
+> not estimate the carbon in a whole meadow — that needs a defined area and a sampling design
+> (Option B).
+
+## 1. The question
+
+`r P$question_A`
+
+## 2. What was sampled
+
+| | |
+|---|---|
+| Area and habitat | `r P$area_habitat` |
+| Survey dates | `r P$survey_dates` |
+| How the cores were placed | `r P$design` |
+| Cores in this report | `r n_cores` complete core(s), from `r n_plots` plot(s) |
+| Data source | `r P$data_source` |
+| Prepared by | `r P$prepared_by` |
+
+Each slice is one measurement *within* a core, not an independent sample of the meadow. Cores
+sharing a plot are not independent of each other either.
+
+## 3. Carbon pool and depth
+
+**Sediment organic carbon** only — not living eelgrass, roots, or total ecosystem carbon.
+Stocks are given for the standard depth increments (0–15, 15–30, 30–50, 50–100 cm) on in-situ
+depths, and only where a core reached the bottom of the increment. Cores are compared over
+**0–`r r$D` cm**, the deepest standard depth every complete core reached.
+
+## 4. How the numbers were calculated
+
+- **Methods:** `r P$methods`.
+- **Slice stock** (Mg C/ha) = dry bulk density (g/cm³) × organic carbon (%) ÷ 100 × slice
+  thickness in the tube (cm) × 100. Bulk density = whole-slice dry mass ÷ slice volume, from the
+  corer's internal diameter (`r f1(r$chk$corer_diameter_cm)` cm on the Instructions tab
+  unless a core gives its own).
+- **Organic carbon:** `r round(100 * loi_share)`% of slices came from loss on ignition,
+  converted with OC% = `r r$chk$loi[["intercept"]]` + `r r$chk$loi[["slope"]]` × LOI%. The
+  rest are elemental organic carbon. Total carbon is never used as organic carbon.
+- **Compaction:** `r paste(sprintf("%s for %d core(s)", names(compaction), as.integer(compaction)), collapse = "; ")`.
+  Compaction moves each slice to its in-situ depth; it never changes how much carbon the slice holds.
+- **Increments:** a slice that crosses an increment boundary is split in proportion to its
+  overlap, so the increments add up to exactly the carbon measured.
+- Nothing is interpolated, smoothed or extrapolated in this report.
+
+## 5. Checks
+
+```{r checks}
+st <- r$chk$cores[, c("core_id", "plot_id", "n_slices", "n_ok", "status")]
+names(st) <- c("Core", "Plot", "Slices", "Slices OK", "Status")
+tab(st)
+if (nrow(r$checks$slices)) tab(r$checks$slices, caption = "Slices that did not pass")
+if (nrow(r$checks$warnings)) tab(r$checks$warnings, caption = "Worth a look (did not stop a core being totalled)")
+```
+
+The R workflow re-calculates every slice independently of the workbook. Largest difference from
+the workbook's own numbers:
+
+```{r crosscheck}
+cc <- r$cross_check
+counts <- grepl("count", cc$quantity)
+cc$max_abs_difference <- ifelse(is.na(cc$max_abs_difference), "not available (workbook not recalculated)",
+  ifelse(counts, as.character(cc$max_abs_difference),
+  ifelse(cc$max_abs_difference < 1e-6, "agrees (< 0.000001)", signif(cc$max_abs_difference, 2))))
+names(cc) <- c("Quantity", "Largest difference")
+tab(cc)
+```
+
+## 6. What the cores show
+
+```{r coretable}
+inc <- r$inc
+inc$value <- ifelse(inc$status == "complete", f1(inc$stock_Mg_ha),
+                    ifelse(inc$status == "partial", "partial", "not reached"))
+w <- reshape(inc[, c("core_id", "increment", "value")], idvar = "core_id", timevar = "increment",
+             direction = "wide")
+names(w) <- sub("^value\\.", "", names(w))
+cs <- r$cores[r$cores$status == "Complete", c("core_id", "measured_to_insitu_cm", "bd_g_cm3", "oc_pct")]
+cs <- merge(cs, w, by = "core_id")
+cs$measured_to_insitu_cm <- f1(cs$measured_to_insitu_cm)
+cs$bd_g_cm3 <- formatC(cs$bd_g_cm3, format = "f", digits = 2)
+cs$oc_pct <- formatC(cs$oc_pct, format = "f", digits = 2)
+names(cs)[1:4] <- c("Core", "Measured to (cm, in situ)", "Bulk density (g/cm³)", "Organic carbon (%)")
+tab(cs, caption = "Organic carbon stock by standard increment (Mg C/ha). 'partial' = the core ends inside the increment, so its value is not comparable.")
+```
+
+```{r fig-profiles, out.width = "100%"}
+fig("profiles.png")
+```
+
+```{r fig-increments, out.width = "70%"}
+fig("increments.png")
+```
+
+```{r fig-bd, out.width = "60%"}
+fig("bd_vs_oc.png")
+```
+
+A slice far outside the grey cloud is worth re-checking before anything else: a wrong corer
+diameter, or a subsample's dry mass set against the whole slice's volume, both show up here first.
+
+## 7. How the cores compare with published eelgrass cores
+
+**What the reference distribution is.** The grey points are individual *Zostera marina* cores
+from `r r$region`, compiled by Janousek et al. (2025), measured continuously to at least
+`r r$D` cm. They come from different studies, estuaries and years, chosen by their authors
+for their own purposes. They show the range other eelgrass meadows have produced — they are not
+a random sample of all eelgrass, and they are not a target.
+
+To keep the comparison fair, the reference set leaves out: your own estuary
+(`r paste(r$settings$REFERENCE_EXCLUDE_ESTUARIES, collapse = ", ")`); any core within
+`r r$settings$REFERENCE_EXCLUDE_WITHIN_M` m of one of your cores (so a published core used as
+practice data can never be compared with itself); and any slice the synthesis marks as
+estimated rather than measured.
+
+Two reference sets are shown, because carbon was measured in two ways:
+
+```{r refsets}
+rt <- r$ref_table
+rt[, 5:9] <- lapply(rt[, 5:9], f1)
+names(rt) <- c("Reference set", "Cores", "Estuaries", "Studies", "Min", "Lower quartile", "Median",
+               "Upper quartile", "Max")
+tab(rt, caption = sprintf("Organic carbon stock, 0–%g cm (Mg C/ha)", r$D))
+```
+
+The headline set is **`r r$ref_labels[[headline]]`**. Its LOI values were converted with the
+same equation as your own LOI slices, so both sides of the comparison share the same
+conversion — but the conversion was fitted on your samples, and the published sediments may
+relate LOI to carbon differently. The measured-only set avoids that, but it is small.
+
+```{r cmp}
+cm <- r$cmp
+cm$stock_Mg_ha <- ifelse(is.na(cm$stock_Mg_ha), "", f1(cm$stock_Mg_ha))
+names(cm) <- c("Core", sprintf("Stock 0–%g cm (Mg C/ha)", r$D), "Note",
+               "Percentile — headline set", "Percentile — measured OC only")
+tab(cm)
+```
+
+A percentile is the share of reference cores with a stock at or below yours. It describes where
+a core sits; it is not a statistical test, and with a small reference set it moves in large
+steps.
+
+```{r fig-cmp, out.width = "100%"}
+fig("comparison.png")
+```
+
+```{r fig-maps, out.width = "48%", fig.show = "hold"}
+fig("locations.png"); fig("reference_map.png")
+```
+
+```{r selection}
+sel <- attr(ref1, "selection")
+tab(data.frame(Step = c("Zostera cores in the synthesis", "In the chosen region", "After excluding your estuary",
+                        sprintf("After excluding cores within %g m of yours", r$settings$REFERENCE_EXCLUDE_WITHIN_M),
+                        sprintf("Measured continuously to %g cm on this carbon basis", r$D)),
+               Cores = as.integer(sel)), caption = "How the headline reference set was chosen")
+```
+
+## 8. Missing data, exclusions and limitations
+
+- Cores not in the tables above did not pass the checks in section 5, or did not reach
+  `r r$D` cm.
+- `r n_assumed <- sum(r$chk$cores$compaction_basis[complete] == "assumed none"); if (n_assumed) sprintf("Compaction was not measured for %d of %d cores and was assumed to be none; if those cores were compacted, their slices sit deeper than shown.", n_assumed, n_cores) else "Compaction was measured on every core."`
+- `r if (loi_share > 0) sprintf("%d%% of slices are LOI converted with a fitted equation. That conversion has its own error, which is not shown in any number here.", round(100 * loi_share)) else "All slices are elemental organic carbon."`
+- Reference-core depths are as published, not corrected for compaction.
+- Stocks below the base of a core are unknown here. A core's total is only comparable with
+  another core's over the same depth.
+
+## 9. What this supports, and what would help
+
+**Supports:** a description of sediment organic carbon at the places these cores were taken,
+over 0–`r r$D` cm, and where those values sit among published eelgrass cores from the region.
+
+**Does not support:** a meadow-wide average, a total for an area, an interval around a mean, or
+any statement about carbon being added (sequestration) — that needs dated cores.
+
+**What would help:** more cores, placed with a sampling design (Part 2), to describe the meadow
+rather than single points; deeper cores to compare over 0–30 cm or more; elemental organic
+carbon on a subset of slices to check the LOI conversion; measured compaction on every core.

@@ -3,55 +3,74 @@
 # Reads the workbook, checks it, calculates core stocks, compares them with published
 # eelgrass cores, writes tables and figures to outputs/option_A/, and renders the report.
 
-source("settings.R")
-for (f in list.files("R", full.names = TRUE)) source(f)
-out <- file.path("outputs", "option_A")
+if (!exists("SETTINGS_FILE")) SETTINGS_FILE <- Sys.getenv("SETTINGS_FILE", "settings.R")
+source(SETTINGS_FILE)
+for (f in list.files("R", pattern = "\\.R$", full.names = TRUE)) source(f)
+out <- if (exists("OUTPUT_DIR_A")) OUTPUT_DIR_A else file.path("outputs", "option_A")
 dir.create(out, recursive = TRUE, showWarnings = FALSE)
 
 # ── Shared foundation: read, check, core stocks ─────────────────────────────────
 wb  <- read_workbook(WORKBOOK)
 chk <- check_slices(wb)
-problems <- chk$slices[chk$slices$check != "OK", c("core_id", "sample_id", "top_cm", "bottom_cm", "check")]
-if (nrow(problems)) {
-  message("Some slices did not pass the checks — those cores are left out until fixed:")
-  print(problems, row.names = FALSE)
-}
+checks <- print_check_report(check_report(chk))
 if (!any(chk$cores$status == "Complete")) stop("No complete cores yet — see the checks above.")
 
 cores <- core_summary(chk)
 inc   <- increment_stocks(chk)
+check_mass_conservation(chk, inc)
 cum   <- cumulative_stocks(inc)
 
 # ── Comparison ─────────────────────────────────────────────────────────────────
 D <- if (is.null(COMPARE_DEPTH_CM)) common_depth(cum) else COMPARE_DEPTH_CM
 if (is.na(D)) stop("None of your cores reached 15 cm, the shallowest standard depth.")
-ref <- reference_stocks(D, chk$cores[chk$cores$status == "Complete", ], wb$loi,
-                        states = REFERENCE_STATES, exclude_estuaries = REFERENCE_EXCLUDE_ESTUARIES,
-                        exclude_within_m = REFERENCE_EXCLUDE_WITHIN_M, carbon = REFERENCE_CARBON)
-cmp <- compare_to_reference(cum, ref, D)
-region <- if (is.null(REFERENCE_STATES)) "Pacific coast" else paste(REFERENCE_STATES, collapse = " + ")
+refs <- reference_sets(D, chk$cores, wb$loi, states = REFERENCE_STATES,
+                       exclude_estuaries = REFERENCE_EXCLUDE_ESTUARIES,
+                       exclude_within_m = REFERENCE_EXCLUDE_WITHIN_M)
+refs <- refs[c(REFERENCE_HEADLINE, setdiff(names(refs), REFERENCE_HEADLINE))]   # headline first
+cmp <- compare_to_reference(cum, refs[[1]], D)
+names(cmp)[names(cmp) == "percentile"] <- paste0("percentile_", names(refs)[1])
+cmp[[paste0("percentile_", names(refs)[2])]] <- compare_to_reference(cum, refs[[2]], D)$percentile
+region <- if (is.null(REFERENCE_STATES)) "the Pacific coast" else paste(REFERENCE_STATES, collapse = " + ")
+ref_table <- do.call(rbind, lapply(names(refs), function(k)
+  cbind(reference_set = REFERENCE_LABELS[[k]], reference_summary(refs[[k]]))))
+boundary <- if (!is.null(BOUNDARY_FILE) && file.exists(BOUNDARY_FILE)) utils::read.csv(BOUNDARY_FILE) else NULL
 
 # ── Write outputs ──────────────────────────────────────────────────────────────
 utils::write.csv(chk$slices, file.path(out, "slices_checked.csv"), row.names = FALSE)
 utils::write.csv(cores, file.path(out, "core_summary.csv"), row.names = FALSE)
 utils::write.csv(inc,   file.path(out, "increment_stocks.csv"), row.names = FALSE)
-utils::write.csv(ref,   file.path(out, "reference_cores_used.csv"), row.names = FALSE)
 utils::write.csv(cmp,   file.path(out, "comparison.csv"), row.names = FALSE)
-ggsave(file.path(out, "profiles.png"), plot_profiles(chk), width = 9, height = 5, dpi = 150)
+for (k in names(refs))
+  utils::write.csv(refs[[k]], file.path(out, sprintf("reference_cores_%s.csv", k)), row.names = FALSE)
+ggsave(file.path(out, "profiles.png"), plot_profiles(chk, attr(refs[[1]], "slices")), width = 9, height = 5, dpi = 150)
 ggsave(file.path(out, "increments.png"), plot_increments(inc), width = 6, height = 4, dpi = 150)
-ggsave(file.path(out, "comparison.png"), plot_reference(ref, cmp, D, region), width = 8, height = 3.6, dpi = 150)
-ggsave(file.path(out, "locations.png"), plot_locations(chk), width = 5, height = 4.5, dpi = 150)
-saveRDS(list(settings = mget(ls(pattern = "^[A-Z_]+$")), chk = chk, cores = cores, inc = inc,
-             cum = cum, D = D, ref = ref, cmp = cmp, region = region,
-             cross_check = cross_check_workbook(chk)), file.path(out, "results.rds"))
+ggsave(file.path(out, "comparison.png"), plot_reference(refs, cmp, D, region), width = 8, height = 4, dpi = 150)
+ggsave(file.path(out, "bd_vs_oc.png"), plot_bd_vs_oc(chk, attr(refs[[1]], "slices")), width = 6, height = 4.5, dpi = 150)
+ggsave(file.path(out, "locations.png"), plot_locations(chk, boundary), width = 5, height = 4.5, dpi = 150)
+ggsave(file.path(out, "reference_map.png"), plot_reference_map(chk, refs[[1]]), width = 6, height = 6, dpi = 150)
+
+settings_used <- list(WORKBOOK = WORKBOOK, COMPARE_DEPTH_CM = COMPARE_DEPTH_CM,
+                      REFERENCE_STATES = REFERENCE_STATES, REFERENCE_HEADLINE = REFERENCE_HEADLINE,
+                      REFERENCE_EXCLUDE_ESTUARIES = REFERENCE_EXCLUDE_ESTUARIES,
+                      REFERENCE_EXCLUDE_WITHIN_M = REFERENCE_EXCLUDE_WITHIN_M)
+saveRDS(list(project = PROJECT, settings = settings_used, chk = chk, checks = checks, cores = cores,
+             inc = inc, cum = cum, D = D, refs = refs, ref_table = ref_table, ref_labels = REFERENCE_LABELS,
+             cmp = cmp, region = region,
+             cross_check = cross_check_workbook(chk), figures = normalizePath(out)),
+        file.path(out, "results.rds"))
 
 cat(sprintf("\n%d complete core(s). Common comparison depth: 0–%g cm.\n",
             sum(chk$cores$status == "Complete"), D))
 print(cmp, row.names = FALSE)
-print(reference_summary(ref), row.names = FALSE)
+print(ref_table, row.names = FALSE)
 
-if (requireNamespace("rmarkdown", quietly = TRUE) && rmarkdown::pandoc_available()) {
-  rmarkdown::render("report_option_A.Rmd", output_dir = out, quiet = TRUE,
-                    envir = new.env())
+# ── Report ─────────────────────────────────────────────────────────────────────
+if (!requireNamespace("rmarkdown", quietly = TRUE) || !rmarkdown::pandoc_available()) {
+  message("Report not rendered: it needs the rmarkdown package and pandoc (both come with RStudio). ",
+          "The tables and figures above are in ", out, ".")
+} else {
+  results_file <- normalizePath(file.path(out, "results.rds"))   # before render() changes folder
+  rmarkdown::render("report_option_A.Rmd", output_dir = out, quiet = TRUE, envir = new.env(),
+                    params = list(results = results_file))
   cat("Report:", file.path(out, "report_option_A.html"), "\n")
 }
