@@ -56,7 +56,7 @@ For a full list of recommended equipment see here:
 <tr>
 <td width="45%">
 
-<img width="100%" alt="Equipment for setting up the plot" src="https://github.com/user-attachments/assets/673d1655-c9d4-4a72-904e-da7e4376b58d">
+<img width="100%" alt="Equipment for setting up the plot" src="images/equipment_for_setting_up_the_plot.png">
 
 </td>
 <td width="55%">
@@ -74,7 +74,7 @@ For a full list of recommended equipment see here:
 <tr>
 <td width="45%">
 
-<img width="100%" alt="Equipment for taking a sediment core" src="https://github.com/user-attachments/assets/dffb92ae-fbcc-40e7-97c0-8fc9b032858e">
+<img width="100%" alt="Equipment for taking a sediment core" src="images/equipment_for_taking_a_sediment_core.png">
 
 </td>
 <td width="55%">
@@ -96,7 +96,7 @@ For a full list of recommended equipment see here:
 <tr>
 <td width="45%">
 
-<img width="100%" alt="Equipment for core extrusion, packaging and processing" src="https://github.com/user-attachments/assets/d37d326c-2979-4731-ba68-5f9cd84c0f46">
+<img width="100%" alt="Equipment for core extrusion, packaging and processing" src="images/equipment_for_core_extrusion_packaging_and_processing.png">
 
 </td>
 <td width="55%">
@@ -117,22 +117,22 @@ For a full list of recommended equipment see here:
 </table>
 
 **Coring underwater**, the tool we recommend is an
-additional **stop-cap** mechanism that creates a vacuum seal underwater. This prevents water
-from flowing in through the top of the corer, and applies a gravimetric force on the core
-upon extrusion. For more information, see the [Universal Corer — Aquatic Research Shop](https://aquaticresearchshop.com/product/universal-corer/).
+additional **stop-cap** mechanism that seals the top of the corer. Water can't flow in from
+above, and the suction this creates helps hold the sediment in the tube while it is lifted out
+and carried to the extruder. For more information, see the [Universal Corer — Aquatic Research Shop](https://aquaticresearchshop.com/product/universal-corer/).
 
 <table>
 <tr>
 <td width="50%">
 
-<img width="100%" alt="Stop-cap corer kit laid out" src="https://github.com/user-attachments/assets/db42ba88-1f27-41ef-aa36-69de965c7024">
+<img width="100%" alt="Stop-cap corer kit laid out" src="images/stop_cap_corer_kit_laid_out.png">
 
 **The kit** — the stop-cap corer assembled and ready to go.
 
 </td>
 <td width="50%">
 
-<img width="100%" alt="Using the stop-cap corer in the field" src="https://github.com/user-attachments/assets/63dbf496-4dbd-4a2c-9d9b-c8d8cba61f48">
+<img width="100%" alt="Using the stop-cap corer in the field" src="images/using_the_stop_cap_corer_in_the_field.png">
 
 **In use** — taking an underwater core in the field.
 
@@ -164,7 +164,7 @@ Five steps take you from a site location to a cooler full of samples.
 <tr>
 <td width="42%">
 
-<img width="88%" alt="Selecting a representative coring spot within the plot" src="https://github.com/user-attachments/assets/f5578eef-03ca-482c-bce3-6f10a93d9fe6">
+<img width="88%" alt="Selecting a representative coring spot within the plot" src="images/selecting_a_representative_coring_spot_within_the_plot.png">
 
 </td>
 <td width="58%">
@@ -175,12 +175,17 @@ Across your plot, use a metal rod or soil probe to test how deep the sediment is
 you a rough idea of how far you will need to insert the corer, and where to take the core in a
 **representative area** — a spot consistent with the average sediment depth across the plot.
 
+The plot itself was chosen at random in Part 2; the spot within it is your judgement. Pick
+somewhere typical of the plot where a core can be taken cleanly, avoiding rocks, channels and
+holes. Don't steer towards patches that look richer or poorer in carbon. If you had to move
+away from the plot's coordinate, note how far and why on the sheet.
+
 </td>
 </tr>
 <tr>
 <td width="42%">
 
-<img width="88%" alt="Probing the sediment to find the depth of refusal" src="https://github.com/user-attachments/assets/9438e830-8f0b-4a58-96bf-67a3358f18dc">
+<img width="88%" alt="Probing the sediment to find the depth of refusal" src="images/probing_the_sediment_to_find_the_depth_of_refusal.png">
 
 </td>
 <td width="58%">
@@ -208,7 +213,7 @@ time, site conditions, weather, and tidal conditions — plus the core's latitud
 </td>
 <td width="45%">
 
-<img width="100%" alt="Data sheet — plot notes section" src="https://github.com/user-attachments/assets/3fbedb0a-e629-473a-8792-26fa7dc0b09b">
+<img width="100%" alt="Data sheet — plot notes section" src="images/data_sheet_plot_notes_section.png">
 
 </td>
 </tr>
@@ -227,7 +232,7 @@ time, site conditions, weather, and tidal conditions — plus the core's latitud
 <tr>
 <td width="45%">
 
-<img width="100%" alt="Hammering the corer in with a team of three" src="https://github.com/user-attachments/assets/a5c241f2-5382-4ab0-913d-c6e805980250">
+<img width="100%" alt="Hammering the corer in with a team of three" src="images/hammering_the_corer_in_with_a_team_of_three.png">
 
 </td>
 <td width="55%">
@@ -256,7 +261,7 @@ calipers, not the nominal pipe size. It is the same for every core taken with th
 </td>
 <td width="45%">
 
-<img width="100%" alt="Data sheet — core notes section" src="https://github.com/user-attachments/assets/7d43fc86-9e4d-470d-99cb-6f8b4dd61f74">
+<img width="100%" alt="Data sheet — core notes section" src="images/data_sheet_core_notes_section.png">
 
 </td>
 </tr>
@@ -278,7 +283,7 @@ calipers, not the nominal pipe size. It is the same for every core taken with th
 <tr>
 <td width="45%">
 
-<img width="100%" alt="Compaction: sediment column shortening inside the tube" src="https://github.com/user-attachments/assets/e87bf946-573b-492f-abdc-484f6bd8ec04">
+<img width="100%" alt="Compaction: sediment column shortening inside the tube" src="images/compaction_sediment_column_shortening_inside_the_tube.png">
 
 </td>
 <td width="55%">
@@ -301,8 +306,16 @@ Whichever method you use, you are after the **same two numbers**
 - **Depth of corer inserted** — how far the tube went into the sediment (penetration)
 - **Length of core extracted** — how much sediment you actually recovered
 
-Either way, the **difference between the inside and outside measurements is the
-compaction**
+Either way, **compaction is the difference between the two**. For example, a tube driven
+**65 cm** into the sediment that recovers **58 cm** of core has 65 − 58 = **7 cm** of compaction,
+and a compaction factor of 65 ÷ 58 = **1.12**. Those two numbers are all you copy into the
+digital sheet: **65** goes in *Plot & Core Log* column K (outside depth) and **58** in column L
+(inside depth). The sheet works out the rest.
+
+<details>
+<summary><b>The two methods, step by step</b></summary>
+
+<br>
 
 <table>
 <tr>
@@ -333,6 +346,8 @@ length of core extracted = tube length − inside distance
 </tr>
 </table>
 
+</details>
+
 <table>
 <tr>
 <td width="50%">
@@ -342,7 +357,7 @@ length of core extracted = tube length − inside distance
 </td>
 <td width="50%">
 
-<img width="100%" alt="Method B — measuring inside and outside distances from the top of the tube" src="https://github.com/user-attachments/assets/b9c176ca-1a37-45ea-a7ec-e4d122b07c08">
+<img width="100%" alt="Method B — measuring inside and outside distances from the top of the tube" src="images/method_b_measuring_inside_and_outside_distances_from_the_top.png">
 
 </td>
 </tr>
@@ -362,7 +377,7 @@ respective fields. These two numbers are what the analysis uses to decompact the
 </td>
 <td width="45%">
 
-<img width="100%" alt="Data sheet — compaction measurement fields" src="https://github.com/user-attachments/assets/615ac034-a02f-4306-81db-8985a6c907c0">
+<img width="100%" alt="Data sheet — compaction measurement fields" src="images/data_sheet_compaction_measurement_fields.png">
 
 </td>
 </tr>
@@ -378,7 +393,7 @@ respective fields. These two numbers are what the analysis uses to decompact the
 <tr>
 <td width="45%">
 
-<img width="100%" alt="Digging around the tube to release suction before extraction" src="https://github.com/user-attachments/assets/2435b917-edda-464a-b363-e06d8ccecdad">
+<img width="100%" alt="Digging around the tube to release suction before extraction" src="images/digging_around_the_tube_to_release_suction_before_extraction.png">
 
 
 </td>
@@ -415,12 +430,12 @@ different spot and try again.
 <tr>
 <td width="45%">
 
-<img width="100%" alt="Positioning the tube onto the extruder using a stop cap" src="https://github.com/user-attachments/assets/dd64a399-8d89-41c0-8791-0e880c4429f5">
+<img width="100%" alt="Positioning the tube onto the extruder using a stop cap" src="images/positioning_the_tube_onto_the_extruder_using_a_stop_cap.png">
 
-**With a stop cap** — gravimetric force holds the sample in the tube, keeping it intact while
-you position it onto the extruder.
+**With a stop cap** — suction from the sealed cap holds the sample in the tube, keeping it
+intact while you position it onto the extruder.
 
-<img width="100%" alt="Positioning the tube onto the extrusion device without a stop cap" src="https://github.com/user-attachments/assets/697f3105-9907-4b8b-a7c3-405b927d002d">
+<img width="100%" alt="Positioning the tube onto the extrusion device without a stop cap" src="images/positioning_the_tube_onto_the_extrusion_device_without_a_sto.png">
 
 **Without one** — remove the end cap smoothly as you position the tube. *Slow is smooth,
 smooth is fast.*
@@ -430,11 +445,13 @@ smooth is fast.*
 
 Transfer the core onto the extruding device, then push it up from the base and slice off each
 subsection at the top of the tube with a PVC collar (typically 2-5 cm). Slide each slice into
-its prelabelled bag, recording the **Core ID**, **sample number**, and **top/bottom depths**.
-The Core ID is a unique identifier for the date, core location, and section depth — for
-example, *UC-02-B: 0–2 cm* denotes a core taken in "Ucluelet", "Plot 2", "Sampling location
-B", with a depth interval of "0–2 cm". Record the total core length once all subsections are
-obtained, and keep the bags cold.
+its prelabelled bag, recording the **Core ID**, **Sample ID**, and **top/bottom depths**.
+The **Core ID** identifies the core — site, plot and sampling location: *UC-02-B* is a core taken
+in Ucluelet, Plot 2, sampling location B. Each slice is then identified by its **Sample ID**
+(1, 2, 3… counting down from the surface) and its depths, so a bag label reads
+*UC-02-B · 1 · 0–2 cm · 2026-06-16*. Write the Core ID the same way, character for character, on
+the bag, the field sheet and the digital sheet. Record the total core length once all
+subsections are obtained, and keep the bags cold.
 
 </td>
 </tr>
@@ -457,14 +474,14 @@ This step has four short companion videos:
 <tr>
 <td width="50%">
 
-<img width="100%" alt="Extruding and sectioning a salt marsh core" src="https://github.com/user-attachments/assets/95b19d2a-5490-454b-98ee-d4777f837015">
+<img width="100%" alt="Extruding and sectioning a salt marsh core" src="images/extruding_and_sectioning_a_salt_marsh_core.png">
 
 **Salt marsh**
 
 </td>
 <td width="50%">
 
-<img width="100%" alt="Extruding and sectioning an eelgrass core" src="https://github.com/user-attachments/assets/f673e2ef-783b-4b13-b587-9aae49d9b3be">
+<img width="100%" alt="Extruding and sectioning an eelgrass core" src="images/extruding_and_sectioning_an_eelgrass_core.png">
 
 **Eelgrass**
 
@@ -473,14 +490,14 @@ This step has four short companion videos:
 <tr>
 <td width="50%">
 
-<img width="100%" alt="Slicing a subsection at the top of the tube" src="https://github.com/user-attachments/assets/7e229778-b080-4f56-a26e-01a61c1578b7">
+<img width="100%" alt="Slicing a subsection at the top of the tube" src="images/slicing_a_subsection_at_the_top_of_the_tube.png">
 
 **Slicing a subsection** at the top of the tube.
 
 </td>
 <td width="50%">
 
-<img width="100%" alt="Bagging and labelling a sectioned slice" src="https://github.com/user-attachments/assets/9febd2d8-e7d9-41a1-8d28-712e19f9518b">
+<img width="100%" alt="Bagging and labelling a sectioned slice" src="images/bagging_and_labelling_a_sectioned_slice.png">
 
 **Bagging and labelling** each slice with its depths.
 
@@ -492,11 +509,11 @@ This step has four short companion videos:
 **[`Making a soil core extractor doc.pdf`](Making%20a%20soil%20core%20extractor%20doc.pdf)**.
 
 <p align="center">
-  <img width="35%" alt="DIY extrusion device — parts detail" src="https://github.com/user-attachments/assets/b849b512-b5db-4665-b90f-903955985c6a">
+  <img width="35%" alt="DIY extrusion device — parts detail" src="images/diy_extrusion_device_parts_detail.png">
 </p>
 
 <p align="center">
-  <img width="70%" alt="DIY core extrusion device — blueprint diagram" src="https://github.com/user-attachments/assets/cab859cd-04e6-4d42-aeae-f7253c6ca5fa">
+  <img width="70%" alt="DIY core extrusion device — blueprint diagram" src="images/diy_core_extrusion_device_blueprint_diagram.png">
 </p>
 
 *Instructions for a do-it-yourself extrusion device using common plumbing elements found at
@@ -504,7 +521,7 @@ your local hardware store. Ensure the proportions match those of the PVC pipe yo
 using.*
 
 <p align="center">
-  <img width="30%" alt="The DIY extrusion device in use" src="https://github.com/user-attachments/assets/4545498b-72a1-4ea5-a75d-08dd27a11b6b">
+  <img width="30%" alt="The DIY extrusion device in use" src="images/the_diy_extrusion_device_in_use.png">
 </p>
 
 <p align="center"><em>The finished device in use.</em></p>
@@ -524,7 +541,7 @@ if section 2 ends at 5 cm, section 3 starts at 5 cm, and so on.
 </td>
 <td width="45%">
 
-<img width="461" height="232" alt="Data sheet — sample data section" src="https://github.com/user-attachments/assets/f2bcc118-8df2-4a31-ad57-a86bf58e9048" />
+<img width="461" height="232" alt="Data sheet — sample data section" src="images/data_sheet_sample_data_section.png" />
 
 </td>
 </tr>
@@ -546,14 +563,14 @@ It captures exactly the fields the analysis expects:
 <tr>
 <td width="50%">
 
-<img width="100%" alt="Blank field data sheet" src="https://github.com/user-attachments/assets/e137cd19-865a-4ffe-afb2-bcae8abe57c1">
+<img width="100%" alt="Blank field data sheet" src="images/blank_field_data_sheet.png">
 
 **Blank data sheet** — ready to print and take into the field.
 
 </td>
 <td width="50%">
 
-<img width="100%" alt="Filled-in field data sheet from the Project Planning example" src="https://github.com/user-attachments/assets/db130d40-1347-4a8d-8b46-bc02469f26a1">
+<img width="100%" alt="Filled-in field data sheet from the Project Planning example" src="images/filled_in_field_data_sheet_from_the_project_planning_example.png">
 
 **Filled-in example** — the same sheet completed for the eelgrass inlet site from
 [Section 2 — Project Planning](../02_Project_Planning/).

@@ -24,8 +24,8 @@ Both are **Option B** questions — an estimate for a defined area, compared bet
 | Decision | The team's choice |
 |---|---|
 | What is estimated | Mean sediment organic-carbon stock (Mg C ha⁻¹) and total (Mg C), per stratum and overall |
-| Study boundary | The 5 ha inlet traced in Step 1 |
-| Strata | Dense meadow and sparse fringe (Step 2) |
+| Study boundary | The 1,242.97 ha site traced in Step 1, less the wetland edge excluded in Step 2 |
+| Strata | High-density and low-density eelgrass (Step 2) |
 | Reporting depth | **0–30 cm** — the depth of their prior, so every core must reach at least 30 cm |
 | Sampling design | Stratified random (Step 5) |
 | Precision target | ±20% at 90% confidence (Step 4) |
@@ -36,31 +36,35 @@ Which reduces to two planning questions:
 1. How many samples to take
 2. Where to take them
 
-> ⚠️ **This is constructed teaching data.** The site and layout are realistic, but the team and
-> their numbers are **not field measurements**. See the [worked example overview](README.md).
+> ⚠️ **The team is constructed for teaching.** The boundary, zones and core locations below come
+> from a real run of the sampling-design tool over Tsawwassen, but no cores were collected and there
+> are no field records behind them. See the [worked example overview](README.md).
 
 ---
 
 ## Step 1 — Study area
 
-Using the Google Earth Engine sampling-design tool, they drew a rough outline of the area they
-knew was mostly eelgrass — a **5 ha inlet (50,000 m²)**. They did not survey the edge; they
-traced what they could see on recent imagery.
+Using the sampling-design tool, they chose **Draw it on the map** and traced the eelgrass flats
+they could see on recent imagery. They did not survey the edge.
 
-<img width="60%" alt="Drawing a study area boundary in Google Earth Engine" src="../02_Project_Planning/images/download%20(5).gif">
+<img width="100%" alt="Sampling-design tool, Step 1: the traced Tsawwassen boundary and its measured area" src="../02_Project_Planning/images/tsawwassen_step1_boundary.png">
 
-**Result:** a boundary polygon, total area **50,000 m²**.
+**Result:** a boundary polygon of **1,242.97 ha**, with room for 124,296 possible 100 m² core
+positions.
 
 ---
 
 ## Step 2 — Stratify
 
-They knew there were slight differences across the site, so they used the **auto-stratification**
-tool to delineate distinct areas.
+They knew there were differences across the site, so they used the tool's automatic grouping
+(**Satellite Embeddings, 10 m**, three groups).
 
-<img width="60%" alt="Auto-stratifying the study area into distinct strata" src="../02_Project_Planning/images/download%20(7).gif">
+<img width="100%" alt="Sampling-design tool, Step 2: three zones — Zone 3 713.80 ha, Zone 2 361.95 ha and Zone 1 171.14 ha" src="../02_Project_Planning/images/tsawwassen_strata_zones.png">
 
-**Result:** two strata — a denser meadow and a sparser fringe — each with its own area.
+Zone 1 traced the wetland edge around the flats rather than eelgrass, so they unticked it.
+
+**Result:** two eelgrass strata — **high density, 713.80 ha** (Zone 3) and **low density,
+361.95 ha** (Zone 2) — **1,075.75 ha** in all.
 
 ---
 
@@ -79,46 +83,49 @@ They calculated the required number of cores from:
 
 | Input | Value | Where it came from |
 |---|---|---|
-| Total area | **50,000 m²** (5 ha) | Step 1 boundary |
-| Plot area | **100 m²** (10 × 10 m) | design choice → $N$ = 500 possible plots |
+| Strata | **713.80 ha** and **361.95 ha** | Step 2 |
+| Plot area | **100 m²** (10 × 10 m) | what one core represents |
 | Confidence level | **90%** → $z = 1.645$ | the tool's default |
 | Margin of error | **±20%** ($E = 0.20$) | the tool's default |
-| Prior mean | **≈ 20.6 Mg C ha⁻¹** to 30 cm | BC eelgrass cores, Janousek et al. (2025) — the calculator's *3 Priors* sheet |
-| Prior SD | **≈ 11.9** | same source |
-| → $CV$ | **0.58** | $11.9 / 20.6$ |
+| Prior mean | **24.8 Mg C ha⁻¹** to 30 cm | Pacific Northwest eelgrass average, 175 cores (Janousek et al. 2025), the tool's default |
+| Prior SD | **16.8** | same source |
+| → $CV$ | **0.68** | $16.8 / 24.8$ — a planning scenario, not this meadow's measured variability |
 
-The spreadsheet calculator, which treats the inlet as one uniform area, returns **22 cores**.
-The [GEE sampling tool](../02_Project_Planning/Sampling%20Design%20Tools/), given the same
-precision target plus the site-specific priors and the two strata from Step 2, returns
-**23 cores**. The team planned on **23** — the stratification-aware number, and the more
-conservative of the two.
+Both the sampling tool and the spreadsheet calculator return **32 cores** for the whole area.
+Shared out by area, with each stratum rounded up, that becomes **33**. The tool's methods paragraph
+mentions a finite-population correction: it samples from its grid of possible positions, so that
+is legitimate, but with 33 cores among more than 100,000 positions it changes nothing.
+
+<img width="100%" alt="Sample Allocation Calculator, sheet 2 Stratified, with the Tsawwassen inputs" src="../02_Project_Planning/images/calculator_tsawwassen_stratified.png">
 
 Padding for ~70% usable-sample recovery — attrition, lost cores, damaged samples — they planned
-to collect **≈ 33**.
+to collect **≈ 47**.
 
-**Result:** 23 cores of usable data required; ~33 planned for collection.
+**Result:** 33 cores of usable data required; ~47 planned for collection.
 
 ---
 
 ## Step 5 — Where to sample
 
-They allocated those 23 cores **proportionally across the two strata** — a meadow twice the
-area of the fringe gets roughly twice the cores — keeping a **minimum of 5 per stratum**.
+They allocated those 33 cores **proportionally across the two strata** — **22** in the
+high-density zone and **11** in the low-density zone — and let the tool place them **at random
+within each zone**.
 
-<img width="60%" alt="Allocating samples across strata over the study area" src="../02_Project_Planning/images/download%20(6).gif">
+<img width="100%" alt="Sampling-design tool, Steps 4 to 6: 33 cores placed at random within the two zones, ready to download" src="../02_Project_Planning/images/tsawwassen_stratified_random_cores.png">
 
-**Result:** a set of coordinates, sent to the field team to go and collect.
+**Result:** 33 coordinates, no two in the same 100 m² plot (the closest pair is 81 m apart),
+downloaded as a CSV for the field team's GPS.
 
 ---
 
 ## Summary of what to expect
 
-*Given a 5 ha inlet and a target of ±20% at 90% confidence, plan for roughly **23 cores of
-usable data** (about **33 collected** after padding), split proportionally between the dense and
-sparse strata.*
+*Given 1,075.75 ha of eelgrass in two strata and a target of ±20% at 90% confidence, plan for
+**33 cores of usable data** (about **47 collected** after padding): 22 in the high-density zone and
+11 in the low-density zone.*
 
-*If the meadow turns out patchier than the CV prior assumed, expect to either add cores or
-report a slightly wider interval — which is exactly why oversampling at the design stage is
+*If the meadow turns out patchier than the prior assumed, expect to either add cores or
+report a wider interval — which is exactly why oversampling at the design stage is
 worth it.*
 
 ---
@@ -131,7 +138,7 @@ worth it.*
 | Lab results and carbon estimates | [Part 4 — Data Interpretation](../04_Data_Interpretation/) |
 | How a filled-in data sheet and analysis look | The Cowichan worked example in [Part 4](../04_Data_Interpretation/) (published cores) |
 
-> **Note on scale.** The plan above sizes a full campaign at **23 cores**. A first season often
+> **Note on scale.** The plan above sizes a full campaign at **33 cores**. A first season often
 > brings back fewer — which is the ordinary shape of a first field campaign, not a failure. Part 4's
 > Option B reports the precision actually achieved against the ±20% target, rather than presenting
 > an under-powered result as a finished one. The constructed Tsawwassen analysis that used to follow

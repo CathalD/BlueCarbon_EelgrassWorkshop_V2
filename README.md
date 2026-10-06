@@ -11,6 +11,42 @@ analysis and reporting
 This workshop is organised in **four parts**. You can go in order, or jump to
 any section you wish.
 
+<p align="center">
+  <img src="01_Background/images/workshop_journey.svg" alt="The workshop journey: a question leads to a sampling plan, a field sheet and labelled cores, lab results and a checked workbook; from there, Option A compares cores and Option B estimates an area, and both end in a report" width="100%">
+</p>
+
+<p align="center">
+  <a href="02_Project_Planning/#before-step-1--your-question-sets-the-decisions">Question</a> ·
+  <a href="02_Project_Planning/">Sampling plan</a> ·
+  <a href="03_Field_Methods/#field-data-sheet">Field sheet and core</a> ·
+  <a href="04_Data_Interpretation/#step-1--from-the-field-to-the-lab">Lab results</a> ·
+  <a href="04_Data_Interpretation/#step-3--check-the-data">Checked workbook</a> ·
+  <a href="04_Data_Interpretation/#option-a--what-do-our-samples-tell-us-and-how-do-they-compare">A: compare cores</a> ·
+  <a href="04_Data_Interpretation/#option-b--what-do-our-measurements-imply-for-this-meadow">B: estimate an area</a> ·
+  <a href="04_Data_Interpretation/#step-5--reporting-the-results">Report</a>
+</p>
+
+**Where it ends up** — the two kinds of result, from the worked example:
+
+<table>
+<tr>
+<td width="50%">
+
+<img width="100%" alt="Option A result card: Cowichan core COW-S5 holds 17.1 Mg C per hectare in the top 15 cm, higher than 87% of 53 published eelgrass cores from British Columbia and Washington" src="01_Background/images/result_card_compare.png">
+
+**A · One core, compared** with published eelgrass cores. Published Cowichan data.
+
+</td>
+<td width="50%">
+
+<img width="100%" alt="Option B result card: a hypothetical 6.6 ha area, 14.6 Mg C per hectare in the top 15 cm, about 96 Mg C in total, all measured; exploratory design so no confidence interval" src="01_Background/images/result_card_area.png">
+
+**B · An estimate for an area.** The boundary is **hypothetical**, drawn for teaching.
+
+</td>
+</tr>
+</table>
+
 ---
 
 ## Contents
@@ -67,9 +103,16 @@ Take some time to explore the data sheet in both forms: a
 [blank sheet](04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx) to fill
 in for your own site, and a
 [worked example](04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_Example.xlsx) with data
-already entered so you can follow along. The example data is constructed for teaching — it is not
-from a real survey. Throughout, the workshop covers why we collect each piece of data, what it
-is, how it is measured, and how it connects to your goals.
+already entered so you can follow along. Throughout, the workshop covers why we collect each piece
+of data, what it is, how it is measured, and how it connects to your goals.
+
+> **Two worked examples, kept apart on purpose.** The **Tsawwassen** team that plans a survey
+> (Part 2) and fills in the paper field sheet (Part 3) is **constructed for teaching** — a real
+> place, but not a real team or real records. The analysis (Part 4) then switches to three
+> **published eelgrass cores from the Cowichan Estuary** (Douglas et al. 2022, via Janousek et al.
+> 2025). Their carbon and bulk density are published measurements; a few fields, such as dry
+> weights back-calculated from bulk density, are reconstructed for teaching and labelled as such.
+> The Cowichan cores did not come from the Tsawwassen sheet. See the [Worked Example](Worked_Example/).
 
 [**Section 2 — Project Planning**](02_Project_Planning/) is the **making the data useful** component, covering how anyone can begin
 designing the sampling plan so the data you'll collect is worth collecting. [**Section 3 — Field
@@ -79,8 +122,8 @@ practices — so the data best supports your project and organizational goals.
 [**Section 4 — Data Interpretation**](04_Data_Interpretation/) then turns the completed sheet
 into carbon estimates.
 
-**👉 The data sheet we're building toward:** [digital data sheet (Google Sheets)](https://docs.google.com/spreadsheets/d/1XMA_zaFNKtxCw2tAiQa3gHaIiT_wJAecmwW7Rz4hhaQ/edit?usp=sharing)
-· a fully worked copy lives in [`Worked_Example/`](Worked_Example/).
+**👉 The data sheet we're building toward:** [digital data sheet (blank, .xlsx)](04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx)
+· the Cowichan worked copy: [`Eelgrass_Carbon_DigitalData_Example.xlsx`](04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_Example.xlsx).
 
 | What the sheet captures | Filled in during | Covered in |
 |---|---|---|
@@ -94,18 +137,27 @@ into carbon estimates.
 # TLDR
 **In a nutshell, once the sheet is filled, how carbon stock is calculated**
 
-Each row of the sheet is one slice of a core. For every slice you [collect a sediment
-core](https://www.youtube.com/playlist?list=PLLsjpJMfNDP5w78ZJNDUvMj1VoRG_qSwd), then measure
-[how much sediment](https://www.youtube.com/watch?v=BuLRrFD78Fs&list=PLLsjpJMfNDP5w78ZJNDUvMj1VoRG_qSwd&index=11)
-(bulk density) and [how much carbon](https://www.youtube.com/watch?v=_Zm9R-kGiE8) it holds, then
-multiply them together:
+You [collect one sediment core](https://www.youtube.com/playlist?list=PLLsjpJMfNDP5w78ZJNDUvMj1VoRG_qSwd)
+at each sampling location, then cut it into slices. Each row of the sheet is one slice. For every
+slice you measure [how much sediment](https://www.youtube.com/watch?v=BuLRrFD78Fs&list=PLLsjpJMfNDP5w78ZJNDUvMj1VoRG_qSwd&index=11)
+it holds (bulk density) and [how much of it is carbon](https://www.youtube.com/watch?v=_Zm9R-kGiE8),
+and multiply them together. The sheet does this for every slice, sums it per core, and splits it
+into standard depth increments (0–15, 15–30, 30–50, 50–100 cm) so cores of different lengths can be
+compared.
+
+<details>
+<summary><b>🧮 How a slice becomes a stock</b> (click to expand)</summary>
+
+<br>
 
 ```
 Carbon stock (kg C/m²) = SOC (g/kg) × bulk density (g/cm³) × layer thickness (cm) ÷ 100
 ```
 
-Higher organic carbon concentration, denser sediment (higher bulk density), and deeper sediment (larger total core thickness) all mean
-more carbon stored per square metre. The sheet does this arithmetic for every slice, sums it per core, and splits it into standard depth increments (0–15, 15–30, 30–50, 50–100 cm) so cores of different lengths can be compared.
+Higher organic carbon concentration, denser sediment (higher bulk density), and a thicker layer all
+mean more carbon stored per square metre. Multiply kg C/m² by 10 for Mg C/ha.
+
+</details>
 
 ---
 

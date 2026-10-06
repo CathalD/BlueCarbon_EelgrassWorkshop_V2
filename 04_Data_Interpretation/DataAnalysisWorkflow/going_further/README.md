@@ -20,6 +20,10 @@ new set of assumptions that needs checking. Nothing in Options A or B depends on
 | **5 · Hierarchical transfer** | Depth-by-depth prediction that learns how estuaries, studies and lab methods differ | 4 | Roadmap — tested in a research prototype |
 | **6 · Spatial prediction** | Satellite covariates and a prediction surface | 5 | Roadmap — tested in a research prototype |
 
+> **Carbon crediting is beyond this ladder.** A crediting methodology would also ask for source
+> separation (C:N, δ¹³C), dated cores and a baseline. Keeping stable IDs, coordinates, dates and
+> methods now keeps that option open.
+
 > **Climbing the ladder changes what the result can claim.** Options A and B describe and estimate
 > from your own measurements. Modules 4–6 are **model-based**: their answers are only as good as
 > the assumption that your meadow behaves like the published ones. Report them alongside Option B,

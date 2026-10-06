@@ -37,12 +37,17 @@ in [Part 2](../02_Project_Planning/):
 | B | **[Option B — an estimate for a defined area](#option-b--what-do-our-measurements-imply-for-this-meadow)** | *What do our measurements imply for this meadow or study area?* |
 | 5 | **[Report the results](#step-5--reporting-the-results)** | *What do I report, and what does each number mean?* |
 
-> 🧭 **Want to see it done?** The worked example follows three published eelgrass cores from the
-> Cowichan Estuary, BC, through every step and both options. Its files are the
-> [example digital data sheet](files/Eelgrass_Carbon_DigitalData_Example.xlsx), an
+> 🧭 **Two examples, kept apart on purpose.** The field records at the start of this part — the
+> paper sheet and the `WWF-01-A` tables — are the **constructed Tsawwassen** example from Parts 2
+> and 3. From the lab results onwards the analysis **switches to three published eelgrass cores
+> from the Cowichan Estuary, BC** (Douglas et al. 2022, via Janousek et al. 2025), followed
+> through every step and both options. Their carbon and bulk density are **published measurements**;
+> their dry weights are **reconstructed** from the published bulk density, and lab IDs and dates are
+> **illustrative**. The Option B area is a **hypothetical** boundary drawn for teaching. The Cowichan
+> cores did not come from the Tsawwassen sheet. Files: the
+> [example digital data sheet](files/Eelgrass_Carbon_DigitalData_Example.xlsx), the
 > [example lab results sheet](files/Example_Lab_Results.xlsx) and the
-> [analysis workflow](DataAnalysisWorkflow/). The data are real, published measurements. The Option B area
-> is a **hypothetical** boundary drawn for teaching.
+> [analysis workflow](DataAnalysisWorkflow/).
 
 ---
 
@@ -52,6 +57,12 @@ You come back from the field with two things:
 
 1. **A cooler of bagged samples**, which need to be processed and prepped for the lab.
 2. **A completed paper field data sheet**, which needs to be digitized.
+
+<img width="100%" alt="What arrives from the field: the filled-in paper field sheet for core WWF-01-A and a labelled sample bag, marked as the constructed Tsawwassen field example, with a note that the analysis that follows switches to published Cowichan cores" src="images/fig1_what_arrives.png">
+
+*What to notice: every bag label matches a row on the field sheet — Core ID, Sample ID and depths.
+This is the **constructed Tsawwassen** field example; from Step 2 onwards the analysis uses the
+published Cowichan cores, which have no paper sheet of their own.*
 
 The rest of this step deals with each in turn, then with getting the samples analysed.
 
@@ -67,6 +78,8 @@ The rest of this step deals with each in turn, then with getting the samples ana
 The paper datasheet records information at two levels, and the digital sheet keeps them on two
 separate tabs for that reason: some things are true of the **whole core**, and some are true of a
 **single slice**.
+
+The examples in these two tables are the **constructed Tsawwassen** field example (Part 3).
 
 **Recorded once per core** — the *Plot & Core Log* tab:
 
@@ -101,11 +114,11 @@ separate tabs for that reason: some things are true of the **whole core**, and s
 
 **The digital data sheet**
 
-**📊 [Open the digital data sheet in Google Sheets](https://docs.google.com/spreadsheets/d/1XMA_zaFNKtxCw2tAiQa3gHaIiT_wJAecmwW7Rz4hhaQ/edit?usp=sharing)**
-· blank copy: [`files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx`](files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx)
+**📊 [Download the blank digital data sheet](files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx)**
 · filled-in example: [`files/Eelgrass_Carbon_DigitalData_Example.xlsx`](files/Eelgrass_Carbon_DigitalData_Example.xlsx)
+· works in Excel, LibreOffice and Google Sheets (*File → Import*)
 
-<!-- TODO (Cathal): the Google Sheets copy predates the 2026 revision (carbon type, slice checks, depth increments, corer diameter setting). Replace it with an upload of the blank .xlsx. -->
+<!-- TODO (Cathal): an online Google Sheets copy used to be linked here; it predated the 2026 revision. Re-upload the blank .xlsx and link it here if you want an online copy. -->
 
 The workbook has four tabs, in the same order as the workflow:
 
@@ -178,20 +191,16 @@ samples usually go to a specialist laboratory.
 
 *Choose a lab, then send samples and a manifest that matches your bag labels.*
 
+<!-- TODO (Cathal): lab directory — restore this table once it has verified entries. Keep the "quoted on" date so costs can be re-checked.
 <details>
 <summary><b>📋 Laboratories offering sediment carbon analysis</b> (click to expand)</summary>
-
-<br>
-
-<!-- TODO (Cathal): fill in as you confirm labs, quotes and turnaround. Keep the "quoted on" date so costs can be re-checked — prices go stale fast. -->
-
 | Lab | Website | Contact | Analyses offered | Cost (per sample) | Quoted on |
 |---|---|---|---|---|---|
-| *(add lab)* | | | | | |
-| *(add lab)* | | | | | |
-| *(add lab)* | | | | | |
-
 </details>
+-->
+
+Most university soil or environmental chemistry labs, and many commercial agricultural labs, can run
+these analyses. Ask the questions below before choosing one.
 
 **What to ask when comparing quotes**
 
@@ -282,7 +291,7 @@ percentage of dry mass:
 - **Nitrogen (N)** — gives you the **C:N ratio**, a source indicator. Low C:N points to
   marine/algal material; higher C:N to vascular plant or terrestrial input. Paired with δ¹³C, this
   is how you separate carbon the meadow produced itself (autochthonous) from carbon it trapped
-  (allochthonous) — a distinction that matters for crediting.
+  (allochthonous) — a distinction some later uses of the results need (see Going further).
 - **Hydrogen (H)** — mainly a diagnostic of organic-matter type and combustion completeness;
   reported routinely, used less often in blue carbon accounting.
 
@@ -302,6 +311,12 @@ is not organic carbon.
 ## Step 2 — Enter the lab results
 
 *Three yellow columns per slice, and two settings on the Instructions tab.*
+
+<img width="100%" alt="One lab result row, COW-S5-01, and the same slice in the digital data sheet, with numbered callouts: 1 the sample ID becomes Core ID COW-S5 and Sample ID 1, 2 the depths 0 to 1 cm, 3 the dry mass, reconstructed from published bulk density, goes to column M, 4 the measured organic carbon 0.9 percent goes to column N, 5 so column O says OC" src="images/fig2_lab_row_to_workbook_row.png">
+
+*What to notice: the lab's `COW-S5-01` becomes Core ID `COW-S5` and Sample ID `1`. The dry mass
+goes to column M — here a **reconstructed** teaching value, as the sheet's colour key says. The
+measured organic carbon, 0.9 %, goes to column N, and column O says `OC`.*
 
 | From the results sheet | Goes to (*Sample Data* tab) |
 |---|---|
@@ -327,7 +342,17 @@ and LOI temperature and duration in the slice or core notes.
 
 *Every slice gets a plain-language check; a core is only totalled when all its slices pass.*
 
-The last column of the *Sample Data* tab says what, if anything, is wrong with each slice:
+<img width="100%" alt="Slice checks before and after a correction: with slice 3's top depth typed as 1.5 cm, slices 2 and 3 both show OVERLAP with another slice; after correcting it to 2.0 cm, all three say OK" src="images/fig3_check_and_correction.png">
+
+*What to notice: one typo flags two slices and keeps the whole core out of the totals. Fix the
+number and the messages clear by themselves.*
+
+The last column of the *Sample Data* tab says what, if anything, is wrong with each slice.
+
+<details>
+<summary><b>Every check message, and what to do</b></summary>
+
+<br>
 
 | Message | What to do |
 |---|---|
@@ -338,7 +363,12 @@ The last column of the *Sample Data* tab says what, if anything, is wrong with e
 | `AWAITING LAB (dry weight, carbon value or type)` | Results not yet entered |
 | `TC is not organic carbon — ask the lab for OC or IC` | Ask the lab for inorganic carbon; enter OC = TC − IC |
 | `CHECK: LOI conversion not set` · `CHECK: LOI below the range…` | Enter your LOI equation, or check the value |
-| `CHECK: bulk density outside 0–2.65 g/cm3 or OC > 50%` | Usually a units slip (kg vs g, fraction vs percent) or a wrong diameter |
+| `CHECK: bulk density outside 0–2.65 g/cm3 or OC > 50%` | Usually a wrong diameter, a carbon value entered as a fraction or with a misplaced decimal, or a slice with no volume |
+
+</details>
+
+A dry weight typed in **kilograms** gives a bulk density near zero, which this range check does not
+catch — the bulk density against organic carbon plot in Option A shows it at once.
 
 Each core also gets a **QC check** on the *Plot & Core Log* tab: duplicate Core ID, corer diameter
 missing, compaction not recorded, one depth missing, extracted longer than inserted, or more than
@@ -357,6 +387,11 @@ repeat the slice above, because a copied row is easy to miss by eye.
 ## Step 4 — Core stocks on a common footing
 
 *Carbon per slice, then per standard depth increment, so cores of different lengths can be compared.*
+
+<img width="100%" alt="Carbon density with depth in Cowichan core COW-S5: measured slices from 0 to 20 cm, the 0 to 15 cm stock of 17.1 Mg C per hectare all measured, and a separately shaded 20 to 30 cm block that is estimated and only used as a scenario" src="images/fig4_slice_to_depth_stock.png">
+
+*What to notice: the 0–15 cm stock is entirely measured. The core stops at 20 cm, so the 15–30 cm
+increment is only partly measured — anything below 20 cm is an estimate, and is shaded apart.*
 
 **Slice stock.** For each slice, the sheet calculates bulk density, organic carbon and the stock:
 
@@ -442,6 +477,13 @@ source("run_option_B.R")
 
 *Measured profiles, comparable core stocks, and where they sit among published eelgrass cores.*
 
+<img width="100%" alt="Option A comparison plot: the three Cowichan cores at 0 to 15 cm against 53 published Zostera marina cores from British Columbia and Washington with measured organic carbon or LOI converted with the workbook's equation, and against 8 cores with measured organic carbon only" src="images/fig5a_option_A_comparison.png">
+
+*Reference set: published* Zostera marina *cores from BC and Washington (Janousek et al. 2025),
+Cowichan itself and anything within 100 m left out. Depth: 0–15 cm, the deepest depth all three cores
+reached. Carbon basis: top panel, measured organic carbon plus LOI converted with the workbook's
+equation; bottom panel, measured organic carbon only.*
+
 Option A uses measured slices only: nothing is interpolated, smoothed or extrapolated. It produces:
 
 - **Core profiles** — organic carbon, bulk density and carbon density against in-situ depth, drawn
@@ -480,32 +522,59 @@ estuaries in BC and Washington.
 
 *An average stock and a total for a defined area, with the uncertainty the design supports.*
 
-Option B starts from the same checked cores as Option A and adds three things:
+<img width="100%" alt="Option B result: map of the hypothetical 6.6 hectare boundary with the three Cowichan cores, a result card reading 14.6 Mg C per hectare in the top 15 cm, about 96 Mg C in total, all measured, exploratory design so no confidence interval, and a bar showing the 0 to 30 cm scenario is 38 percent estimated" src="images/fig5b_option_B_result.png">
 
-1. **A carbon curve for each core, 0–100 cm.** Inside the core, each centimetre takes its slice's
-   measured carbon, so the curve adds up to exactly what was measured. Below the base of the core,
-   carbon density is **estimated**: first with a decay curve fitted to that core, then one fitted to
-   all cores in its stratum, and if neither fits, the mean of the deepest 5 cm held constant. Every
-   result says how much of it is measured and how much is estimated, increment by increment.
-2. **One value per sampling unit.** Cores that share a Plot ID are averaged first — two cores in
-   one plot are one observation, not two. Slices are never treated as separate samples.
-3. **An estimate that matches the design:**
+*What to notice: the headline is a depth every core **measured** — 0–15 cm. The 0–30 cm figure is
+a **scenario**, and the bar shows how much of it was estimated. "Hypothetical" is on the map and the
+card, not just in the text. There is one value for the whole area and nothing is drawn between the
+points.*
+
+**In the worked example** (exploratory design, **hypothetical** 6.6 ha boundary), every Cowichan core
+measured the top 15 cm: **14.6 Mg C/ha, about 96 Mg C over the area — all measured**. As a deeper
+scenario, the 0–30 cm figure is about 34 Mg C/ha, but **38 %** of it is estimated below the 20 cm
+cores. The cores are too short for 0–50 or 0–100 cm, so those are not reported. The cores were not
+placed at random, so no interval is given. A **synthetic** stratified survey — computer-generated,
+clearly labelled — shows the stratified calculation: 26.7 Mg C/ha to 30 cm (90 % interval
+21.5–31.9), with an unsampled stratum excluded.
+
+What Option B reports depends on how the cores were placed (Part 2, Step 5):
 
 | Design (Part 2) | What is reported |
 |---|---|
 | **Exploratory** — cores placed by judgement or opportunity | Mean and total, the range among sampling units, and **no confidence interval** |
-| **Simple random** (or systematic with a random start) | Mean, total and a t-interval with the finite-population correction |
+| **Simple random** (or systematic with a random start) | Mean, total and a t-interval. The finite-population correction is added only if the cores were drawn from a fixed list of plots |
 | **Stratified random** | Area-weighted mean and total (`survey` package) and its interval. An unsampled stratum is excluded and its area reported. A stratum with one sampling unit gives a point estimate only |
+
+<details>
+<summary><b>How the estimate is made, and how deep it can go</b></summary>
+
+<br>
+
+Option B starts from the same checked cores as Option A and adds three things:
+
+1. **A carbon curve for each core, in 1 cm steps.** Inside the core, each centimetre takes its
+   slice's measured carbon, so the curve adds up to exactly what was measured. Below the base of the
+   core, carbon density is **estimated**: first with a decay curve fitted to that core, then one
+   fitted to all cores in its stratum, and if neither fits, the mean of the deepest 5 cm held
+   constant. Every result says how much of it is measured and how much is estimated, increment by
+   increment.
+2. **One value per sampling unit.** Cores that share a Plot ID are averaged first — two cores in
+   one plot are one observation, not two. Slices are never treated as separate samples.
+3. **An estimate that matches the design** (table above).
+
+**Only as deep as the cores allow.** Following Janousek et al. (2025), a stock is reported to 30 cm
+only when every core is at least 20 cm long, to 50 cm at 35 cm, and to 100 cm at 75 cm. The headline
+is always the deepest depth **every core measured**. A deeper figure can be shown alongside it as a
+clearly labelled **scenario**, with the share that is estimated.
+
+The code is in [`DataAnalysisWorkflow/R/04_option_B.R`](DataAnalysisWorkflow/R/04_option_B.R); the
+report explains each core's curve under "How was depth estimated?".
+
+</details>
 
 The map shows the reporting boundary, where the cores were taken, the strata, and **one value per
 stratum or area**. Nothing is drawn between the points. An area average is not a map of where the
 carbon is.
-
-**In the worked example** (exploratory, **hypothetical** 6.6 ha boundary), the three cores imply
-about **34 Mg C/ha in the top 30 cm**. Because the cores stop at 20 cm, **38 %** of that is estimated
-below them, so no interval is given. A **synthetic** stratified survey — computer-generated, clearly
-labelled — shows the stratified calculation: 26.7 Mg C/ha (90 % interval 21.6–31.8), with an
-unsampled stratum excluded.
 
 ---
 
@@ -571,7 +640,17 @@ surveys, and not a removal of carbon from the atmosphere. Reporting a stock as a
 is the most common error in blue-carbon communication, and the one a technical reviewer will catch
 first.
 
-> 📸 **[SCREENSHOT NEEDED]** — an example summary figure or one-page results summary.
+<img width="100%" alt="The top of the generated Option B report for the Cowichan worked example: a hypothetical-boundary warning, the question, the area and sampling table, and the measured 0 to 15 cm estimate with a note on why no interval is given" src="images/fig6_report_option_B.png">
+
+*What to notice: the report opens with what the number can and cannot be used for — the
+hypothetical boundary, the depth, the design, how many independent sampling units — before the
+estimate itself. Section 3 says what the interval would include, and section 8 what the result
+supports.*
+
+**Full example reports:** [Option A](DataAnalysisWorkflow/example_reports/cowichan_report_option_A.html)
+· [Option B](DataAnalysisWorkflow/example_reports/cowichan_report_option_B.html)
+· [Option B, synthetic stratified](DataAnalysisWorkflow/example_reports/SYNTHETIC_report_option_B_stratified.html)
+(download and open in a browser).
 
 ---
 
@@ -597,6 +676,11 @@ cores, or move towards spatial prediction, the workflow has optional modules tha
 Options A and B. Each module says what it adds and what it assumes:
 **[`DataAnalysisWorkflow/going_further/`](DataAnalysisWorkflow/going_further/)**. Nothing in Options A
 or B depends on them.
+
+**Carbon crediting is outside this release.** A crediting methodology would ask for more than a stock:
+for example, separating carbon the meadow produced from carbon it trapped (C:N and δ¹³C, Step 1.4),
+dated cores for accumulation rates, and a baseline. The records this workshop keeps — IDs,
+coordinates, dates, methods and the LOI equation — make that later step possible.
 
 ---
 

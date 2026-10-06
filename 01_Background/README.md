@@ -18,25 +18,34 @@
 
 ## What is blue carbon?
 
+<p align="center">
+  <img src="images/sediment_carbon_stock_concept.svg" alt="Conceptual diagram: eelgrass takes up carbon from water and air, some carbon leaves through respiration, decay, erosion and export, and some is buried in the sediment. A core cut into slices samples the sediment organic carbon stock, which is what this workshop measures" width="100%">
+</p>
+
 **Blue carbon** is the organic carbon captured and stored by coastal and marine
 ecosystems. In Canada, this is primarily **seagrass/eelgrass meadows and tidal salt
-marshes**. These habitats are among the most efficient carbon sinks on Earth: For example, per unit
-area, eelgrass ecosystems can bury organic carbon faster than terrestrial forests, and because it
-is locked away in waterlogged, low-oxygen sediment, that carbon can remain stored for
-centuries to millennia.
+marshes**. Syntheses of published measurements suggest these habitats can bury organic carbon in
+their sediments faster, per unit area, than forest soils accumulate it (Mcleod et al. 2011) — though
+burial rates vary widely from meadow to meadow, and a *rate* of burial is not the same as how much is
+stored. Because the buried carbon is locked away in waterlogged, low-oxygen sediment, it can remain
+there for centuries to millennia.
 
-Two common concepts used to describe blue carbon ecosystems are **sequestration** and **storage**
+Three words come up again and again, and they mean different things:
 
-1. **Sequestration** — Describes the process of living plants pulling CO₂ out of the water and atmosphere.
-2. **Storage** — When sequestered carbon remains in the ecosystem, we say it is a "carbon store". The bulk of the carbon accumulates in the *sediment* beneath the
-   meadow, not in the plants themselves. This is why our sampling focuses on
-   sediment cores rather than biomass alone.
+1. **Uptake** — living plants pulling CO₂ out of the water and atmosphere as they photosynthesise.
+   Much of that carbon goes back quickly as the plants respire, die and decay.
+2. **Sequestration** — the part that is kept out of the atmosphere for a long time. In an eelgrass
+   meadow, that mostly means organic carbon buried in the sediment. It is a *rate*: how much is added
+   per year.
+3. **Storage** (a **stock**) — the carbon held in the ecosystem now. The bulk of it sits in the
+   *sediment* beneath the meadow, not in the plants themselves. This workshop measures that sediment
+   stock, which is why our sampling focuses on sediment cores rather than biomass alone.
 
 <table>
 <tr>
 <td width="60%">
 
-<img width="100%" alt="What is blue carbon? — slide" src="https://github.com/user-attachments/assets/afbcd0f7-4380-42b4-8376-d2a94bae6109">
+<img width="100%" alt="What is blue carbon? — slide" src="images/what_is_blue_carbon_slide.png">
 
 </td>
 <td width="40%">
@@ -44,8 +53,8 @@ Two common concepts used to describe blue carbon ecosystems are **sequestration*
 The plants, the soil, the water, and the air in this diagram represent the carbon
 **pools** ("stocks"), the places that hold carbon at any point in time and can be
 directly measured. The arrows represent the **processes** ("fluxes") that move carbon
-between the pools. Fluxes over time control the pools, and ultimately the net
-sequestration.
+between the pools. Over time, the fluxes in and out decide whether a pool grows or
+shrinks — and so how much carbon is sequestered.
 
 </td>
 </tr>
@@ -66,7 +75,7 @@ adding organic carbon to the seabed.
 <tr>
 <td width="60%">
 
-<img width="100%" alt="Eelgrass (Zostera marina) — slide" src="https://github.com/user-attachments/assets/ee974671-e167-4d17-b7b4-491188c83123">
+<img width="100%" alt="Eelgrass (Zostera marina) — slide" src="images/eelgrass_zostera_marina_slide.png">
 
 </td>
 <td width="40%">
@@ -85,14 +94,17 @@ Eelgrass ecosystems can accumulate carbon derived from two places:
 <tr>
 <td width="60%">
 
-<img width="100%" alt="Eelgrass sediment carbon — slide" src="https://github.com/user-attachments/assets/109307fa-6ff4-4f80-bb2a-c1251366dce9">
+<img width="100%" alt="Eelgrass sediment carbon — slide" src="images/eelgrass_sediment_carbon_slide.png">
 
 </td>
 <td width="40%">
 
-Eelgrass sediments typically hold lower organic carbon concentrations compared to
-other coastal ecosystems, but thanks to their deep sediment pools, they typically
-store more carbon overall than terrestrial forests.
+Eelgrass sediments typically hold lower organic carbon concentrations than other coastal
+ecosystems, such as salt marshes. The chart shows global averages (McLeod et al. 2011), in
+megagrams (Mg, not mg) of CO₂ per hectare. Local meadows can sit far below them: published BC
+eelgrass cores average about 20 Mg C ha⁻¹ in the top 30 cm of sediment (Janousek et al. 2025).
+Comparisons with forests, or with other meadows, only mean something when they cover the same area,
+the same depth and the same carbon pool.
 
 </td>
 </tr>
@@ -106,7 +118,7 @@ store more carbon overall than terrestrial forests.
 <tr>
 <td width="60%">
 
-<img width="100%" alt="Carbon pool equilibrium — slide" src="https://github.com/user-attachments/assets/377d197c-1b1c-4850-9eeb-6a0a8a8a1162">
+<img width="100%" alt="Carbon pool equilibrium — slide" src="images/carbon_pool_equilibrium_slide.png">
 
 </td>
 <td width="40%">
@@ -125,7 +137,7 @@ state", or simply "net ecosystem carbon balance"
 <tr>
 <td width="60%">
 
-<img width="100%" alt="Ecosystem resilience — slide" src="https://github.com/user-attachments/assets/d4b48a1e-6681-4803-843e-a9a593ea2c83">
+<img width="100%" alt="Ecosystem resilience — slide" src="images/ecosystem_resilience_slide.png">
 
 </td>
 <td width="40%">
@@ -137,21 +149,25 @@ environmental and human-caused disturbances.
 </tr>
 </table>
 
-We can visualize this with a graph: The balance of carbon entering the ecosystem
-(green), the loss of carbon (red), and the net balance of these two processes (black).
+We can visualize this with a graph: carbon entering the ecosystem (green), carbon leaving it
+(red), and the carbon stored, the result of the two (black). These curves are **conceptual** — drawn
+with the [Ecosystem Carbon Accumulation Visualizer](https://cathald.github.io/CarbonAccumulationVisualizer/),
+not measured at Cowichan, Tsawwassen or any other site.
 
 <table>
 <tr>
 <td width="60%">
 
-<img width="100%" alt="Ecosystem carbon accumulation curve reaching equilibrium" src="images/download%20(Null).gif">
+<img width="100%" alt="Ecosystem carbon accumulation curve reaching equilibrium" src="images/carbon_accumulation_equilibrium_keyframe.png">
+
+<sub>▶ <a href="images/carbon_accumulation_equilibrium.gif">Watch the animation</a></sub>
 
 </td>
 <td width="40%">
 
 Here is an ecosystem carbon curve, showing the baseline accumulation of carbon over
-time. As sequestration (carbon in) and loss (carbon out) converge, the amount of carbon
-stored in the ecosystem levels off at a "peak," or equilibrium (represented by the dashed line)
+time. As carbon coming in and carbon going out converge, the amount of carbon
+stored in the ecosystem levels off at a "peak," or equilibrium (represented by the dashed line).
 
 </td>
 </tr>
@@ -161,13 +177,15 @@ stored in the ecosystem levels off at a "peak," or equilibrium (represented by t
 <tr>
 <td width="60%">
 
-<img width="100%" alt="Carbon curve with a single disturbance, then recovery" src="images/download%20(pulse).gif">
+<img width="100%" alt="Carbon curve with a single disturbance, then recovery" src="images/carbon_disturbance_and_recovery_keyframe.png">
+
+<sub>▶ <a href="images/carbon_disturbance_and_recovery.gif">Watch the animation</a></sub>
 
 </td>
 <td width="40%">
 
-And here is the same ecosystem, but with a disturbance that causes a loss and
-recovery of carbon.
+And here is the same ecosystem, but with a single disturbance at year 40: the stored
+carbon drops sharply, then recovers towards the same equilibrium.
 
 </td>
 </tr>
@@ -180,7 +198,9 @@ degrade over time, becoming a net emitter of carbon and losing the carbon it had
 <tr>
 <td width="60%">
 
-<img width="100%" alt="Overlapping pulse and press disturbances driving ecosystem collapse" src="images/download.gif">
+<img width="100%" alt="Overlapping pulse and press disturbances driving ecosystem collapse" src="images/carbon_pulse_press_collapse_keyframe.png">
+
+<sub>▶ <a href="images/carbon_pulse_press_collapse.gif">Watch the animation</a></sub>
 
 </td>
 <td width="40%">
@@ -213,7 +233,7 @@ these materials settle and build up, forming sediment.
 <tr>
 <td width="60%">
 
-<img width="100%" alt="Sediment core cross-section — slide" src="https://github.com/user-attachments/assets/5cdfbdec-7faf-4261-bd21-3ac4e66c3ea6">
+<img width="100%" alt="Sediment core cross-section — slide" src="images/sediment_core_cross_section_slide.png">
 
 </td>
 <td width="40%">
@@ -226,6 +246,17 @@ Taking a section of the sediment reveals the layers of accumulation over time.
 
 ---
 ## So how do you measure sediment carbon?
+
+<table>
+<tr>
+<td width="100%">
+
+<img width="100%" alt="Four steps of a carbon project — slide" src="images/four_steps_of_a_carbon_project_slide.png">
+
+</td>
+</tr>
+</table>
+
 
 Measuring carbon requires collecting a **sediment core**, determining how much
 sediment is there (from its **volume** and dry **weight**), and measuring how much of that
@@ -260,15 +291,16 @@ Steps 3 and 4 — analysing the samples and calculating carbon — are
 samples you collect are used as effectively as possible to support your project and
 organizational goals.
 
-<table>
-<tr>
-<td width="100%">
 
-<img width="100%" alt="Four steps of a carbon project — slide" src="https://github.com/user-attachments/assets/58bcd1bd-ff1b-4fa6-b46d-b156a653ae8a">
+---
 
-</td>
-</tr>
-</table>
+## Sources quoted in this section
+
+- Mcleod, E. et al. (2011). A blueprint for blue carbon: toward an improved understanding of the role
+  of vegetated coastal habitats in sequestering CO₂. *Frontiers in Ecology and the Environment* 9(10):
+  552–560.
+- Janousek, C.N. et al. (2025). Blue carbon stocks along the Pacific coast of North America are mainly
+  driven by local rather than regional factors. *Global Biogeochemical Cycles* 39, e2024GB008239.
 
 ---
 
