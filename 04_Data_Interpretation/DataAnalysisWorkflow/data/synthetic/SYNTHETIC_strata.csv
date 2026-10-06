@@ -1,0 +1,13 @@
+stratum,longitude,latitude
+dense,0.0000,0.0000
+dense,0.0012,0.0000
+dense,0.0012,0.0024
+dense,0.0000,0.0024
+sparse,0.0012,0.0000
+sparse,0.0019,0.0000
+sparse,0.0019,0.0024
+sparse,0.0012,0.0024
+channel_edge,0.0019,0.0000
+channel_edge,0.0021,0.0000
+channel_edge,0.0021,0.0024
+channel_edge,0.0019,0.0024
