@@ -240,6 +240,13 @@ do this, there are 4 basic steps:
 3. **Analyse** the samples
 4. **Calculate carbon** and **interpret** the results
 
+Most projects start from one of two questions. Some teams want to understand their own samples:
+*what do our cores tell us, and how do they compare with other eelgrass meadows?* Others want a
+number for a place: *how much carbon is stored in the sediment of this meadow or study area?* The
+field and lab work is the same for both. The second question asks more of the planning — a defined
+boundary, and cores placed so that together they represent the whole area — which is why the
+question comes first.
+
 The first two steps are the workshop's two core jobs (see the [main guide](../README.md)):
 
 - **Making the data useful** (step 1) — *before* collecting anything, design the sampling so

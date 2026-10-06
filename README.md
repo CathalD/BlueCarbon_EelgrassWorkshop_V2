@@ -20,7 +20,7 @@ any section you wish.
 | 1 | [**Background**](01_Background/) | What blue carbon is and why it matters; introduce key references (the [Howard et al. Blue Carbon Manual](https://www.thebluecarboninitiative.org/manual)); the workshop [slide deck](01_Background/BlueCarbon_EelgrassPPT_FinalV1.pdf).|
 | 2 | [**Project Planning**](02_Project_Planning/) | How many samples to take and where: Intro to probability-based sampling, sampling distribution strategies, and the WWF-Canada sampling-design guide + sampling design tools. |
 | 3 | [**Field Methods**](03_Field_Methods/) | Collecting sediment cores: equipment, step-by-step coring methods and coring how-to videos, and accompanying datasheets. |
-| 4 | [**Data Interpretation**](04_Data_Interpretation/) | Submitting samples to a lab, reading lab results, and the full carbon analysis. |
+| 4 | [**Data Interpretation**](04_Data_Interpretation/) | Submitting samples to a lab, reading and checking lab results, and two ways to use them: comparing your cores with each other and with published eelgrass cores, or estimating the carbon in a defined area. |
 
 
 ### Useful links
@@ -86,7 +86,7 @@ into carbon estimates.
 |---|---|---|
 | Plot & core log (location, depths, corer) | the field | [Section 3](03_Field_Methods/) |
 | Sample slices (depths, notes) | the field | [Section 3](03_Field_Methods/) |
-| Lab results (weights, %C) | after the lab | [Section 4](04_Data_Interpretation/) |
+| Lab results (weights, organic carbon or LOI) | after the lab | [Section 4](04_Data_Interpretation/) |
 | Bulk density, carbon stock | calculated for you | [Section 4](04_Data_Interpretation/) |
 
 
@@ -105,7 +105,7 @@ Carbon stock (kg C/m²) = SOC (g/kg) × bulk density (g/cm³) × layer thickness
 ```
 
 Higher organic carbon concentration, denser sediment (higher bulk density), and deeper sediment (larger total core thickness) all mean
-more carbon stored per square metre. The sheet does this arithmetic for every slice and sums it per core.
+more carbon stored per square metre. The sheet does this arithmetic for every slice, sums it per core, and splits it into standard depth increments (0–15, 15–30, 30–50, 50–100 cm) so cores of different lengths can be compared.
 
 ---
 
@@ -113,9 +113,9 @@ more carbon stored per square metre. The sheet does this arithmetic for every sl
 
 - [`BlueCarbon_EelgrassPPT_FinalV1.pptx`](01_Background/BlueCarbon_EelgrassPPT_FinalV1.pptx) — the full workshop slide deck ([PDF version](01_Background/BlueCarbon_EelgrassPPT_FinalV1.pdf)).
 - [`BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx`](02_Project_Planning/BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx) — the sample-size calculator.
-- [`Eelgrass_Carbon_Datasheet_v2.pdf`](03_Field_Methods/Eelgrass_Carbon_Datasheet_v2.pdf) — the field datasheet.
+- [`Eelgrass_Carbon_Datasheet_v2.pdf`](03_Field_Methods/datasheets/Eelgrass_Carbon_Datasheet_v2.pdf) — the field datasheet.
 - **Coastal Blue Carbon Field Guide** — [PDF](Coastal-Blue-Carbon-Field-Guide-FINAL.pdf) · [companion video playlist](https://www.youtube.com/playlist?list=PLLsjpJMfNDP5w78ZJNDUvMj1VoRG_qSwd).
-- [`04_Data_Interpretation/DataAnalysisWorkflow/`](04_Data_Interpretation/DataAnalysisWorkflow/) — the complete R analysis pipeline and report.
+- [`04_Data_Interpretation/DataAnalysisWorkflow/`](04_Data_Interpretation/DataAnalysisWorkflow/) — the R analysis workflow and its reports (Option A and Option B), with a quick start.
 - **Ecosystem Carbon Accumulation Visualizer** — [cathald.github.io/CarbonAccumulationVisualizer](https://cathald.github.io/CarbonAccumulationVisualizer/)
 - **WWF-Canada Blue Carbon Sampling Design Tools** — [github.com/WWF-Canada-SKI/Carbon-Measurement](https://github.com/WWF-Canada-SKI/Carbon-Measurement/tree/main/Blue%20Carbon/Sampling%20Design%20Tools)
 

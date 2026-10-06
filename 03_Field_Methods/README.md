@@ -18,7 +18,7 @@ This section of the workshop focuses on **collecting the data** in the field. On
 ([Section 2](../02_Project_Planning/)), it's time for the field team to collect **sediment
 cores**. Here we cover the necessary equipment, tips for consistent
 coring, compaction measurement, and completing the
-[**field data sheet**](../Eelgrass_Carbon_Datasheet_v2.pdf) (blank, printable copies are in
+[**field data sheet**](datasheets/Eelgrass_Carbon_Datasheet_v2.pdf) (blank and filled-in copies are in
 [`datasheets/`](datasheets/); see [Field data sheet](#field-data-sheet), below).
 
 The method shown is push (also known as percussion) coring with a PVC pipe, a cost-effective method that is commonly used in coastal ecosystems. Note that equipment requirements are
@@ -45,7 +45,7 @@ Individual videos are linked at the step they belong to, throughout this page.
 
 Before heading out, gather and lay out the coring equipment. There are many types of corers
 available, each with distinct advantages and limitations; here we use a push coring method
-with a PVC pipe. The PVC tubing used to to core should be as long as
+with a PVC pipe. The PVC tubing used to core should be as long as
 the target depth for the core (usually between 30 cm and 1 m), with approximately 20 cm of
 additional headspace. Three- or four-inch diameter tubing is usually used, and you will need
 top and bottom endcaps to fit each tube.
@@ -152,7 +152,7 @@ Five steps take you from a site location to a cooler full of samples.
 | 2 | **Insert the corer** | *How to drive the tube in cleanly?* |
 | 3 | **Measure compaction** | *How much did the sediment squash?* |
 | 4 | **Extract the core** | *How do I get the samples out without losing sediment?* |
-| 5 | **Extrude and section** | *How do I slice, bag, and label each sub-subsection?* |
+| 5 | **Extrude and section** | *How do I slice, bag, and label each slice?* |
 
 ---
 
@@ -249,8 +249,9 @@ ruler graduations on the outside of the tube so you can read insertion depth.
 
 **📋 Record it on the data sheet — core notes**
 
-You can begin filling in Part 2 of the sheet: the **Core ID**, and the core's
-latitude/longitude.
+You can begin filling in Part 2 of the sheet: the **Core ID**, the core's
+latitude/longitude, and the corer's **internal diameter (cm)** — measured inside the tube with
+calipers, not the nominal pipe size. It is the same for every core taken with that tube.
 
 </td>
 <td width="45%">
@@ -533,12 +534,12 @@ if section 2 ends at 5 cm, section 3 starts at 5 cm, and so on.
 
 ## Field data sheet
 
-The workshop data sheet is included: **[`Eelgrass_Carbon_Datasheet_v2.pdf`](../Eelgrass_Carbon_Datasheet_v2.pdf)**
-(blank copies for printing can also live in [`datasheets/`](datasheets/)). It captures
-exactly the fields the analysis expects:
+The workshop data sheet is included: **[`datasheets/Eelgrass_Carbon_Datasheet_v2.pdf`](datasheets/Eelgrass_Carbon_Datasheet_v2.pdf)**,
+with a filled-in example, [`datasheets/Eelgrass_Carbon_Datasheet_Example.pdf`](datasheets/Eelgrass_Carbon_Datasheet_Example.pdf).
+It captures exactly the fields the analysis expects:
 
 - **Plot notes** — Plot ID, date, study area, time, study site, weather/conditions, project name
-- **Core notes** (once per core) — Core ID, latitude, longitude, depth of corer inserted, length of core extracted
+- **Core notes** (once per core) — Core ID, latitude, longitude, corer internal diameter, depth of corer inserted, length of core extracted
 - **Sample data** (per slice) — Core ID, sample #, top (cm), bottom (cm), notes
 
 <table>
@@ -565,8 +566,8 @@ exactly the fields the analysis expects:
 
 ## In this section
 
-- [`Eelgrass_Carbon_Datasheet_v2.pdf`](../Eelgrass_Carbon_Datasheet_v2.pdf) — the workshop field data sheet.
-- [`datasheets/`](datasheets/) — blank/printable data sheets.
+- [`datasheets/Eelgrass_Carbon_Datasheet_v2.pdf`](datasheets/Eelgrass_Carbon_Datasheet_v2.pdf) — the workshop field data sheet, blank and ready to print.
+- [`datasheets/Eelgrass_Carbon_Datasheet_Example.pdf`](datasheets/Eelgrass_Carbon_Datasheet_Example.pdf) — the same sheet, filled in.
 - [`Making a soil core extractor doc.pdf`](Making%20a%20soil%20core%20extractor%20doc.pdf) — DIY extrusion device build instructions.
 - [`method_a_graduations.svg`](method_a_graduations.svg) — Method A compaction diagram (reading graduations on the tube).
 - `images/` — field method photos and diagrams.

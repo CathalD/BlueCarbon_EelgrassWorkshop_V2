@@ -159,6 +159,39 @@ Both need the same thing first: a sampling design. They appear at every step bel
 
 </details>
 
+## Before Step 1 — Your question sets the decisions
+
+*Which analysis will answer my question, and what does it need from the field?*
+
+The workshop supports two questions, and they share the same field and lab work. They differ in
+what has to be decided now:
+
+| Decision | **A — What do our samples tell us, and how do they compare?** | **B — What do our measurements imply for this meadow or area?** |
+|---|---|---|
+| What is estimated | Each core's sediment organic-carbon stock, to a stated depth | The area's mean stock (Mg C ha⁻¹) and total (Mg C), to a stated depth |
+| Study boundary | Optional — where the cores are | **Required** (Step 1). The estimate covers only what is inside it |
+| Habitat or strata | The habitat each core represents | Strata and their areas, if you stratify (Step 2). A stratum with no cores is left out of the total |
+| Reporting depth | A standard depth every core reaches: 0–15, 0–30, 0–50 or 0–100 cm | The same. Below the base of a core, carbon is estimated, and the deeper the reporting depth goes past your cores, the more of the answer is estimated |
+| Sampling design | Any. A single core is fine — it describes one place | Random or stratified random placement (Step 5) gives an interval. Cores placed by judgement give an **exploratory** estimate with no interval |
+| Precision target | Not needed | Needed for a random design, e.g. ±20% at 90% (Step 4) |
+| Analysis (Part 4) | [Option A](../04_Data_Interpretation/#option-a--what-do-our-samples-tell-us-and-how-do-they-compare) | [Option B](../04_Data_Interpretation/#option-b--what-do-our-measurements-imply-for-this-meadow) |
+
+**Why these come before fieldwork.** Each one changes where the cores go or how deep they must go,
+and none can be fixed afterwards: a core that stops at 20 cm cannot measure 0–30 cm, and cores
+placed by eye cannot support a confidence interval, however many there are.
+
+**Plots, cores and slices.** The unit that counts is the **plot** — the patch of meadow a core
+represents (10 × 10 m by default, see [Appendix A3](#a3--cochrans-correction-why-big-areas-stop-needing-more-cores)).
+The slices cut from a core are measurements down that one core, not separate samples of the meadow.
+Two cores taken in the same plot are one observation, and are averaged before any estimate. Sample
+size, in Step 4, counts plots.
+
+**Keeping monitoring possible.** This release does not analyse change over time, but a later
+survey can only be compared with this one if you keep what it needs: stable plot and core IDs,
+their coordinates, the survey dates, the same design and reporting depth, and the same field and lab
+methods (including the LOI equation). Record them now — they cost nothing today and cannot be
+recovered later.
+
 ## Step 1 — Define your study area
 
 *Where, roughly, am I working?*
@@ -394,9 +427,9 @@ Two sources, in order of preference:
 - **Total area** (Step 1) — 50,000 m² → at 100 m² per plot, $N$ = **500** possible plots
 - **Confidence level** — 90% ($z = 1.645$)
 - **Margin of error** — ±20% ($E = 0.20$)
-- **Prior mean and SD** — ≈ 120 Mg C ha⁻¹, SD ≈ 60, from Janousek et al. (2025) → $CV = 0.5$
+- **Prior mean and SD** — ≈ 20.6 Mg C ha⁻¹ to 30 cm, SD ≈ 11.9: BC eelgrass cores in Janousek et al. (2025), the calculator's *3 Priors* sheet → $CV = 0.58$
 
-**Result: 23 cores.**
+**Result: 22 cores** from the spreadsheet; **23** from the spatial tool, which also splits them between the two strata.
 
 </td>
 </tr>
@@ -427,7 +460,7 @@ This is the **Sample Allocation Calculator** named in Step 3 of the [Sampling De
 </tr>
 </table>
 
-**The two tools will not always agree.** For the Tsawwassen inlet the spreadsheet returned **17** samples, while the spatial tool suggested **23**. The difference comes from the spatial tool having more information about the site: here it accounted for the two stratified areas, so it could allocate cores between them rather than treating the meadow as uniform. More information about a site generally means a more efficient design.
+**The two tools will not always agree.** For the Tsawwassen inlet the spreadsheet returned **22** samples, while the spatial tool suggested **23**. The difference comes from the spatial tool having more information about the site: here it accounted for the two stratified areas, so it allocated cores between them rather than treating the meadow as uniform. With very different strata, or a different prior, the gap can be much larger — which is why the prior's source, and its depth, belong in your notes.
 
 The quickest way to build intuition is to open the calculator — or the [Blue Carbon Hub visualizer](https://blue-carbon-hub.projects.earthengine.app/) — and change **one knob at a time**, watching *n* respond. [Appendix A4](#a4--what-actually-drives-sample-size) has the full comparison if you'd rather read it than run it.
 
@@ -595,7 +628,7 @@ Steps 1–5 don't require any of this. But if you want to know why the calculato
 
 ### A1 — What an estimate actually is
 
-*The machinery behind the [Background](#background--what-sampling-is-and-why-it-works) section.*
+*The machinery behind the [Background](#background-what-sampling-is-and-why-it-works) section.*
 
 You core a subset of plots and average them. That average, $\bar{x}$, is your estimate of the meadow's true mean carbon.
 
@@ -657,7 +690,7 @@ As $N$ grows, $(N-1)E^2$ dominates the denominator and the correction fades — 
 
 Four inputs dominate, and two of them sit **squared** in the formula.
 
-All numbers below are anchored on the settings used throughout this workshop, and typical of coastal MMRV work: a **5 ha inlet** ($N$ = 500 plots), **±20% margin of error**, **90% confidence**, $CV$ = 0.5 → **17 cores**. One knob turned at a time:
+All numbers below are anchored on a round-number baseline close to the worked example, and typical of coastal MMRV work: a **5 ha inlet** ($N$ = 500 plots), **±20% margin of error**, **90% confidence**, $CV$ = 0.5 → **17 cores**. (The worked example's own prior, $CV$ = 0.58, gives 22.) One knob turned at a time:
 
 ```
                                               cores needed (from 17)

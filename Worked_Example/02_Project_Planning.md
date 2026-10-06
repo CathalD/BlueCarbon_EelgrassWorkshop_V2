@@ -9,7 +9,7 @@
 ## The team and their question
 
 A small team of four working in British Columbia, assessing **baseline carbon in the
-Tsawwassen Beach marshes** before protection and restoration measures are implemented.
+Tsawwassen Beach eelgrass meadows** before protection and restoration measures are implemented.
 
 They want to know two things:
 
@@ -18,14 +18,26 @@ They want to know two things:
 **B)** How those measurements **compare** between different areas of the eelgrass, and against
 future surveys, so they can tell whether management is changing the ecosystem.
 
+Both are **Option B** questions — an estimate for a defined area, compared between its strata
+— so they set the decisions Part 2 asks for before fieldwork:
+
+| Decision | The team's choice |
+|---|---|
+| What is estimated | Mean sediment organic-carbon stock (Mg C ha⁻¹) and total (Mg C), per stratum and overall |
+| Study boundary | The 5 ha inlet traced in Step 1 |
+| Strata | Dense meadow and sparse fringe (Step 2) |
+| Reporting depth | **0–30 cm** — the depth of their prior, so every core must reach at least 30 cm |
+| Sampling design | Stratified random (Step 5) |
+| Precision target | ±20% at 90% confidence (Step 4) |
+| Analysis | Part 4, Option B. For later surveys: keep plot IDs, coordinates and methods the same |
+
 Which reduces to two planning questions:
 
 1. How many samples to take
 2. Where to take them
 
-> ⚠️ **This is constructed teaching data.** The site and layout are realistic and the values sit
-> within published ranges for BC salt marsh and eelgrass, but they are **not field
-> measurements**. See the provenance note in [Part 4](../04_Data_Interpretation/).
+> ⚠️ **This is constructed teaching data.** The site and layout are realistic, but the team and
+> their numbers are **not field measurements**. See the [worked example overview](README.md).
 
 ---
 
@@ -56,7 +68,8 @@ tool to delineate distinct areas.
 
 They only wanted to measure **sediment** carbon in this area.
 
-**Result:** carbon pool = sediment; core to depth of refusal.
+**Result:** carbon pool = sediment organic carbon, reported to **30 cm**. Every core must reach at
+least 30 cm; they core to the depth of refusal where they can.
 
 ---
 
@@ -70,11 +83,11 @@ They calculated the required number of cores from:
 | Plot area | **100 m²** (10 × 10 m) | design choice → $N$ = 500 possible plots |
 | Confidence level | **90%** → $z = 1.645$ | the tool's default |
 | Margin of error | **±20%** ($E = 0.20$) | the tool's default |
-| Prior mean | **≈ 120 Mg C ha⁻¹** | regional WWF-Canada carbon map |
-| Prior SD | **≈ 60** | regional WWF-Canada carbon map |
-| → $CV$ | **0.5** | $60 / 120$ |
+| Prior mean | **≈ 20.6 Mg C ha⁻¹** to 30 cm | BC eelgrass cores, Janousek et al. (2025) — the calculator's *3 Priors* sheet |
+| Prior SD | **≈ 11.9** | same source |
+| → $CV$ | **0.58** | $11.9 / 20.6$ |
 
-The spreadsheet calculator, which treats the inlet as one uniform area, returns **17 cores**.
+The spreadsheet calculator, which treats the inlet as one uniform area, returns **22 cores**.
 The [GEE sampling tool](../02_Project_Planning/Sampling%20Design%20Tools/), given the same
 precision target plus the site-specific priors and the two strata from Step 2, returns
 **23 cores**. The team planned on **23** — the stratification-aware number, and the more
@@ -116,11 +129,10 @@ worth it.*
 |---|---|
 | Collecting the cores this plan specifies | [Part 3 — Field Methods](../03_Field_Methods/) |
 | Lab results and carbon estimates | [Part 4 — Data Interpretation](../04_Data_Interpretation/) |
-| The completed data sheet | [`Eelgrass_Carbon_DigitalData_Example.xlsx`](Eelgrass_Carbon_DigitalData_Example.xlsx) |
+| How a filled-in data sheet and analysis look | The Cowichan worked example in [Part 4](../04_Data_Interpretation/) (published cores) |
 
-> **Note on scale.** The plan above sizes a full campaign at **23 cores**. The team collected
-> **6** in their first season and intend to return for the rest — which is the ordinary shape
-> of a first field campaign, not a failure. [Part 4](../04_Data_Interpretation/) analyses
-> those six and reports the precision they actually achieved against the ±20% target, rather
-> than presenting an under-powered result as a finished one. Treat the Part 4 numbers as a
-> demonstration of method on a first season's data.
+> **Note on scale.** The plan above sizes a full campaign at **23 cores**. A first season often
+> brings back fewer — which is the ordinary shape of a first field campaign, not a failure. Part 4's
+> Option B reports the precision actually achieved against the ±20% target, rather than presenting
+> an under-powered result as a finished one. The constructed Tsawwassen analysis that used to follow
+> this plan is kept in [`archive/`](archive/) for reference.
