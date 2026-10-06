@@ -1,0 +1,66 @@
+# settings.R — the only file you need to edit.
+# The values below run the Cowichan Estuary worked example. Replace them with your own.
+
+# ── 1. Your project (these words go straight into the report) ───────────────────
+PROJECT <- list(
+  title        = "Cowichan Estuary eelgrass — worked example",
+  question     = "What do three eelgrass cores tell us about sediment organic carbon at Cowichan, and how do they compare with other eelgrass meadows?",
+  area_habitat = "Cowichan Estuary, British Columbia — subtidal/intertidal eelgrass (Zostera marina)",
+  survey_dates = "Not given in the published dataset (see Douglas 2021)",
+  design       = "Three stations chosen by the original study to be representative of the meadow (not randomly placed)",
+  methods      = "Push cores (7.6 cm acrylic tubes), 1–2 cm slices; organic carbon by elemental analyser after acid fumigation on some slices, loss on ignition (550 °C) on the rest, converted with a local calibration",
+  data_source  = "Douglas et al. (2022), as compiled in Janousek et al. (2025), doi:10.25573/serc.28127486",
+  prepared_by  = "Blue Carbon Eelgrass Workshop"
+)
+
+# ── 2. Your data ───────────────────────────────────────────────────────────────
+# The completed digital data sheet (.xlsx). No export needed — it is read directly.
+WORKBOOK <- "../files/Eelgrass_Carbon_DigitalData_Example.xlsx"
+
+# ── 3. Option A — comparing your cores ─────────────────────────────────────────
+# Depth for the comparison (cm). NULL = the deepest standard depth (15, 30, 50, 100)
+# that every one of your complete cores reached.
+COMPARE_DEPTH_CM <- NULL
+
+# Which published cores count as "comparable". Janousek et al. (2025) Zostera marina cores
+# from these provinces/states. NULL = the whole Pacific coast dataset.
+REFERENCE_STATES <- c("BC", "WA")
+
+# Exclude your own estuary from the reference set, and any reference core within this
+# distance of one of your cores. This stops a core being compared with itself.
+REFERENCE_EXCLUDE_ESTUARIES <- c("COW")
+REFERENCE_EXCLUDE_WITHIN_M  <- 100
+
+# "oc_measured": only elemental organic carbon from studies that removed inorganic carbon.
+# "oc_or_loi":   also loss-on-ignition values, converted with YOUR workbook's LOI equation.
+REFERENCE_CARBON <- "oc_measured"
+
+# ── 4. Option B — estimating across an area ────────────────────────────────────
+# "exploratory" = cores were not placed with a random design (no interval is reported)
+# "srs"         = simple random (or random-start systematic) sampling of the whole area
+# "stratified"  = random sampling within strata (needs STRATUM_AREAS_M2)
+DESIGN <- "exploratory"
+
+# The reporting boundary: a CSV of longitude, latitude vertices (decimal degrees).
+# The worked example's boundary is HYPOTHETICAL — drawn for teaching, not a mapped meadow.
+BOUNDARY_FILE <- "data/example_area/cowichan_HYPOTHETICAL_boundary.csv"
+BOUNDARY_IS_HYPOTHETICAL <- TRUE
+
+# For a stratified design: area of each stratum in m², named by the stratum codes in the
+# Core Log, e.g. c(SG_dense = 32000, SG_sparse = 18000). Strata with no cores are reported
+# as excluded, never filled in.
+STRATUM_AREAS_M2 <- NULL
+
+# What one sampling unit represents, and what counts as one.
+PLOT_AREA_M2  <- 100      # 10 x 10 m plot (sets the finite-population correction)
+SAMPLING_UNIT <- "plot"   # cores sharing a Plot ID are averaged before estimating
+
+# Reporting depth for the headline (cm): 15, 30, 50 or 100. All four are always tabulated.
+REPORT_DEPTH_CM <- 30
+
+# Precision you set at the planning stage (Part 2). Used only for random designs.
+CONF_LEVEL    <- 0.90
+TARGET_MARGIN <- 0.20
+
+# Below the base of a core, a decay curve is fitted when the core has at least this many slices.
+EXTRAP_MIN_SLICES <- 4
