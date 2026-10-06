@@ -1,5 +1,5 @@
 #!/bin/sh
-# Maintainer tool: rebuild the workbooks from the original template, then recalculate them
+# Maintainer tool: rebuild the workbooks (and the mock lab results) from the original template, then recalculate them
 # in LibreOffice so the saved files carry calculated values (needed by previews and readers).
 # Usage (from DataAnalysisWorkflow/): sh data-raw/rebuild_workbooks.sh [original_template.xlsx]
 #   With no argument the original 2026 template is taken from git history (commit 39383d1).
@@ -15,8 +15,10 @@ SOFFICE=$(command -v soffice || echo /Applications/LibreOffice.app/Contents/MacO
 [ -x "$SOFFICE" ] || { echo "LibreOffice (soffice) not found"; exit 1; }
 
 "${PYTHON:-python3}" data-raw/build_workbooks.py "$template"
+"${PYTHON:-python3}" data-raw/build_lab_results.py
 for f in ../files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx \
          ../files/Eelgrass_Carbon_DigitalData_Example.xlsx \
+         ../files/Example_Lab_Results.xlsx \
          data/synthetic/Eelgrass_Carbon_DigitalData_SYNTHETIC.xlsx; do
   [ -f "$f" ] || continue
   "$SOFFICE" --headless --calc --convert-to xlsx --outdir "$tmp" "$f" >/dev/null 2>&1
