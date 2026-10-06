@@ -7,16 +7,28 @@
 CORE_LOG_COLS <- c(plot_id = 1, core_id = 2, date = 3, time = 4, site = 5, latitude = 6,
                    longitude = 7, photo_id = 8, conditions = 9, diameter_cm = 10,
                    outside_cm = 11, inside_cm = 12, stratum = 16, compaction_note = 17,
-                   core_notes = 18)
+                   core_notes = 18,
+                   # calculated by the workbook — read only to cross-check our own numbers
+                   wb_core_check = 15, wb_diameter_used = 19)
 SAMPLE_COLS <- c(core_id = 1, sample_id = 2, top_cm = 3, bottom_cm = 4, notes = 5,
                  wet_g = 12, dry_g = 13, carbon_value_pct = 14, carbon_type = 15,
-                 # calculated by the workbook — read only to cross-check our own numbers
                  wb_bd = 17, wb_oc_pct = 18, wb_stock_kg_m2 = 22, wb_check = 27)
+# Rows the template provides for data (first, last). Anything typed below them is an error,
+# not something to ignore quietly.
+CORE_LOG_ROWS <- c(6, 35)
+SAMPLE_ROWS   <- c(6, 205)
 
-read_tab <- function(path, sheet, cols, first_row, last_row) {
+read_tab <- function(path, sheet, cols, rows, extra_cols) {
   raw <- suppressMessages(readxl::read_excel(path, sheet = sheet, col_names = FALSE,
                                              col_types = "text", .name_repair = "minimal"))
-  raw <- raw[first_row:min(last_row, nrow(raw)), , drop = FALSE]
+  below <- seq_len(nrow(raw)) > rows[2]
+  filled <- Reduce(`|`, lapply(extra_cols, function(i)
+    if (i <= ncol(raw)) !is.na(raw[[i]]) & trimws(raw[[i]]) != "" else rep(FALSE, nrow(raw))))
+  if (any(below & filled))
+    stop(sprintf("'%s' has data below row %d (row %s). The template has room for rows %d–%d only: ",
+                 sheet, rows[2], paste(which(below & filled), collapse = ", "), rows[1], rows[2]),
+         "add rows inside the table, or split the project into two workbooks.")
+  raw <- raw[rows[1]:min(rows[2], nrow(raw)), , drop = FALSE]
   out <- as.data.frame(lapply(cols, function(i) if (i <= ncol(raw)) raw[[i]] else NA_character_),
                        stringsAsFactors = FALSE)
   names(out) <- names(cols)
@@ -24,77 +36,107 @@ read_tab <- function(path, sheet, cols, first_row, last_row) {
 }
 
 as_num <- function(x) suppressWarnings(as.numeric(x))
+blank  <- function(x) is.na(x) | trimws(x) == ""
 
-#' Read the workbook. Returns list(cores, samples, loi).
+#' Value of a named cell (e.g. LOI_SLOPE), found through the workbook's defined names, so it
+#' does not matter where the cell sits on the sheet. NA when the cell is empty.
+read_named_cell <- function(path, name) {
+  xml <- tryCatch(paste(readLines(unz(path, "xl/workbook.xml"), warn = FALSE), collapse = ""),
+                  error = function(e) "")
+  m <- regmatches(xml, regexpr(sprintf('<definedName[^>]*name="%s"[^>]*>[^<]+</definedName>', name), xml))
+  if (!length(m)) stop("The workbook has no named cell '", name, "'. Use the current blank sheet from Part 4.")
+  ref <- sub("^.*>([^<]+)<.*$", "\\1", m)
+  for (e in list(c("&apos;", "'"), c("&quot;", '"'), c("&lt;", "<"), c("&gt;", ">"), c("&amp;", "&")))
+    ref <- gsub(e[1], e[2], ref, fixed = TRUE)
+  sheet <- gsub("^'|'$", "", sub("!.*$", "", ref))
+  cell  <- gsub("\\$", "", sub("^.*!", "", ref))
+  v <- suppressMessages(readxl::read_excel(path, sheet = sheet, range = cell, col_names = FALSE,
+                                           col_types = "text"))
+  if (!nrow(v) || !ncol(v)) NA_real_ else as_num(v[[1]][1])
+}
+
+#' Read the workbook. Returns list(cores, samples, loi, corer_diameter_cm).
 read_workbook <- function(path) {
   if (!file.exists(path)) stop("Workbook not found: ", path)
-  cores <- read_tab(path, "2. Plot & Core Log", CORE_LOG_COLS, first_row = 6, last_row = 35)
-  cores <- cores[!is.na(cores$core_id) & trimws(cores$core_id) != "", ]
-  for (k in c("latitude", "longitude", "diameter_cm", "outside_cm", "inside_cm"))
+  cores <- read_tab(path, "2. Plot & Core Log", CORE_LOG_COLS, CORE_LOG_ROWS, extra_cols = 2)
+  cores <- cores[!blank(cores$core_id), ]
+  for (k in c("latitude", "longitude", "diameter_cm", "outside_cm", "inside_cm", "wb_diameter_used"))
     cores[[k]] <- as_num(cores[[k]])
   cores$core_id <- trimws(cores$core_id)
-  cores$plot_id <- trimws(cores$plot_id)
-  cores$stratum <- ifelse(is.na(cores$stratum), NA, trimws(cores$stratum))
+  cores$plot_id <- ifelse(blank(cores$plot_id), NA_character_, trimws(cores$plot_id))
+  cores$stratum <- ifelse(blank(cores$stratum), NA_character_, trimws(cores$stratum))
 
-  s <- read_tab(path, "3. Sample Data", SAMPLE_COLS, first_row = 6, last_row = 205)
-  s <- s[!is.na(s$core_id) & trimws(s$core_id) != "", ]
+  s <- read_tab(path, "3. Sample Data", SAMPLE_COLS, SAMPLE_ROWS, extra_cols = c(2, 3, 4))
+  s <- s[!blank(s$core_id), ]
   for (k in c("top_cm", "bottom_cm", "wet_g", "dry_g", "carbon_value_pct",
               "wb_bd", "wb_oc_pct", "wb_stock_kg_m2"))
     s[[k]] <- as_num(s[[k]])
   s$core_id <- trimws(s$core_id)
   s$carbon_type <- toupper(trimws(s$carbon_type))
 
-  ins <- suppressMessages(readxl::read_excel(path, sheet = "1. Instructions", col_names = FALSE,
-                                             col_types = "text", .name_repair = "minimal"))
-  pick <- function(label) {
-    i <- which(trimws(ins[[1]]) == label)
-    if (length(i) == 0) NA_real_ else as_num(ins[[2]][i[1]])
-  }
   list(cores = cores, samples = s,
-       loi = c(intercept = pick("LOI intercept"), slope = pick("LOI slope")))
+       loi = c(intercept = read_named_cell(path, "LOI_INTERCEPT"),
+               slope = read_named_cell(path, "LOI_SLOPE")),
+       corer_diameter_cm = read_named_cell(path, "CORER_DIAMETER_CM"))
+}
+
+#' Corer diameter used for each core: the core's own value (Sheet 2, column J) if given,
+#' otherwise the project value on the Instructions tab. Never assumed beyond that.
+corer_diameter <- function(cores, project_cm) {
+  own <- !is.na(cores$diameter_cm)
+  cores$diameter_used_cm <- ifelse(own, cores$diameter_cm, project_cm)
+  cores$diameter_source  <- ifelse(own, "this core", ifelse(is.na(project_cm), "missing", "Instructions"))
+  cores
 }
 
 #' Compaction factor for each core: outside / inside when both were measured; 1 only
 #' when the user explicitly wrote "assume none"; otherwise NA (never silently 1).
+#' The QC check follows the workbook's order (Sheet 2, column O): first problem wins.
 compaction_factor <- function(cores) {
   measured <- !is.na(cores$outside_cm) & !is.na(cores$inside_cm)
+  neither  <- is.na(cores$outside_cm) & is.na(cores$inside_cm)
   assumed  <- !measured & tolower(trimws(cores$compaction_note)) %in% "assume none"
   cf <- ifelse(measured, cores$outside_cm / cores$inside_cm, ifelse(assumed, 1, NA_real_))
   cores$compaction_factor <- cf
   cores$compaction_basis  <- ifelse(measured, "measured", ifelse(assumed, "assumed none", "missing"))
-  cores$core_check <- with(cores, ifelse(
-    is.na(diameter_cm), "CHECK: corer diameter missing",
-    ifelse(compaction_basis == "missing", "CHECK: compaction not recorded",
-    ifelse(measured & (inside_cm > outside_cm), "CHECK: extracted > inserted",
-    ifelse(measured & (compaction_factor > 1.5), "CHECK: >50% compaction",
-    ifelse(compaction_basis == "assumed none", "ASSUMED: no compaction (not measured)", "OK"))))))
   dup <- duplicated(cores$core_id) | duplicated(cores$core_id, fromLast = TRUE)
-  cores$core_check[dup] <- "CHECK: duplicate Core ID in Core Log"
+  cores$core_check <- ifelse(dup, "CHECK: duplicate Core ID",
+    ifelse(is.na(cores$diameter_used_cm), "CHECK: corer diameter missing",
+    ifelse(neither, ifelse(assumed, "ASSUMED: no compaction (not measured)", "CHECK: compaction not recorded"),
+    ifelse(!measured, "CHECK: one depth missing",
+    ifelse(cores$inside_cm > cores$outside_cm, "CHECK: extracted > inserted",
+    ifelse(cf > 1.5, "CHECK: >50% compaction", "OK"))))))
   cores
 }
 
 #' Organic carbon (% of dry mass) from the lab value and its type.
-#' OC is used as is; LOI is converted with the stated equation (never below 0);
-#' TC, unknown types and missing equations give NA — they are reported, never guessed.
+#' OC is used as is; LOI is converted with the stated equation; TC, unknown types, a missing
+#' equation, and an LOI value that would convert to below zero give NA — reported, never guessed.
+loi_to_oc <- function(loi_pct, loi) loi[["intercept"]] + loi[["slope"]] * loi_pct
+
 organic_carbon_pct <- function(value, type, loi) {
   out <- rep(NA_real_, length(value))
   oc <- type %in% "OC"
   out[oc] <- value[oc]
   li <- type %in% "LOI"
-  if (!any(is.na(loi))) out[li] <- pmax(0, loi[["intercept"]] + loi[["slope"]] * value[li])
+  if (!any(is.na(loi))) {
+    conv <- loi_to_oc(value[li], loi)
+    out[li] <- ifelse(conv < 0, NA_real_, conv)
+  }
   out
 }
 
 #' Slice-level calculations and checks. Units: depths cm, mass g, volume cm3,
 #' bulk density g/cm3, carbon density g C/cm3, stock g C/cm2 and kg C/m2.
 check_slices <- function(wb) {
-  cores <- compaction_factor(wb$cores)
+  cores <- compaction_factor(corer_diameter(wb$cores, wb$corer_diameter_cm))
   s <- wb$samples
   m <- match(s$core_id, cores$core_id)
   s$plot_id <- cores$plot_id[m]
   s$stratum <- cores$stratum[m]
   s$compaction_factor <- cores$compaction_factor[m]
-  s$diameter_cm <- cores$diameter_cm[m]
+  s$diameter_cm <- cores$diameter_used_cm[m]
+  s$core_length_cm <- cores$inside_cm[m]
   s$thickness_cm <- s$bottom_cm - s$top_cm
   s$insitu_top_cm <- s$top_cm * s$compaction_factor
   s$insitu_bottom_cm <- s$bottom_cm * s$compaction_factor
@@ -124,35 +166,93 @@ check_slices <- function(wb) {
   set(gap, "GAP above this slice")
   set(is.na(s$compaction_factor) | is.na(s$diameter_cm),
       "CHECK: Core ID not in Core Log, or its compaction / diameter missing")
+  set(!is.na(s$core_length_cm) & s$core_length_cm > 0 & s$bottom_cm > s$core_length_cm,
+      "CHECK: slice deeper than the core length on Sheet 2")
   set(is.na(s$dry_g) | is.na(s$carbon_value_pct) | is.na(s$carbon_type) | s$carbon_type == "",
       "AWAITING LAB (dry weight, carbon value or type)")
   set(s$carbon_type == "TC", "TC is not organic carbon — ask the lab for OC or IC")
   set(!s$carbon_type %in% c("OC", "LOI", "TC"), "CHECK: type must be OC, TC or LOI")
+  have_eq <- !any(is.na(wb$loi))
+  set(is.na(s$oc_pct) & have_eq, "CHECK: LOI below the range of the conversion equation (OC would be < 0)")
   set(is.na(s$oc_pct), "CHECK: LOI conversion not set (Instructions tab)")
   set(s$bd_g_cm3 <= 0 | s$bd_g_cm3 > 2.65 | s$oc_pct > 50,
       "CHECK: bulk density outside 0–2.65 g/cm3 or OC > 50%")
   s$check <- chk
 
+  # A warning does not stop a core being totalled, but should be looked at: a slice whose
+  # thickness and lab values exactly repeat the slice above is often a copied row (published
+  # compilations pad short cores this way).
+  s$warning <- rep(NA_character_, nrow(s))
+  o <- order(s$core_id, s$top_cm)
+  prev <- c(NA, head(o, -1))
+  same_core <- if (length(o) > 1) c(FALSE, s$core_id[o][-1] == s$core_id[o][-length(o)]) else rep(FALSE, length(o))
+  rep_vals <- same_core &
+    vapply(seq_along(o), function(k) {
+      if (!same_core[k]) return(FALSE)
+      a <- o[k]; b <- prev[k]
+      isTRUE(all.equal(c(s$thickness_cm[a], s$dry_g[a], s$carbon_value_pct[a]),
+                       c(s$thickness_cm[b], s$dry_g[b], s$carbon_value_pct[b]))) &&
+        identical(s$carbon_type[a], s$carbon_type[b])
+    }, logical(1))
+  s$warning[o[rep_vals]] <- "Same thickness, dry weight and carbon value as the slice above — copied row?"
+
   # Core status: complete only when the core is OK/assumed and every slice is OK.
-  cores$n_slices <- as.integer(table(factor(s$core_id, levels = cores$core_id)))
-  cores$n_ok <- as.integer(table(factor(s$core_id[s$check == "OK"], levels = cores$core_id)))
+  cores$n_slices <- as.integer(table(factor(s$core_id, levels = unique(cores$core_id)))[cores$core_id])
+  cores$n_ok <- as.integer(table(factor(s$core_id[s$check == "OK"], levels = unique(cores$core_id)))[cores$core_id])
   core_ok <- cores$core_check %in% c("OK", "ASSUMED: no compaction (not measured)")
   cores$status <- ifelse(cores$n_slices == 0, "No slices entered",
-                  ifelse(!core_ok, cores$core_check,
-                  ifelse(cores$n_ok < cores$n_slices, "Not complete — see slice checks", "Complete")))
+                  ifelse(!core_ok, paste(cores$core_check, "(Sheet 2)"),
+                  ifelse(cores$n_ok < cores$n_slices, "Not complete — see Slice check on Sheet 3", "Complete")))
   cores$measured_to_insitu_cm <- vapply(cores$core_id, function(id) {
     x <- s$insitu_bottom_cm[s$core_id == id]; if (length(x) && any(!is.na(x))) max(x, na.rm = TRUE) else NA_real_
-  }, numeric(1))
+  }, numeric(1), USE.NAMES = FALSE)
   orphan <- setdiff(unique(s$core_id), cores$core_id)
-  list(cores = cores, slices = s, loi = wb$loi, orphan_core_ids = orphan)
+  list(cores = cores, slices = s, loi = wb$loi, corer_diameter_cm = wb$corer_diameter_cm,
+       orphan_core_ids = orphan)
+}
+
+#' Plain-language list of everything that keeps a core out of the totals.
+check_report <- function(chk) {
+  cores <- chk$cores[chk$cores$status != "Complete", c("core_id", "status")]
+  slices <- chk$slices[chk$slices$check != "OK", c("core_id", "sample_id", "top_cm", "bottom_cm", "check")]
+  warn <- chk$slices[!is.na(chk$slices$warning), c("core_id", "sample_id", "top_cm", "bottom_cm", "warning")]
+  list(cores = cores, slices = slices, warnings = warn, orphan_core_ids = chk$orphan_core_ids)
+}
+
+print_check_report <- function(rep) {
+  if (nrow(rep$cores)) {
+    message("These cores are left out of the totals until fixed:")
+    print(rep$cores, row.names = FALSE)
+  }
+  if (nrow(rep$slices)) {
+    message("Slice problems:")
+    print(rep$slices, row.names = FALSE)
+  }
+  if (length(rep$orphan_core_ids))
+    message("Core IDs on Sheet 3 that are not on Sheet 2: ", paste(rep$orphan_core_ids, collapse = ", "))
+  if (nrow(rep$warnings)) {
+    message("Worth a look (these do not stop a core being totalled):")
+    print(rep$warnings, row.names = FALSE)
+  }
+  invisible(rep)
 }
 
 #' Compare our numbers with the workbook's own calculated columns (when the workbook was
-#' saved with calculated values). Returns the largest absolute differences.
+#' saved with calculated values). Returns the largest absolute differences, and how many
+#' slice checks and core diameters disagree.
 cross_check_workbook <- function(chk) {
-  s <- chk$slices
+  s <- chk$slices; cores <- chk$cores
   d <- function(a, b) { x <- abs(a - b); if (all(is.na(x))) NA_real_ else max(x, na.rm = TRUE) }
-  data.frame(quantity = c("bulk density (g/cm3)", "organic carbon (%)", "stock (kg C/m2)"),
-             max_abs_difference = c(d(s$bd_g_cm3, s$wb_bd), d(s$oc_pct, s$wb_oc_pct),
-                                    d(s$stock_kg_m2, s$wb_stock_kg_m2)))
+  agree_na <- function(a, b) sum(xor(is.na(a), is.na(b)))
+  data.frame(
+    quantity = c("bulk density (g/cm3)", "organic carbon (%)", "stock (kg C/m2)",
+                 "corer diameter used (cm)", "slice checks that differ (count)",
+                 "core checks that differ (count)", "values present in one but not the other (count)"),
+    max_abs_difference = c(d(s$bd_g_cm3, s$wb_bd), d(s$oc_pct, s$wb_oc_pct),
+                           d(s$stock_kg_m2, s$wb_stock_kg_m2),
+                           d(cores$diameter_used_cm, cores$wb_diameter_used),
+                           sum(s$check != s$wb_check, na.rm = TRUE) + sum(is.na(s$wb_check)),
+                           sum(cores$core_check != cores$wb_core_check, na.rm = TRUE),
+                           agree_na(s$bd_g_cm3, s$wb_bd) + agree_na(s$oc_pct, s$wb_oc_pct) +
+                             agree_na(s$stock_kg_m2, s$wb_stock_kg_m2)))
 }

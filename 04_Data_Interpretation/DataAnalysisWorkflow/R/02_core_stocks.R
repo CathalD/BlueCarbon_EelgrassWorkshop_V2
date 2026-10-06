@@ -42,18 +42,41 @@ increment_stocks <- function(chk, breaks = STANDARD_INCREMENTS) {
   r
 }
 
-#' Cumulative stock from the surface to each standard depth (0–15, 0–30, ...), complete
-#' only when every increment above it is complete.
+#' Cumulative stock from the surface to each standard depth (0–15, 0–30, ...). A value is
+#' given only when every increment above that depth is complete; otherwise the status says
+#' whether the core ends inside the deepest increment ("partial") or above it ("not reached").
 cumulative_stocks <- function(inc) {
   if (!nrow(inc)) return(data.frame())
-  do.call(rbind, lapply(split(inc, inc$core_id), function(x) {
+  out <- do.call(rbind, lapply(split(inc, inc$core_id), function(x) {
     x <- x[order(x$depth_top_cm), ]
-    ok <- cumprod(x$status == "complete") == 1
-    data.frame(core_id = x$core_id, plot_id = x$plot_id, stratum = x$stratum,
-               depth_cm = x$depth_bottom_cm,
-               stock_Mg_ha = ifelse(ok, cumsum(ifelse(is.na(x$stock_Mg_ha), 0, x$stock_Mg_ha)), NA_real_),
-               status = ifelse(ok, "complete", "not reached"))
+    rows <- lapply(seq_len(nrow(x)), function(k) {
+      above <- x[seq_len(k), ]
+      complete <- all(above$status == "complete")
+      data.frame(core_id = x$core_id[1], plot_id = x$plot_id[1], stratum = x$stratum[1],
+                 depth_cm = x$depth_bottom_cm[k],
+                 stock_Mg_ha = if (complete) sum(above$stock_Mg_ha) else NA_real_,
+                 status = if (complete) "complete" else if (x$status[k] == "partial") "partial" else "not reached")
+    })
+    do.call(rbind, rows)
   }))
+  rownames(out) <- NULL
+  out
+}
+
+#' Carbon is never gained or lost when slices are placed on in-situ depths and split between
+#' increments: for every complete core that the increments fully span, the sum of its
+#' increment stocks must equal the sum of its slice stocks. Stops if not (it would be a bug).
+check_mass_conservation <- function(chk, inc, tol = 1e-9) {
+  if (!nrow(inc)) return(invisible(TRUE))
+  s <- chk$slices
+  for (id in unique(inc$core_id)) {
+    x <- s[s$core_id == id, ]
+    if (max(x$insitu_bottom_cm) > max(inc$depth_bottom_cm) + 1e-9) next   # core runs past 100 cm
+    a <- sum(x$stock_g_cm2); b <- sum(inc$stock_g_cm2[inc$core_id == id], na.rm = TRUE)
+    if (abs(a - b) > tol * max(1, a))
+      stop(sprintf("Carbon not conserved for core %s: slices %.6g vs increments %.6g g C/cm2", id, a, b))
+  }
+  invisible(TRUE)
 }
 
 #' One row per core: what was measured, and the measured total (to whatever depth the

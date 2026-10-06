@@ -82,30 +82,46 @@ def build(example=None):
     unmerge_all(log)
     for c in range(16, 19):
         apply(log.cell(4, c), st["band_field"])
+    for c in range(19, 21):
+        apply(log.cell(4, c), st["band_pre"])
     log["P4"] = "Design & notes"
+    log["S4"] = "Corer used"
     heads = {16: "Stratum (code)\ne.g. SG", 17: "Compaction not measured?\nenter: assume none",
              18: "Core notes"}
     for c, t in heads.items():
         log.cell(5, c).value = t
         apply(log.cell(5, c), style_of(log["A5"]))
+    for c, t in {19: "Corer diameter\nused (cm)", 20: "Diameter\nfrom"}.items():
+        log.cell(5, c).value = t
+        apply(log.cell(5, c), style_of(log["M5"]))
+    log["J5"] = "Corer internal\ndiameter (cm)\nonly if different\nfrom Instructions"
     log["K5"] = "Outside depth (cm)\n= depth of corer inserted"
     log["L5"] = "Inside depth (cm)\n= length of core extracted"
-    for r in range(N_CORE_ROWS[0], N_CORE_ROWS[1] + 1):
+    c0, c1 = N_CORE_ROWS
+    for r in range(c0, c1 + 1):
         for c in (16, 17, 18):
             apply(log.cell(r, c), st["input"])
+        for c in (19, 20):
+            apply(log.cell(r, c), style_of(log[f"M{r}"]), "0.00" if c == 19 else "General")
         log[f"M{r}"] = (f'=IF(AND($K{r}<>"",$L{r}<>""),$K{r}/$L{r},'
                         f'IF(LOWER(TRIM($Q{r}))="assume none",1,""))')
         log[f"N{r}"] = f'=IF(OR($K{r}="",$L{r}=""),"",$K{r}-$L{r})'
+        log[f"S{r}"] = f'=IF($B{r}="","",IF($J{r}<>"",$J{r},IF(CORER_DIAMETER_CM<>"",CORER_DIAMETER_CM,"")))'
+        log[f"T{r}"] = (f'=IF($B{r}="","",IF($J{r}<>"","this core",'
+                        f'IF(CORER_DIAMETER_CM<>"","Instructions","missing")))')
         log[f"O{r}"] = (
-            f'=IF($B{r}="","",IF($J{r}="","CHECK: corer diameter missing",'
+            f'=IF($B{r}="","",IF(COUNTIF($B${c0}:$B${c1},$B{r})>1,"CHECK: duplicate Core ID",'
+            f'IF($S{r}="","CHECK: corer diameter missing",'
             f'IF(AND($K{r}="",$L{r}=""),IF($M{r}=1,"ASSUMED: no compaction (not measured)",'
             f'"CHECK: compaction not recorded"),IF(OR($K{r}="",$L{r}=""),"CHECK: one depth missing",'
-            f'IF($L{r}>$K{r},"CHECK: extracted > inserted",IF($M{r}>1.5,"CHECK: >50% compaction","OK"))))))')
+            f'IF($L{r}>$K{r},"CHECK: extracted > inserted",IF($M{r}>1.5,"CHECK: >50% compaction","OK")))))))')
     log.column_dimensions["P"].width = 12
     log.column_dimensions["Q"].width = 20
     log.column_dimensions["R"].width = 34
-    log.merge_cells("A2:R2"); log.merge_cells("A4:I4"); log.merge_cells("J4:L4")
-    log.merge_cells("M4:O4"); log.merge_cells("P4:R4"); log.merge_cells("A38:R39")
+    log.column_dimensions["S"].width = 11
+    log.column_dimensions["T"].width = 11
+    log.merge_cells("A2:T2"); log.merge_cells("A4:I4"); log.merge_cells("J4:L4")
+    log.merge_cells("M4:O4"); log.merge_cells("P4:R4"); log.merge_cells("S4:T4"); log.merge_cells("A38:T39")
     log["A2"] = ("Enter one row for every core you collect. Core ID must be unique and must match "
                  "exactly what you type on Sheet 3 — the sample rows look up their compaction factor "
                  "and corer diameter from here.")
@@ -116,7 +132,8 @@ def build(example=None):
         "to give its true in-situ depth. If compaction was not measured, leave both blank and type "
         "'assume none' in column Q only if you have a reason to believe there was none — the QC check "
         "will then say ASSUMED, never OK. Stratum: the code from your sampling design (Part 2), e.g. SG; "
-        "leave blank if you did not stratify.")
+        "leave blank if you did not stratify. Corer diameter: enter it once on the Instructions tab (YOUR "
+        "CORER); fill column J only for a core taken with a different tube. Column S shows the diameter used.")
     log.row_dimensions[38].height = 30; log.row_dimensions[39].height = 30
     log["A38"].alignment = openpyxl.styles.Alignment(
         wrap_text=True, vertical="top")
@@ -167,17 +184,22 @@ def build(example=None):
                          f'MATCH($A{r},{S2}!$B${N_CORE_ROWS[0]}:$B${N_CORE_ROWS[1]},0)),""))')
     a0, a1 = N_SLICE_ROWS
     A, C, D = (f"${x}${a0}:${x}${a1}" for x in "ACD")
+    # inside depth (length extracted) of this slice's core; "" when not recorded. COUNTIFS/SUMIFS,
+    # not INDEX, because INDEX of a blank input cell returns 0 rather than "".
+    rB, rL = (f"{S2}!${x}${N_CORE_ROWS[0]}:${x}${N_CORE_ROWS[1]}" for x in "BL")
+    core_len = lambda r: f'IF(COUNTIFS({rB},$A{r},{rL},">0")=0,"",SUMIFS({rL},{rB},$A{r}))'
     for r in range(a0, a1 + 1):
         f = {
             6: f'=IF(OR($C{r}="",$D{r}=""),"",$D{r}-$C{r})',
-            7: lk("M", r), 8: lk("J", r),
+            7: lk("M", r), 8: lk("S", r),
             9: f'=IF(OR($C{r}="",$G{r}=""),"",$C{r}*$G{r})',
             10: f'=IF(OR($D{r}="",$G{r}=""),"",$D{r}*$G{r})',
             11: f'=IF(OR($F{r}="",$H{r}=""),"",PI()*(($H{r}/2)^2)*$F{r})',
             16: f'=IF(OR($L{r}="",$M{r}="",$L{r}=0),"",(($L{r}-$M{r})/$L{r})*100)',
             17: f'=IF(OR($M{r}="",$K{r}="",$K{r}=0),"",$M{r}/$K{r})',
             18: (f'=IF(OR($N{r}="",$O{r}=""),"",IF(UPPER($O{r})="OC",$N{r},IF(UPPER($O{r})="LOI",'
-                 f'IF(OR(LOI_INTERCEPT="",LOI_SLOPE=""),"",MAX(0,LOI_INTERCEPT+LOI_SLOPE*$N{r})),"")))'),
+                 f'IF(OR(LOI_INTERCEPT="",LOI_SLOPE=""),"",IF(LOI_INTERCEPT+LOI_SLOPE*$N{r}<0,"",'
+                 f'LOI_INTERCEPT+LOI_SLOPE*$N{r})),"")))'),
             19: f'=IF($R{r}="","",$R{r}*10)',
             20: f'=IF(OR($Q{r}="",$R{r}=""),"",$Q{r}*$R{r}/100)',
             21: f'=IF(OR($T{r}="",$F{r}=""),"",$T{r}*$F{r})',
@@ -192,12 +214,15 @@ def build(example=None):
             f'IF(COUNTIFS({A},$A{r},{C},"<"&$D{r},{D},">"&$C{r})>1,"OVERLAP with another slice",'
             f'IF(AND($C{r}>0,COUNTIFS({A},$A{r},{D},$C{r})=0),"GAP above this slice",'
             f'IF(OR($G{r}="",$H{r}=""),"CHECK: Core ID not in Core Log, or its compaction / diameter missing",'
+            f'IF(AND({core_len(r)}<>"",$D{r}>{core_len(r)}),"CHECK: slice deeper than the core length on Sheet 2",'
             f'IF(OR($M{r}="",$N{r}="",$O{r}=""),"AWAITING LAB (dry weight, carbon value or type)",'
             f'IF(AND(UPPER($O{r})<>"OC",UPPER($O{r})<>"LOI"),IF(UPPER($O{r})="TC",'
             f'"TC is not organic carbon — ask the lab for OC or IC","CHECK: type must be OC, TC or LOI"),'
-            f'IF($R{r}="","CHECK: LOI conversion not set (Instructions tab)",'
+            f'IF($R{r}="",IF(AND(LOI_INTERCEPT<>"",LOI_SLOPE<>""),'
+            f'"CHECK: LOI below the range of the conversion equation (OC would be < 0)",'
+            f'"CHECK: LOI conversion not set (Instructions tab)"),'
             f'IF(OR($Q{r}<=0,$Q{r}>2.65,$R{r}>50),"CHECK: bulk density outside 0–2.65 g/cm3 or OC > 50%",'
-            f'"OK")))))))))')
+            f'"OK"))))))))))')
         for i, (h, band, kind, nf) in enumerate(cols, start=1):
             cell = smp.cell(r, i)
             apply(cell, {"input": st["input"], "labin": lab_input, "calc": st["calc"],
@@ -229,7 +254,7 @@ def build(example=None):
     for i, w in enumerate([14, 10, 9, 10, 11, 13, 13, 34, 15, 14, 15, 15, 14, 14, 14, 14], start=1):
         summ.column_dimensions[L(i)].width = w
     rngS = lambda col: f"{S3}!${col}${a0}:${col}${a1}"
-    dia = lambda r: (f"INDEX({S2}!$J${N_CORE_ROWS[0]}:$J${N_CORE_ROWS[1]},"
+    dia = lambda r: (f"INDEX({S2}!$S${N_CORE_ROWS[0]}:$S${N_CORE_ROWS[1]},"
                      f"MATCH($A{r},{S2}!$B${N_CORE_ROWS[0]}:$B${N_CORE_ROWS[1]},0))")
     for k, r in enumerate(range(N_SUM_ROWS[0], N_SUM_ROWS[1] + 1)):
         lr = N_CORE_ROWS[0] + k
@@ -241,8 +266,9 @@ def build(example=None):
             5: f'=IF($A{r}="","",COUNTIFS({rngS("A")},$A{r},{rngS("AA")},"OK"))',
             6: f'=IF(OR($A{r}="",$D{r}=0),"",_xlfn.MAXIFS({rngS("D")},{rngS("A")},$A{r}))',
             7: f'=IF(OR($A{r}="",$D{r}=0),"",IFERROR(_xlfn.MAXIFS({rngS("J")},{rngS("A")},$A{r}),""))',
-            8: (f'=IF($A{r}="","",IF($D{r}=0,"No slices entered",IF($E{r}<$D{r},'
-                f'"Not complete — see Slice check on Sheet 3","Complete")))'),
+            8: (f'=IF($A{r}="","",IF($D{r}=0,"No slices entered",'
+                f'IF(AND({S2}!$O${lr}<>"OK",LEFT({S2}!$O${lr},7)<>"ASSUMED"),{S2}!$O${lr}&" (Sheet 2)",'
+                f'IF($E{r}<$D{r},"Not complete — see Slice check on Sheet 3","Complete"))))'),
             9: (f'=IF(OR($A{r}="",$H{r}<>"Complete"),"",SUMIFS({rngS("M")},{rngS("A")},$A{r})/'
                 f'(PI()*({dia(r)}/2)^2*SUMIFS({rngS("F")},{rngS("A")},$A{r})))'),
             10: (f'=IF(OR($A{r}="",$H{r}<>"Complete"),"",100*SUMIFS({rngS("U")},{rngS("A")},$A{r})/'
@@ -280,8 +306,9 @@ def build(example=None):
     summ.cell(mr + 2, 1).alignment = openpyxl.styles.Alignment(wrap_text=True, vertical="top")
     summ.merge_cells("A2:P2")
     summ["A1"] = "Core Summary — automatic, nothing to type"
-    summ["A2"] = ("One row per core on Sheet 2. A core is totalled only when every one of its slices passes the "
-                  "Slice check on Sheet 3 — a missing value is never counted as zero. Increments use in-situ depths.")
+    summ["A2"] = ("One row per core on Sheet 2. A core is totalled only when its QC check on Sheet 2 is OK (or ASSUMED) "
+                  "and every one of its slices passes the Slice check on Sheet 3 — a missing value is never counted as "
+                  "zero. Increments use in-situ depths.")
     summ.freeze_panes = "B5"
 
     # =========================================================== 1. Instructions
@@ -294,12 +321,18 @@ def build(example=None):
     R = lambda a, b: rows.append(("R", a, b))
     B = lambda: rows.append(("B", None, None))
     H("HOW TO USE THIS WORKBOOK")
-    R("Sheet 2 — Plot & Core Log", "One row per CORE. Enter plot/core notes, the corer's measured internal diameter, "
-      "the two compaction depths and (if you stratified) the stratum. The compaction factor calculates itself.")
+    R("Sheet 2 — Plot & Core Log", "One row per CORE. Enter plot/core notes, the two compaction depths and (if you "
+      "stratified) the stratum. The compaction factor calculates itself. Enter a corer diameter there only for a core "
+      "taken with a different tube from the one below.")
     R("Sheet 3 — Sample Data", "One row per SLICE. Enter the field columns before you leave site, then add the lab "
       "columns when results come back. Everything else calculates, and the Slice check column tells you what is "
       "missing or inconsistent.")
     R("Sheet 4 — Core Summary", "Per-core totals and standard depth increments. Fully automatic — nothing to type here.")
+    B(); H("YOUR CORER")
+    R("Corer internal diameter (cm)", None)
+    R("About the diameter", "Measured inside the tube with calipers — not the nominal pipe size (see THINGS THAT "
+      "CATCH PEOPLE OUT). Used for every core, unless Sheet 2 column J gives a different value for that core. Leave "
+      "it blank and the slices are flagged: the volume, and so the bulk density, cannot be calculated.")
     B(); H("COLOUR KEY")
     R("Yellow fill / blue text", "You type here: data from the field data sheet, or from the lab.")
     R("Grey fill / black text", "Calculated. Do not type over these — you will break the column.")
@@ -319,7 +352,8 @@ def build(example=None):
     R("TC", "Total carbon. Includes shell and other carbonate, which is not organic carbon. It is not used: ask the "
       "lab for inorganic carbon (IC) and enter OC = TC − IC instead.")
     R("LOI", "Loss on ignition (% organic matter). Converted to organic carbon with the equation below: "
-      "OC% = intercept + slope × LOI%, never below zero.")
+      "OC% = intercept + slope × LOI%. A value that would convert to below zero is outside the equation's range "
+      "and is flagged, not set to zero.")
     R("LOI intercept", None)
     R("LOI slope", None)
     R("Where the equation comes from", "Best: your own calibration — run elemental analysis on a subset of the same "
@@ -343,7 +377,8 @@ def build(example=None):
     B(); H("THINGS THAT CATCH PEOPLE OUT")
     R("Measure your actual corer diameter", "Nominal pipe size is not internal diameter. A '3 inch' Schedule 40 PVC "
       "pipe has an internal diameter noticeably larger than 7.62 cm. Volume sits in the denominator of bulk density, "
-      "so an assumed diameter biases EVERY carbon stock in the dataset. Measure the ID with calipers and enter that.")
+      "so an assumed diameter biases EVERY carbon stock in the dataset. Measure the ID with calipers and enter it "
+      "under YOUR CORER above (and on the field data sheet).")
     R("Compaction corrects depths, not stocks", "Carbon stock per slice uses the MEASURED interval and the recovered-"
       "slice volume. The dry mass in the tube already came from a taller in-situ column, so multiplying by the "
       "compaction factor as well would double-count it. The corrected depths (columns I–J) tell you which in-situ "
@@ -363,14 +398,15 @@ def build(example=None):
             if b is not None:
                 ins.cell(r, 2).value = b; apply(ins.cell(r, 2), st["i_text"])
                 ins.row_dimensions[r].height = max(15.75, 13.5 * math.ceil(len(b) / 105))
-            if a in ("LOI intercept", "LOI slope"):
+            if a in ("LOI intercept", "LOI slope", "Corer internal diameter (cm)"):
                 loi_rows[a] = r
-                apply(ins.cell(r, 2), st["input"], "0.000")
+                apply(ins.cell(r, 2), st["input"], "0.000" if a.startswith("LOI") else "0.00")
                 ins.cell(r, 2).alignment = openpyxl.styles.Alignment(horizontal="left")
         r += 1
     ins["A2"] = ("Companion to WWF-Canada, Measuring Carbon in Coastal Sediments (2026), and Part 4 of the "
                  "Blue Carbon Eelgrass Workshop.")
-    for name, key in (("LOI_INTERCEPT", "LOI intercept"), ("LOI_SLOPE", "LOI slope")):
+    for name, key in (("LOI_INTERCEPT", "LOI intercept"), ("LOI_SLOPE", "LOI slope"),
+                      ("CORER_DIAMETER_CM", "Corer internal diameter (cm)")):
         ref = f"'1. Instructions'!$B${loi_rows[key]}"
         dn = DefinedName(name, attr_text=ref)
         try:
@@ -392,6 +428,7 @@ def cowichan(wb, ins, log, smp, loi_rows):
              if r["SampID"] in cores and r["BD_type"] == "M"]
     dia = 7.6  # Douglas et al. (2022): acrylic tubes, 7.6 cm diameter
     area = math.pi * (dia / 2) ** 2
+    ins.cell(loi_rows["Corer internal diameter (cm)"], 2).value = dia
     ins.cell(loi_rows["LOI intercept"], 2).value = -0.197
     ins.cell(loi_rows["LOI slope"], 2).value = 0.320
     ins.cell(loi_rows["LOI intercept"], 3).value = ("Example: local calibration from the 16 slices in these cores "
@@ -402,7 +439,7 @@ def cowichan(wb, ins, log, smp, loi_rows):
         rows = [d for d in depth if d["SampID"] == sid]
         code = rows[0]["StudySampID"]
         vals = [code, f"COW-{code}", None, None, "Cowichan Estuary, BC — eelgrass",
-                float(c["Lat"]), float(c["Long"]), None, None, dia, None, None]
+                float(c["Lat"]), float(c["Long"]), None, None, None, None, None]  # diameter: Instructions
         for i, v in enumerate(vals, start=1):
             log.cell(r, i).value = v
         log.cell(r, 16).value = "SG"
@@ -418,8 +455,10 @@ def cowichan(wb, ins, log, smp, loi_rows):
             top, bot, bd = float(d["depth_top_cm"]), float(d["depth_bottom_cm"]), float(d["BD"])
             if d["C_type"] == "M" and d["PercC"] not in ("", "NA"):
                 val, kind, note = float(d["PercC"]), "OC", "OC: elemental analyser, carbonate removed by acid fumigation"
-            else:
+            elif d["PercOM"] not in ("", "NA"):
                 val, kind, note = float(d["PercOM"]), "LOI", "LOI 550 °C, 5 h (no elemental C for this slice)"
+            else:
+                val, kind, note = None, None, "No carbon value in the source dataset"
             smp.cell(r, 1).value = f"COW-{code}"
             smp.cell(r, 2).value = k
             smp.cell(r, 3).value = top
@@ -431,7 +470,100 @@ def cowichan(wb, ins, log, smp, loi_rows):
             r += 1
 
 
+# ----------------------------------------------------------------------------- synthetic
+# A computer-generated stratified survey, used ONLY to show how Option B's stratified estimate
+# and interval work. It is not field data and is placed at 0° N, 0° E so it describes no real
+# place. Three strata of unequal area; the third is deliberately left unsampled.
+SYN_DIR = "data/synthetic"
+SYN_SEED = 2026
+SYN_LOI = (-0.197, 0.320)
+DEG = 6371008.8 * math.pi / 180  # metres per degree near 0° N — same Earth radius as R polygon_area_m2()
+SYN_STRATA = [  # name, lon from, lon to (degrees); all span lat 0.0000–0.0024
+    ("dense", 0.0000, 0.0012), ("sparse", 0.0012, 0.0019), ("channel_edge", 0.0019, 0.0021)]
+SYN_LAT = (0.0000, 0.0024)
+SYN_PLOTS = {"dense": 6, "sparse": 5}          # channel_edge: none (unsampled on purpose)
+SYN_SHAPE = {"dense": (0.45, 0.95, 12.0, 1.30), "sparse": (0.30, 0.45, 10.0, 1.50)}  # floor, excess, scale cm, BD
+
+
+def syn_area_m2(lon0, lon1):
+    return (lon1 - lon0) * DEG * (SYN_LAT[1] - SYN_LAT[0]) * DEG
+
+
+def synthetic(wb, ins, log, smp, loi_rows):
+    import random
+    rng = random.Random(SYN_SEED)
+    for ws in (ins, log, smp, wb["4. Core Summary"]):
+        ws["A1"] = "SYNTHETIC DATA — not field observations · " + str(ws["A1"].value)
+    dia = 7.0
+    area = math.pi * (dia / 2) ** 2
+    ins.cell(loi_rows["Corer internal diameter (cm)"], 2).value = dia
+    ins.cell(loi_rows["LOI intercept"], 2).value, ins.cell(loi_rows["LOI slope"], 2).value = SYN_LOI
+    ins.cell(loi_rows["LOI intercept"], 3).value = "SYNTHETIC: equation chosen for the demonstration, not fitted."
+    cores = []
+    for name, lon0, lon1 in SYN_STRATA:
+        for k in range(1, SYN_PLOTS.get(name, 0) + 1):
+            pid = f"SYN-{name[0].upper()}{k}"
+            lon = rng.uniform(lon0 + 0.0001, lon1 - 0.0001)
+            lat = rng.uniform(SYN_LAT[0] + 0.0001, SYN_LAT[1] - 0.0001)
+            mult = math.exp(rng.gauss(0, 0.25))
+            n_cores = 2 if (name, k) == ("dense", 3) else 1      # one plot with two cores
+            for j in range(n_cores):
+                cid = pid + ("ab"[j] if n_cores > 1 else "")
+                cores.append((name, pid, cid, lon + 0.00003 * j, lat, mult))
+    r = N_CORE_ROWS[0]; sr = N_SLICE_ROWS[0]
+    for i, (name, pid, cid, lon, lat, mult) in enumerate(cores):
+        extracted = rng.choice([30, 32, 34, 36, 38, 40, 42])
+        inserted = round(extracted * rng.uniform(1.05, 1.18))
+        vals = [pid, cid, "2026-07-15", None, "SYNTHETIC site", round(lat, 6), round(lon, 6), None, None,
+                None, inserted, extracted]
+        for c, v in enumerate(vals, start=1):
+            log.cell(r, c).value = v
+        log.cell(r, 16).value = name
+        log.cell(r, 18).value = f"SYNTHETIC — generated by data-raw/build_workbooks.py (seed {SYN_SEED})."
+        r += 1
+        floor, excess, scale, bd0 = SYN_SHAPE[name]
+        use_loi = i % 4 == 1
+        edges = [0, 2, 4, 6, 8, 10] + list(range(15, extracted, 5)) + [extracted]
+        edges = sorted(set(e for e in edges if e <= extracted))
+        cf = inserted / extracted
+        for k, (top, bot) in enumerate(zip(edges[:-1], edges[1:]), start=1):
+            mid = (top + bot) / 2 * cf
+            oc = max(0.05, mult * (floor + excess * math.exp(-mid / scale)) * math.exp(rng.gauss(0, 0.08)))
+            bd = (bd0 + 0.006 * mid) * math.exp(rng.gauss(0, 0.04)) * cf   # in-tube (compressed) density
+            smp.cell(sr, 1).value = cid
+            smp.cell(sr, 2).value = k
+            smp.cell(sr, 3).value = top
+            smp.cell(sr, 4).value = bot
+            smp.cell(sr, 5).value = "SYNTHETIC"
+            smp.cell(sr, 13).value = round(bd * area * (bot - top), 2)
+            if use_loi:
+                smp.cell(sr, 14).value = round((oc - SYN_LOI[0]) / SYN_LOI[1], 2)
+                smp.cell(sr, 15).value = "LOI"
+            else:
+                smp.cell(sr, 14).value = round(oc, 3)
+                smp.cell(sr, 15).value = "OC"
+            sr += 1
+
+
+def write_synthetic_area_files():
+    import os
+    os.makedirs(SYN_DIR, exist_ok=True)
+    with open(f"{SYN_DIR}/SYNTHETIC_boundary.csv", "w", newline="") as f:
+        w = csv.writer(f); w.writerow(["longitude", "latitude"])
+        lon0, lon1 = SYN_STRATA[0][1], SYN_STRATA[-1][2]
+        for x, y in [(lon0, SYN_LAT[0]), (lon1, SYN_LAT[0]), (lon1, SYN_LAT[1]), (lon0, SYN_LAT[1])]:
+            w.writerow([f"{x:.4f}", f"{y:.4f}"])
+    with open(f"{SYN_DIR}/SYNTHETIC_strata.csv", "w", newline="") as f:
+        w = csv.writer(f); w.writerow(["stratum", "longitude", "latitude"])
+        for name, lon0, lon1 in SYN_STRATA:
+            for x, y in [(lon0, SYN_LAT[0]), (lon1, SYN_LAT[0]), (lon1, SYN_LAT[1]), (lon0, SYN_LAT[1])]:
+                w.writerow([name, f"{x:.4f}", f"{y:.4f}"])
+    return {name: round(syn_area_m2(lon0, lon1)) for name, lon0, lon1 in SYN_STRATA}
+
+
 if __name__ == "__main__":
     build().save(f"{OUT_DIR}/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx")
     build(cowichan).save(f"{OUT_DIR}/Eelgrass_Carbon_DigitalData_Example.xlsx")
-    print("written")
+    areas = write_synthetic_area_files()
+    build(synthetic).save(f"{SYN_DIR}/Eelgrass_Carbon_DigitalData_SYNTHETIC.xlsx")
+    print("written; synthetic stratum areas (m2):", areas)
