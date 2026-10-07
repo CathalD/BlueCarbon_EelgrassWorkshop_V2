@@ -1,7 +1,7 @@
 """
 build_lab_results.py — maintainer tool, participants never need to run this.
 
-Writes ../files/Example_Lab_Results.xlsx: a MOCK laboratory results sheet laid out the way
+Writes workbooks/Example_Lab_Results.xlsx: a MOCK laboratory results sheet laid out the way
 many soil labs return results (one row per sample: identity, date, masses, N, total C,
 inorganic C, organic C, LOI, bulk density, comments), filled with the Cowichan worked-example
 values so it lines up with the Example workbook. "Example Lab" is not a real laboratory.
@@ -16,7 +16,7 @@ import openpyxl
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter as L
 
-OUT = "../files/Example_Lab_Results.xlsx"
+OUT = "workbooks/Example_Lab_Results.xlsx"
 DIA = 7.6
 thin = Side(style="thin", color="BFBFBF")
 BOX = Border(left=thin, right=thin, top=thin, bottom=thin)

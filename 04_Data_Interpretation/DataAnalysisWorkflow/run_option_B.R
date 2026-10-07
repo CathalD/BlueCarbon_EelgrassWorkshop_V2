@@ -3,25 +3,21 @@
 # Uses the same checked core stocks as Option A, extends each core to 100 cm (measured part
 # kept exactly, estimated part shown separately), makes one value per sampling unit, and
 # estimates the mean and total for the reporting area in the way the sampling design allows.
-# Writes tables and figures to outputs/option_B/ and renders the report.
+# Writes tables and figures to <OUTPUT_DIR>/option_B/ and renders the report.
 
-if (!exists("SETTINGS_FILE")) SETTINGS_FILE <- Sys.getenv("SETTINGS_FILE", "settings.R")
-source(SETTINGS_FILE)
-for (f in list.files("R", pattern = "\\.R$", full.names = TRUE)) source(f)
-out <- if (exists("OUTPUT_DIR_B")) OUTPUT_DIR_B else file.path("outputs", "option_B")
+# ── Shared foundation: read, check, core stocks (run_checks.R, as for Option A) ─
+source("run_checks.R")
+if (!ready) stop("No complete cores yet — fix what the checks above list, save the workbook, and run again.", call. = FALSE)
+out <- file.path(OUTPUT_DIR, "option_B")
 dir.create(out, recursive = TRUE, showWarnings = FALSE)
 
-# ── Shared foundation: read, check, core stocks (identical to Option A) ─────────
-wb  <- read_workbook(WORKBOOK)
-chk <- check_slices(wb)
-checks <- print_check_report(check_report(chk))
-if (!any(chk$cores$status == "Complete")) stop("No complete cores yet — see the checks above.")
-inc <- increment_stocks(chk)
-check_mass_conservation(chk, inc)
-
 # ── The reporting area ─────────────────────────────────────────────────────────
-if (is.null(BOUNDARY_FILE) || !file.exists(BOUNDARY_FILE))
-  stop("Option B needs a reporting boundary: set BOUNDARY_FILE in ", SETTINGS_FILE, ".")
+if (is.null(BOUNDARY_FILE))
+  stop("Option B needs a reporting boundary: save it as a CSV of longitude, latitude vertices (e.g. ",
+       "my_data/boundary.csv) and set BOUNDARY_FILE in ", SETTINGS_FILE, ".", call. = FALSE)
+if (!file.exists(BOUNDARY_FILE))
+  stop("Boundary file not found: ", BOUNDARY_FILE, ". Check the name in BOUNDARY_FILE (", SETTINGS_FILE,
+       ") against the file in your folder.", call. = FALSE)
 boundary <- utils::read.csv(BOUNDARY_FILE)
 if (!all(c("longitude", "latitude") %in% names(boundary)))
   stop("The boundary file needs columns 'longitude' and 'latitude'.")

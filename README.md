@@ -100,9 +100,9 @@ These two phrases — *making the data useful* and *collecting the data* — com
 workshop as the names for these two jobs.
 
 Take some time to explore the data sheet in both forms: a
-[blank sheet](04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx) to fill
+[blank sheet](04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx) to fill
 in for your own site, and a
-[worked example](04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_Example.xlsx) with data
+[worked example](04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx) with data
 already entered so you can follow along. Throughout, the workshop covers why we collect each piece
 of data, what it is, how it is measured, and how it connects to your goals.
 
@@ -122,8 +122,8 @@ practices — so the data best supports your project and organizational goals.
 [**Section 4 — Data Interpretation**](04_Data_Interpretation/) then turns the completed sheet
 into carbon estimates.
 
-**👉 The data sheet we're building toward:** [digital data sheet (blank, .xlsx)](04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx)
-· the Cowichan worked copy: [`Eelgrass_Carbon_DigitalData_Example.xlsx`](04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_Example.xlsx).
+**👉 The data sheet we're building toward:** [digital data sheet (blank, .xlsx)](04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx)
+· the Cowichan worked copy: [`Eelgrass_Carbon_DigitalData_Example.xlsx`](04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx).
 
 | What the sheet captures | Filled in during | Covered in |
 |---|---|---|

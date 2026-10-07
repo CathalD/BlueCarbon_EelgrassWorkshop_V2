@@ -16,6 +16,7 @@ Legend: 📸 image/screenshot needed · 🔗 link needed · ✍️ writing neede
 - [ ] 📸 **NFLD corer photos** for the underwater / stop-cap section, and a check of the stop-cap wording ("suction from the sealed cap holds the sediment in the tube") against the device and video.
 - [ ] 📸 A workshop photo of the team coring or extruding, for the "Extrude and section" step.
 - [ ] 📸 The example lab **submission** sheet, filled in (Part 4, Step 1.3).
+- [ ] 📸 **The first RStudio screen** after `use_course()`: the new project open, with `Start_Here.R` in front and the Files pane showing `my_data/` (Part 4, Run it yourself; workflow quick start). Needs RStudio's window, so only you can take it.
 
 ## Landing page (`README.md`)
 
@@ -40,13 +41,22 @@ Legend: 📸 image/screenshot needed · 🔗 link needed · ✍️ writing neede
 
 ## Part 4 — Data Interpretation (`04_Data_Interpretation/README.md`)
 
-- [ ] 🔗 **Online copy of the digital data sheet.** The old Google Sheets link predated the 2026 revision and was removed. Re-upload `files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx` if you want an online copy, and link it in Part 4, Step 1.1.
+- [ ] 🔗 **Online copy of the digital data sheet.** The old Google Sheets link predated the 2026 revision and was removed. Re-upload `DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx` if you want an online copy, and link it in Part 4, Step 1.1.
 - [ ] 📊 **Lab directory table** — hidden (as an HTML comment in Step 1.3) until it has verified entries: website, contact, analyses, cost per sample, "quoted on" date.
 - [ ] ✍️ Tidy the **References** into your preferred citation style.
 - [ ] ❓ **Field Guide and Lab Guide corrections.** Part 4 lists where the workshop departs from the guides: the TC/OC note and "total ecosystem carbon" heading (p. 18), Eq 7, the bulk-density glossary entry, and the Lab Guide's × 0.5 LOI factor. Raise them with the guides' authors for the next edition.
 - [ ] ❓ **A low bulk-density check.** The slice check flags bulk density above 2.65 g/cm³ but not values near zero, which is what a dry weight typed in kilograms produces. Consider adding a lower bound (around 0.05 g/cm³) to the workbook and R checks.
 
 ## Analysis workflow (`04_Data_Interpretation/DataAnalysisWorkflow/`)
+
+- [ ] ❓ **Publish the participant download.** Part 4 and the workflow quick start point participants at
+  `usethis::use_course(".../releases/latest/download/BlueCarbon_Part4_Workshop.zip")`, which works once a
+  release carries that file. Build it with `sh data-raw/build_course_zip.sh`, attach
+  `dist/BlueCarbon_Part4_Workshop.zip` to a release (a draft first), and before announcing check that
+  `curl -sIL <that URL>` ends in `content-type: application/zip` — `use_course()` refuses any other type.
+  Until then, *Code → Download ZIP* and opening the `.Rproj` works.
+- [ ] ❓ **Posit Cloud** (later): a base project with the packages installed, shared by link, as a
+  no-install alternative to the local route.
 
 - [ ] ❓ **Published LOI equation.** The blank workbook ships with no LOI equation (participants enter a local calibration). If a published seagrass equation is ever offered as a fallback, verify its coefficients against the primary source first. The Fourqurean et al. (2012) figure quoted in older materials could not be checked.
 - [ ] ✍️ **Going further, modules 5–6.** Port the hierarchical transfer model and the spatial prediction from the research prototype, starting from its lightest variant (ecosystem class plus the local update).

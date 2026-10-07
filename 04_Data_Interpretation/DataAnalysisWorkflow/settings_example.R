@@ -1,26 +1,26 @@
-# settings.R — your project. This is the only file you edit (Start_Here.R walks you through it).
-# Each line is explained; the worked example's values are in settings_example.R for comparison.
+# settings_example.R — the Cowichan Estuary worked example. Start_Here.R runs it first to check
+# that everything works on your computer, and Part 4 shows its results. You do not need to edit
+# this file: your own project's settings are in settings.R.
 
-# ── 1. Your project (these words go straight into the reports) ──────────────────
+# ── 1. Your project (these words go straight into the report) ───────────────────
 PROJECT <- list(
-  title        = "My eelgrass sediment carbon project",
-  question_A   = "What do our cores tell us about sediment organic carbon here, and how do they compare with other eelgrass meadows?",
-  question_B   = "What do our cores imply for sediment organic carbon across our study area?",
-  area_habitat = "Site name, region — eelgrass (Zostera marina) sediment",
-  survey_dates = "Dates of fieldwork",
-  design       = "How the core locations were chosen (Part 2)",
-  methods      = "Corer, slice thickness, and how the lab measured carbon",
-  data_source  = "Who collected and analysed the samples",
-  prepared_by  = "Your name or organisation"
+  title        = "Cowichan Estuary eelgrass — worked example",
+  question_A   = "What do three eelgrass cores tell us about sediment organic carbon at Cowichan, and how do they compare with other eelgrass meadows?",
+  question_B   = "What might the three cores imply for sediment organic carbon across an eelgrass area at Cowichan? (Teaching example: the boundary is hypothetical.)",
+  area_habitat = "Cowichan Estuary, British Columbia — eelgrass (Zostera marina) sediment",
+  survey_dates = "Not given in the compiled dataset (see Douglas et al. 2022)",
+  design       = "Three stations chosen by the original study to be representative of the meadow (not randomly placed)",
+  methods      = "Push cores (7.6 cm acrylic tubes), 1–2 cm slices; organic carbon by elemental analyser after acid fumigation on some slices, loss on ignition (550 °C) on the rest, converted with a local calibration",
+  data_source  = "Douglas, Schuerholz & Juniper (2022), Frontiers in Marine Science 9:857586, as compiled in Janousek et al. (2025), doi:10.25573/serc.28127486",
+  prepared_by  = "Blue Carbon Eelgrass Workshop"
 )
 
 # ── 2. Your data ───────────────────────────────────────────────────────────────
-# Your completed digital data sheet (.xlsx), field and lab results together. Start_Here.R makes
-# this file for you from the blank sheet. No export needed — it is read directly.
-WORKBOOK <- "my_data/my_eelgrass_carbon.xlsx"
+# The completed digital data sheet (.xlsx). No export needed — it is read directly.
+WORKBOOK <- "workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx"
 
 # Where results are written: <OUTPUT_DIR>/checks, /option_A, /option_B, /module4.
-OUTPUT_DIR <- "outputs/my_project"
+OUTPUT_DIR <- "outputs/example"
 
 # ── 3. Option A — comparing your cores ─────────────────────────────────────────
 # Depth for the comparison (cm). NULL = the deepest standard depth (15, 30, 50, 100)
@@ -32,10 +32,8 @@ COMPARE_DEPTH_CM <- NULL
 REFERENCE_STATES <- c("BC", "WA")
 
 # Exclude your own estuary from the reference set, and any reference core within this
-# distance of one of your cores. This stops a core being compared with itself. Estuary codes
-# are in data/reference/janousek2025_zostera_cores.csv (column Estuary); leave empty if yours
-# is not there.
-REFERENCE_EXCLUDE_ESTUARIES <- character(0)
+# distance of one of your cores. This stops a core being compared with itself.
+REFERENCE_EXCLUDE_ESTUARIES <- c("COW")
 REFERENCE_EXCLUDE_WITHIN_M  <- 100
 
 # Both reference sets are always shown. Which one leads the report:
@@ -50,11 +48,10 @@ REFERENCE_HEADLINE <- "oc_or_loi"
 # "stratified"  = random sampling within strata (needs STRATUM_AREAS_M2)
 DESIGN <- "exploratory"
 
-# The reporting boundary: a CSV of longitude, latitude vertices (decimal degrees), e.g. exported
-# from the sampling tool in Part 2 and saved as my_data/boundary.csv. NULL = no boundary yet, so
-# Option B is skipped.
-BOUNDARY_FILE <- NULL
-BOUNDARY_IS_HYPOTHETICAL <- FALSE
+# The reporting boundary: a CSV of longitude, latitude vertices (decimal degrees).
+# The worked example's boundary is HYPOTHETICAL — drawn for teaching, not a mapped meadow.
+BOUNDARY_FILE <- "data/example_area/cowichan_HYPOTHETICAL_boundary.csv"
+BOUNDARY_IS_HYPOTHETICAL <- TRUE
 
 # For a stratified design: area of each stratum in m², named by the stratum codes in the
 # Core Log, e.g. c(SG_dense = 32000, SG_sparse = 18000). Strata with no cores are reported

@@ -17,8 +17,23 @@ side <- function(...) image_background(image_append(c(...)), "white")
 save <- function(im, path) { image_write(image_flatten(image_background(im, "white")), path, format = "png"); cat("wrote", path, "\n") }
 gg_save <- function(p, path, w, h) { ggsave(path, p, width = w, height = h, dpi = 150, bg = "white"); cat("wrote", path, "\n") }
 
-A <- readRDS("outputs/option_A/results.rds")
-B <- readRDS("outputs/option_B/results.rds")
+A <- readRDS("outputs/example/option_A/results.rds")
+B <- readRDS("outputs/example/option_B/results.rds")
+
+# ---- Part 4, Step 1.1: the paper sheet, digitized (constructed Tsawwassen core WWF-01-A) ---------
+img3 <- "../../03_Field_Methods/images"
+paper <- image_append(c(image_read(file.path(img3, "data_sheet_core_notes_section.png")),
+                        image_read(file.path(img3, "data_sheet_sample_data_section.png"))), stack = TRUE)
+tl <- shot("tsaw_log.png"); ts <- shot("tsaw_smp.png")
+W <- max(image_info(tl)$width, image_info(ts)$width, 900) + 24
+fig1b <- stack(
+  strip("The paper sheet (Part 3) — constructed Tsawwassen teaching example, not real data", W, col = "#8a7a55"),
+  pad(image_scale(paper, "820"), 12),
+  strip("Typed into the digital data sheet: tab 2, one row per core", W, col = GREEN),
+  pad(tl, 12),
+  strip("Tab 3, one row per slice. The lab columns stay empty until results come back, so every slice says AWAITING LAB.", W, size = 17, col = GREEN),
+  pad(ts, 12))
+save(fig1b, file.path(img4, "fig1b_paper_sheet_to_workbook.png"))
 
 # ---- Part 4, figure 2: one lab row becomes one workbook row ------------------------------------
 lab <- shot("lab.png"); wb <- shot("wb.png")
@@ -75,7 +90,7 @@ fig4 <- ggplot() +
 gg_save(fig4, file.path(img4, "fig4_slice_to_depth_stock.png"), 8, 5.6)
 
 # ---- Part 4, figure 5: Option A and Option B outputs ------------------------------------------
-file.copy("outputs/option_A/comparison.png", file.path(img4, "fig5a_option_A_comparison.png"), overwrite = TRUE)
+file.copy("outputs/example/option_A/comparison.png", file.path(img4, "fig5a_option_A_comparison.png"), overwrite = TRUE)
 res <- B$res; sc <- B$scenario$res
 card <- ggplot() + xlim(0, 1) + ylim(0, 1) + theme_void() +
   annotate("rect", xmin = 0, xmax = 1, ymin = 0, ymax = 1, fill = "#e8f3ec", colour = GREEN) +
@@ -89,8 +104,8 @@ card <- ggplot() + xlim(0, 1) + ylim(0, 1) + theme_void() +
   annotate("text", x = 0.05, y = 0.1, hjust = 0, size = 3.4, colour = BLUE,
            label = sprintf("Deeper scenario, 0–%g cm: %.1f Mg C/ha, %.0f%% estimated", B$settings$SCENARIO_DEPTH_CM, sc$mean_Mg_ha, sc$pct_estimated))
 cf <- file.path(shots, "card.png"); gg_save(card, cf, 5.2, 3.2)
-map <- image_scale(image_read("outputs/option_B/area_map.png"), "x780")
-bar <- image_scale(image_read("outputs/option_B/measured_estimated_share.png"), "780x")
+map <- image_scale(image_read("outputs/example/option_B/area_map.png"), "x780")
+bar <- image_scale(image_read("outputs/example/option_B/measured_estimated_share.png"), "780x")
 right <- stack(image_scale(image_read(cf), "780x"), bar)
 save(side(pad(map, 8), pad(right, 8)), file.path(img4, "fig5b_option_B_result.png"))
 
@@ -129,10 +144,10 @@ save(side(pad(left, 6), pad(mapz, 6)), file.path(img2, "tsawwassen_step1_boundar
 
 # ---- Workflow README: the few settings a participant changes ----------------------------------
 lines <- c('<span class="c">1</span>PROJECT &lt;- list(title = "…", question_A = "…", question_B = "…", …)',
-           '<span class="c">2</span>WORKBOOK &lt;- "../files/Eelgrass_Carbon_DigitalData_Example.xlsx"',
-           '<span class="c">3</span>REFERENCE_EXCLUDE_ESTUARIES &lt;- c("COW")',
+           '<span class="c">2</span>WORKBOOK &lt;- "my_data/my_eelgrass_carbon.xlsx"',
+           '<span class="c">3</span>REFERENCE_EXCLUDE_ESTUARIES &lt;- character(0)  <span class="k"># your estuary\'s code, if it is in the reference data</span>',
            '<span class="c">4</span>DESIGN &lt;- "exploratory"        <span class="k"># or "srs", "stratified"</span>',
-           '<span class="c">5</span>BOUNDARY_FILE &lt;- "data/example_area/cowichan_HYPOTHETICAL_boundary.csv"',
+           '<span class="c">5</span>BOUNDARY_FILE &lt;- "my_data/boundary.csv"   <span class="k"># NULL until you have one</span>',
            '<span class="c">6</span>STRATUM_AREAS_M2 &lt;- NULL        <span class="k"># e.g. c(high = 7138000, low = 3619500)</span>',
            '<span class="c">7</span>REPORT_DEPTH_CM &lt;- NULL         <span class="k"># NULL = deepest depth every core measured</span>')
 html <- paste0('<!doctype html><meta charset="utf-8"><style>body{margin:0;padding:16px;background:#fff;font:15px Menlo,monospace;color:#1b1f23}',

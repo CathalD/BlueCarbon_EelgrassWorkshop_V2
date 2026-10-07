@@ -45,9 +45,23 @@ in [Part 2](../02_Project_Planning/):
 > their dry weights are **reconstructed** from the published bulk density, and lab IDs and dates are
 > **illustrative**. The Option B area is a **hypothetical** boundary drawn for teaching. The Cowichan
 > cores did not come from the Tsawwassen sheet. Files: the
-> [example digital data sheet](files/Eelgrass_Carbon_DigitalData_Example.xlsx), the
-> [example lab results sheet](files/Example_Lab_Results.xlsx) and the
+> [example digital data sheet](DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx), the
+> [example lab results sheet](DataAnalysisWorkflow/workbooks/Example_Lab_Results.xlsx) and the
 > [analysis workflow](DataAnalysisWorkflow/).
+
+## Run it yourself
+
+The analysis in this part runs on your own computer, in RStudio, from one folder.
+
+| | You do | You see |
+|---|---|---|
+| **1. Download** | In the RStudio console: `usethis::use_course("https://github.com/CathalD/BlueCarbon_EelgrassWorkshop_V2/releases/latest/download/BlueCarbon_Part4_Workshop.zip")` | RStudio opens a new project, `BlueCarbon_Part4_Workshop`, with `Start_Here.R` |
+| **2. Test** | Click **Source** on `Start_Here.R` | The Cowichan example runs and its report opens; the console ends with *Setup works*; a blank workbook appears in `my_data/` |
+| **3. Your data** | Fill in `my_data/my_eelgrass_carbon.xlsx` from your field sheets and lab results, edit `settings.R`, click **Source** again | Your checks, core stocks and reports, in `outputs/my_project/` |
+
+The steps below show each stage with the Cowichan example. The boxes marked **▶ In RStudio** say
+what to do with your own workbook. Installing R, other ways to get the folder, and every file it
+writes: [the workflow's quick start](DataAnalysisWorkflow/).
 
 ---
 
@@ -90,7 +104,7 @@ The examples in these two tables are the **constructed Tsawwassen** field exampl
 | Date / Time | When the core was taken | 2026-06-16, 10:45 |
 | Study area / site | Location | Tsawwassen Beach |
 | Latitude / Longitude | Coordinates of the core | 49.033540, −123.131287 |
-| Photo series ID | Links the core to its photo record | `WWF-01-A-P` |
+| Photo series ID | Links the core to its photo record (optional; the paper sheet has no box for it — use its notes) | *(blank)* |
 | Weather / tidal conditions | Context for the sampling day | Partly cloudy, low tide |
 | Corer internal diameter (cm) | Only if this core used a different tube from the one on the Instructions tab — **measure it, don't assume it** | *(blank)* |
 | Outside depth (cm) | How far the corer was driven in (penetration) | 65.0 |
@@ -107,15 +121,17 @@ The examples in these two tables are the **constructed Tsawwassen** field exampl
 | Bottom depth (cm) | Bottom of the slice | 5 |
 | Notes | Texture, colour, roots, shell, rocks | Dense live root mat, dark brown silty clay |
 
-> 📸 **[SCREENSHOT NEEDED]** — the completed paper field data sheet.
->
-> 📸 **[SCREENSHOT NEEDED]** — the same sheet digitized, so readers can see how one transfers
-> onto the other.
+<img width="100%" alt="The constructed Tsawwassen paper sheet for core WWF-01-A, Steps 2 and 3, above the same core typed into the digital data sheet: on tab 2 the Core ID, the outside and inside depths 65 and 58 cm and the stratum Zone 3, giving a compaction factor of 1.121; on tab 3 the six slices with their depths, in-situ depths and sample volumes, each slice check saying AWAITING LAB because the lab columns are still empty" src="images/fig1b_paper_sheet_to_workbook.png">
+
+*What to notice: every number on the paper sheet is typed once, into a yellow cell. The compaction
+factor (65 ÷ 58 = 1.121), the in-situ depths and the sample volumes calculate themselves, and the
+slice check says **AWAITING LAB** until the dry weight and carbon value arrive. A constructed
+teaching example, not real data.*
 
 **The digital data sheet**
 
-**📊 [Download the blank digital data sheet](files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx)**
-· filled-in example: [`files/Eelgrass_Carbon_DigitalData_Example.xlsx`](files/Eelgrass_Carbon_DigitalData_Example.xlsx)
+**📊 [Download the blank digital data sheet](DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx)**
+· filled-in example: [`DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx`](DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx)
 · works in Excel, LibreOffice and Google Sheets (*File → Import*)
 
 <!-- TODO (Cathal): an online Google Sheets copy used to be linked here; it predated the 2026 revision. Re-upload the blank .xlsx and link it here if you want an online copy. -->
@@ -237,7 +253,7 @@ Requirements vary between labs, so confirm theirs before shipping.
 *A results sheet, one row per slice.*
 
 Results sheets differ between labs, but most carry the same handful of columns. The
-**[example lab results sheet](files/Example_Lab_Results.xlsx)** uses the Cowichan worked-example
+**[example lab results sheet](DataAnalysisWorkflow/workbooks/Example_Lab_Results.xlsx)** uses the Cowichan worked-example
 values and a "Reading this sheet" tab that maps every column to the digital data sheet. "Example
 Lab" is not a real laboratory.
 
@@ -318,6 +334,15 @@ is not organic carbon.
 goes to column M — here a **reconstructed** teaching value, as the sheet's colour key says. The
 measured organic carbon, 0.9 %, goes to column N, and column O says `OC`.*
 
+**▶ In RStudio — your own workbook**
+
+| | |
+|---|---|
+| **Open** | `my_data/my_eelgrass_carbon.xlsx` (RStudio's *Files* pane → `my_data`) |
+| **Do** | Copy each lab row's whole-slice dry weight, carbon value and carbon type into columns M, N and O of its slice. On *1. Instructions*, enter your corer diameter and, for LOI, your equation. Save. |
+| **See** | Columns P–Z fill in: bulk density, organic carbon, and the carbon stock of each slice and of each standard depth increment. |
+| **Means** | The workbook has done the calculation. The R workflow repeats it from the same inputs and checks that the two agree. |
+
 | From the results sheet | Goes to (*Sample Data* tab) |
 |---|---|
 | Dry weight of the whole slice (g) | Column **M** — Dry weight |
@@ -346,6 +371,15 @@ and LOI temperature and duration in the slice or core notes.
 
 *What to notice: one typo flags two slices and keeps the whole core out of the totals. Fix the
 number and the messages clear by themselves.*
+
+**▶ In RStudio — your own workbook**
+
+| | |
+|---|---|
+| **Open** | `Start_Here.R` |
+| **Do** | Click **Source** (or run section 4 on its own). |
+| **See** | Under *These cores are left out of the totals until fixed* and *Slice problems*, each problem with its core, sample and depths, in the same words as column AA. Nothing listed means every core is complete. The full list is also in `outputs/my_project/checks/slices_checked.csv`. |
+| **Means** | Fix each one in the workbook against the paper sheet or the lab report, save, and Source again. Never delete a flagged slice to make the check pass. |
 
 The last column of the *Sample Data* tab says what, if anything, is wrong with each slice.
 
@@ -392,6 +426,15 @@ repeat the slice above, because a copied row is easy to miss by eye.
 
 *What to notice: the 0–15 cm stock is entirely measured. The core stops at 20 cm, so the 15–30 cm
 increment is only partly measured — anything below 20 cm is an estimate, and is shaded apart.*
+
+**▶ In RStudio — your own workbook**
+
+| | |
+|---|---|
+| **Open** | The console after section 4 of `Start_Here.R`, or `outputs/my_project/checks/` |
+| **Do** | Read the table of cores. |
+| **See** | One row per core: its status, how deep it was measured (in situ), and its stock to 15, 30, 50 and 100 cm, with "—" where the core did not reach that depth. `cumulative_stocks.csv` and `increment_stocks.csv` hold the same numbers. |
+| **Means** | Compare cores only at a depth they all reached. A dash is not a zero, and nothing fills it in. |
 
 **Slice stock.** For each slice, the sheet calculates bulk density, organic carbon and the stock:
 
@@ -484,6 +527,15 @@ Cowichan itself and anything within 100 m left out. Depth: 0–15 cm, the deepes
 reached. Carbon basis: top panel, measured organic carbon plus LOI converted with the workbook's
 equation; bottom panel, measured organic carbon only.*
 
+**▶ In RStudio — your own workbook**
+
+| | |
+|---|---|
+| **Open** | `settings.R`, section 3 |
+| **Do** | Set `REFERENCE_STATES`, and put your estuary's code in `REFERENCE_EXCLUDE_ESTUARIES` if it is in the reference data. Source `Start_Here.R`. |
+| **See** | `outputs/my_project/option_A/report_option_A.html` opens. The console lists each core's stock at the common depth and its percentile in each reference set. |
+| **Means** | Where your cores sit among published eelgrass cores, at a depth they all measured. It describes the sampled locations, not the whole meadow. |
+
 Option A uses measured slices only: nothing is interpolated, smoothed or extrapolated. It produces:
 
 - **Core profiles** — organic carbon, bulk density and carbon density against in-situ depth, drawn
@@ -528,6 +580,15 @@ estuaries in BC and Washington.
 a **scenario**, and the bar shows how much of it was estimated. "Hypothetical" is on the map and the
 card, not just in the text. There is one value for the whole area and nothing is drawn between the
 points.*
+
+**▶ In RStudio — your own workbook**
+
+| | |
+|---|---|
+| **Open** | `settings.R`, section 4 |
+| **Do** | Save your boundary as `my_data/boundary.csv` (columns `longitude`, `latitude`). Set `BOUNDARY_FILE` and `DESIGN`, and `STRATUM_AREAS_M2` if you stratified. Source `Start_Here.R`. |
+| **See** | `outputs/my_project/option_B/report_option_B.html` opens. The console's first line is the measured headline, then any deeper scenario with its estimated share, then the depths not reported and why. |
+| **Means** | An estimate for that boundary under that design. Exploratory cores give no interval; a random design gives one, and the report says what it does and does not include. |
 
 **In the worked example** (exploratory design, **hypothetical** 6.6 ha boundary), every Cowichan core
 measured the top 15 cm: **14.6 Mg C/ha, about 96 Mg C over the area — all measured**. As a deeper
@@ -706,9 +767,9 @@ coordinates, dates, methods and the LOI equation — make that later step possib
 
 - [`DataAnalysisWorkflow/`](DataAnalysisWorkflow/) — the R analysis workflow (Options A and B), with
   its own quick-start README.
-- [`files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx`](files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx) — blank digital data sheet.
-- [`files/Eelgrass_Carbon_DigitalData_Example.xlsx`](files/Eelgrass_Carbon_DigitalData_Example.xlsx) — the Cowichan worked example, filled in.
-- [`files/Example_Lab_Results.xlsx`](files/Example_Lab_Results.xlsx) — a mock lab results sheet, and how to read it.
+- [`DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx`](DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx) — blank digital data sheet.
+- [`DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx`](DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx) — the Cowichan worked example, filled in.
+- [`DataAnalysisWorkflow/workbooks/Example_Lab_Results.xlsx`](DataAnalysisWorkflow/workbooks/Example_Lab_Results.xlsx) — a mock lab results sheet, and how to read it.
 - [`Lab-Guide-Eng-2026.pdf`](Lab-Guide-Eng-2026.pdf) — WWF-Canada laboratory procedures guide.
 - `images/` — lab result screenshots and analysis figures.
 

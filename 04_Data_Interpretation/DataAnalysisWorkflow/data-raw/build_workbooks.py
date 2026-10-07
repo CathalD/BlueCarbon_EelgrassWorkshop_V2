@@ -13,11 +13,14 @@ layout, colours and tab names, and applying the agreed corrections:
   * Core Summary only totals a core when every slice is checked OK — a blank is never a zero —
     and reports increments only where the core reaches them.
   * Plot & Core Log gains Stratum, an explicit "compaction not measured" choice, and Core notes.
+  * Room for a compiled survey: 300 cores and 4,000 slices, about the size of the whole Janousek
+    et al. (2025) Zostera compilation (240 cores, 3,276 slices). The last data row of each tab is
+    stored in a named cell (LAST_CORE_ROW, LAST_SLICE_ROW) so the R workflow reads the same rows.
 
 Usage (from DataAnalysisWorkflow/):
   python3 data-raw/build_workbooks.py <original_template.xlsx>
-Writes ../files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx and
-       ../files/Eelgrass_Carbon_DigitalData_Example.xlsx (Cowichan Estuary example).
+Writes workbooks/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx and
+       workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx (Cowichan Estuary example).
 Recalculate afterwards (LibreOffice headless) so cached values exist for readers.
 """
 import csv, math, sys
@@ -28,10 +31,12 @@ from openpyxl.workbook.defined_name import DefinedName
 from openpyxl.utils import get_column_letter as L
 
 TEMPLATE = sys.argv[1]
-OUT_DIR = "../files"
-N_CORE_ROWS = (6, 35)      # Plot & Core Log rows
-N_SLICE_ROWS = (6, 205)    # Sample Data rows
-N_SUM_ROWS = (5, 34)       # Core Summary rows
+OUT_DIR = "workbooks"
+CAP_CORES, CAP_SLICES = 300, 4000
+N_CORE_ROWS = (6, 5 + CAP_CORES)     # Plot & Core Log rows
+N_SLICE_ROWS = (6, 5 + CAP_SLICES)   # Sample Data rows
+N_SUM_ROWS = (5, 4 + CAP_CORES)      # Core Summary rows
+TEMPLATE_CORE_LAST = 35              # the original template styles Core Log rows 6-35
 INCREMENTS = [(0, 15), (15, 30), (30, 50), (50, 100)]
 S2, S3, S4 = "'2. Plot & Core Log'", "'3. Sample Data'", "'4. Core Summary'"
 
@@ -98,7 +103,14 @@ def build(example=None):
     log["K5"] = "Outside depth (cm)\n= depth of corer inserted"
     log["L5"] = "Inside depth (cm)\n= length of core extracted"
     c0, c1 = N_CORE_ROWS
+    clear(log, (TEMPLATE_CORE_LAST + 1, 40), 20)       # the template's footnote rows become data rows
+    for r in (38, 39):
+        log.row_dimensions[r].height = None
+    row6 = {c: style_of(log.cell(c0, c)) for c in range(1, 16)}
     for r in range(c0, c1 + 1):
+        if r > TEMPLATE_CORE_LAST:
+            for c in range(1, 16):
+                apply(log.cell(r, c), row6[c])
         for c in (16, 17, 18):
             apply(log.cell(r, c), st["input"])
         for c in (19, 20):
@@ -121,11 +133,13 @@ def build(example=None):
     log.column_dimensions["S"].width = 11
     log.column_dimensions["T"].width = 11
     log.merge_cells("A2:T2"); log.merge_cells("A4:I4"); log.merge_cells("J4:L4")
-    log.merge_cells("M4:O4"); log.merge_cells("P4:R4"); log.merge_cells("S4:T4"); log.merge_cells("A38:T39")
+    note = c1 + 3
+    log.merge_cells("M4:O4"); log.merge_cells("P4:R4"); log.merge_cells("S4:T4")
+    log.merge_cells(f"A{note}:T{note + 1}")
     log["A2"] = ("Enter one row for every core you collect. Core ID must be unique and must match "
                  "exactly what you type on Sheet 3 — the sample rows look up their compaction factor "
                  "and corer diameter from here.")
-    log["A38"] = (
+    log[f"A{note}"] = (
         "Outside depth = how far the corer was driven into the sediment (the datasheet's 'Depth of corer "
         "inserted'). Inside depth = the length of core actually recovered in the tube ('Length of core "
         "extracted'). Compaction factor = outside / inside: the number a measured depth is multiplied by "
@@ -134,8 +148,8 @@ def build(example=None):
         "will then say ASSUMED, never OK. Stratum: the code from your sampling design (Part 2), e.g. SG; "
         "leave blank if you did not stratify. Corer diameter: enter it once on the Instructions tab (YOUR "
         "CORER); fill column J only for a core taken with a different tube. Column S shows the diameter used.")
-    log.row_dimensions[38].height = 30; log.row_dimensions[39].height = 30
-    log["A38"].alignment = openpyxl.styles.Alignment(
+    log.row_dimensions[note].height = 30; log.row_dimensions[note + 1].height = 30
+    log[f"A{note}"].alignment = openpyxl.styles.Alignment(
         wrap_text=True, vertical="top")
     dv = DataValidation(type="list", formula1='"assume none"', allow_blank=True)
     log.add_data_validation(dv); dv.add(f"Q{N_CORE_ROWS[0]}:Q{N_CORE_ROWS[1]}")
@@ -143,7 +157,7 @@ def build(example=None):
     # =========================================================== 3. Sample Data
     unmerge_all(smp)
     old_widths = {k: v.width for k, v in smp.column_dimensions.items()}
-    clear(smp, (4, 207), 30)
+    clear(smp, (4, max(207, N_SLICE_ROWS[1] + 2)), 30)
     cols = [  # (header, band, kind, number format)
         ("Core ID", "field", "input", None), ("Sample ID", "field", "input", None),
         ("Top depth\n(cm)", "field", "input", "0.0"), ("Bottom depth\n(cm)", "field", "input", "0.0"),
@@ -233,7 +247,7 @@ def build(example=None):
     smp["A1"] = "Sample Data — one row per slice"
     smp["A2"] = ("Type only in the yellow columns. Core ID must match Sheet 2 exactly. Enter the carbon value "
                  "as a percent of dry mass (0.9 means 0.9%), and say what it is in column O: OC, TC or LOI.")
-    smp["A207"] = ("Depths in columns C–D are measured down the recovered core (in the tube). The increment "
+    smp[f"A{a1 + 2}"] = ("Depths in columns C–D are measured down the recovered core (in the tube). The increment "
                    "columns W–Z use in-situ depths (I–J), splitting a slice that crosses a boundary in "
                    "proportion to its overlap, so no carbon is gained or lost.")
     dv = DataValidation(type="list", formula1='"OC,TC,LOI"', allow_blank=True)
@@ -242,7 +256,7 @@ def build(example=None):
 
     # =========================================================== 4. Core Summary
     unmerge_all(summ)
-    clear(summ, (4, 40), 20)
+    clear(summ, (4, max(40, N_SUM_ROWS[1] + 6)), 20)
     sh = ["Core ID", "Plot ID", "Stratum", "Slices entered", "Slices checked OK",
           "Measured to —\nin tube (cm)", "Measured to —\nin situ (cm)", "Status",
           "Dry bulk density\n(g/cm3)\nthickness-weighted", "Organic carbon\n(%)\nmass-weighted",
@@ -312,8 +326,8 @@ def build(example=None):
     summ.freeze_panes = "B5"
 
     # =========================================================== 1. Instructions
-    clear(ins, (5, 80), 3)
-    for r in range(5, 81):
+    clear(ins, (5, 100), 3)
+    for r in range(5, 101):
         for c in (1, 2):
             apply(ins.cell(r, c), st["i_text"])
     rows = []
@@ -370,6 +384,18 @@ def build(example=None):
     R("0–15, 15–30, 30–50, 50–100 cm", "Measured on in-situ depths. A slice that crosses a boundary is split in "
       "proportion to how much of it lies on each side. Sheet 4 only reports an increment when the core reaches "
       "its bottom; otherwise it says 'partial' or 'not reached'.")
+    B(); H("SIZE OF THIS WORKBOOK")
+    R("Room for", f"{CAP_CORES} cores (Sheet 2, rows {N_CORE_ROWS[0]}–{N_CORE_ROWS[1]}) and {CAP_SLICES:,} slices (Sheet 3, rows {a0}–{a1}). "
+      "A larger survey can be compiled into this one workbook, one row per core and one row per slice — the "
+      "Janousek et al. (2025) eelgrass compilation (240 cores, 3,276 slices) would fit.")
+    k0, k1 = N_CORE_ROWS
+    R("Cores entered", f'=COUNTA({S2}!$B${k0}:$B${k1})&" of {CAP_CORES}"')
+    R("Slices entered", f'=COUNTA({S3}!$A${a0}:$A${a1})&" of {CAP_SLICES:,}"')
+    R("Anything typed below the tables?",
+      f'=IF(COUNTA({S2}!$B${k1 + 1}:$B${k1 + 2000})+COUNTA({S3}!$B${a1 + 1}:$D${a1 + 5000})=0,"No — good.",'
+      f'"YES: rows below the tables are not checked, totalled or read by the analysis. Move them up into the table.")')
+    R("Last data row, Sheet 2", None)
+    R("Last data row, Sheet 3", None)
     B(); H("THE ANALYSIS (Part 4)")
     R("No export needed", "The R workflow reads this workbook directly. Keep the tab names and the header rows as they "
       "are, save as .xlsx (in Google Sheets: File → Download → Microsoft Excel), and point the workflow's settings "
@@ -402,11 +428,17 @@ def build(example=None):
                 loi_rows[a] = r
                 apply(ins.cell(r, 2), st["input"], "0.000" if a.startswith("LOI") else "0.00")
                 ins.cell(r, 2).alignment = openpyxl.styles.Alignment(horizontal="left")
+            if a.startswith("Last data row"):
+                loi_rows[a] = r
+                ins.cell(r, 2).value = N_CORE_ROWS[1] if a.endswith("2") else N_SLICE_ROWS[1]
+                apply(ins.cell(r, 2), st["calc"], "0")
+                ins.cell(r, 2).alignment = openpyxl.styles.Alignment(horizontal="left")
         r += 1
     ins["A2"] = ("Companion to WWF-Canada, Measuring Carbon in Coastal Sediments (2026), and Part 4 of the "
                  "Blue Carbon Eelgrass Workshop.")
     for name, key in (("LOI_INTERCEPT", "LOI intercept"), ("LOI_SLOPE", "LOI slope"),
-                      ("CORER_DIAMETER_CM", "Corer internal diameter (cm)")):
+                      ("CORER_DIAMETER_CM", "Corer internal diameter (cm)"),
+                      ("LAST_CORE_ROW", "Last data row, Sheet 2"), ("LAST_SLICE_ROW", "Last data row, Sheet 3")):
         ref = f"'1. Instructions'!$B${loi_rows[key]}"
         dn = DefinedName(name, attr_text=ref)
         try:

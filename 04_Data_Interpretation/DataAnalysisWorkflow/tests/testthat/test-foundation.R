@@ -117,11 +117,44 @@ test_that("compaction moves slices to in-situ depth, is applied once, and conser
 })
 
 test_that("the Example workbook and R agree", {
-  wbf <- file.path(ROOT, "..", "files", "Eelgrass_Carbon_DigitalData_Example.xlsx")
+  wbf <- file.path(ROOT, "workbooks", "Eelgrass_Carbon_DigitalData_Example.xlsx")
   skip_if_not(file.exists(wbf))
   chk <- check_slices(read_workbook(wbf))
   cc <- cross_check_workbook(chk)
   expect_true(all(cc$max_abs_difference[1:4] <= 1e-6))
   expect_true(all(cc$max_abs_difference[5:7] == 0))
   expect_true(all(chk$cores$status == "Complete"))
+})
+
+test_that("the workbooks carry their own row limits, and older workbooks fall back to 30 / 200", {
+  blankf <- file.path(ROOT, "workbooks", "Eelgrass_Carbon_DigitalData_BlankSheet.xlsx")
+  skip_if_not(file.exists(blankf))
+  expect_equal(read_named_cell(blankf, "LAST_CORE_ROW"), 305)     # 300 cores
+  expect_equal(read_named_cell(blankf, "LAST_SLICE_ROW"), 4005)   # 4,000 slices
+  expect_equal(data_rows(blankf, "NO_SUCH_NAME", CORE_LOG_ROWS), c(6, 35))
+  wb <- read_workbook(blankf)                                     # an empty workbook reads cleanly
+  expect_equal(nrow(wb$cores), 0); expect_equal(nrow(wb$samples), 0)
+  chk <- check_slices(wb)
+  expect_false(any(chk$cores$status == "Complete"))
+  expect_null(core_summary(chk))
+  expect_equal(nrow(stock_table(data.frame(), data.frame())), 0)
+})
+
+test_that("a missing workbook gives a message that says where R looked", {
+  expect_error(read_workbook("my_data/not_there.xlsx"), "Workbook not found: my_data/not_there.xlsx \\(looked in")
+})
+
+test_that("the participant's settings and the example's settings define the same things", {
+  a <- new.env(); b <- new.env()
+  sys.source(file.path(ROOT, "settings.R"), a); sys.source(file.path(ROOT, "settings_example.R"), b)
+  expect_setequal(ls(a), ls(b))
+  expect_false(identical(a$OUTPUT_DIR, b$OUTPUT_DIR))           # example and own results never mix
+})
+
+test_that("the stock table shows each complete core to the depths it reached", {
+  chk <- simple_chk(core_row("C1"), slice_rows("C1", c(0, 10, 20), bd = 1, oc = 1))
+  inc <- increment_stocks(chk); cum <- cumulative_stocks(inc)
+  tab <- stock_table(core_summary(chk), cum)
+  expect_equal(tab[["0-15 cm (Mg C/ha)"]], "15.0")          # 1 g/cm3 x 1% x 15 cm x 100
+  expect_equal(tab[["0-30 cm (Mg C/ha)"]], "—")             # core only reaches 20 cm
 })

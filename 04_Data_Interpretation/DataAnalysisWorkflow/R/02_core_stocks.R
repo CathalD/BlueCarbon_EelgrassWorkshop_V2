@@ -101,3 +101,17 @@ core_summary <- function(chk) {
   })
   do.call(rbind, rows)
 }
+
+#' One row per core for the console: its status, how deep it was measured (in situ), and its
+#' cumulative stock (Mg C/ha) to each standard depth it fully reached ("—" where it did not).
+stock_table <- function(cores, cum) {
+  if (is.null(cores) || !nrow(cores)) return(data.frame())
+  out <- cores[, c("core_id", "status", "measured_to_insitu_cm")]
+  out$measured_to_insitu_cm <- round(out$measured_to_insitu_cm, 1)
+  for (d in STANDARD_INCREMENTS[-1]) {
+    x <- if (nrow(cum)) cum[cum$depth_cm == d, ] else data.frame(core_id = character(), stock_Mg_ha = numeric())
+    v <- x$stock_Mg_ha[match(out$core_id, x$core_id)]
+    out[[sprintf("0-%g cm (Mg C/ha)", d)]] <- ifelse(is.na(v), "—", sprintf("%.1f", v))
+  }
+  out
+}

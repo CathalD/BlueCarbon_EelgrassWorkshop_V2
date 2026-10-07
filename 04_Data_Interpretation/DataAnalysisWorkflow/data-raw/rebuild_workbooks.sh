@@ -16,9 +16,9 @@ SOFFICE=$(command -v soffice || echo /Applications/LibreOffice.app/Contents/MacO
 
 "${PYTHON:-python3}" data-raw/build_workbooks.py "$template"
 "${PYTHON:-python3}" data-raw/build_lab_results.py
-for f in ../files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx \
-         ../files/Eelgrass_Carbon_DigitalData_Example.xlsx \
-         ../files/Example_Lab_Results.xlsx \
+for f in workbooks/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx \
+         workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx \
+         workbooks/Example_Lab_Results.xlsx \
          data/synthetic/Eelgrass_Carbon_DigitalData_SYNTHETIC.xlsx; do
   [ -f "$f" ] || continue
   "$SOFFICE" --headless --calc --convert-to xlsx --outdir "$tmp" "$f" >/dev/null 2>&1
