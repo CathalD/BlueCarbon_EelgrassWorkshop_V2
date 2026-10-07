@@ -223,8 +223,10 @@ plot_increments <- function(inc) {
 
 #' Your cores against the reference distributions at the common depth (one panel per carbon basis).
 plot_reference <- function(refs, cmp, depth_cm, region_label) {
-  lab <- vapply(names(refs), function(k) sprintf("%s — %d cores, %d estuaries", REFERENCE_LABELS[[k]],
-                nrow(refs[[k]]), length(unique(refs[[k]]$Estuary))), "")
+  lab <- vapply(names(refs), function(k) {
+    n <- nrow(refs[[k]]); e <- length(unique(refs[[k]]$Estuary))
+    sprintf("%s — %d core%s, %d estuar%s", REFERENCE_LABELS[[k]], n, if (n == 1) "" else "s", e, if (e == 1) "y" else "ies")
+  }, "")
   d <- do.call(rbind, lapply(names(refs), function(k)
     if (nrow(refs[[k]])) data.frame(set = lab[[k]], stock_Mg_ha = refs[[k]]$stock_Mg_ha) else NULL))
   if (is.null(d))
