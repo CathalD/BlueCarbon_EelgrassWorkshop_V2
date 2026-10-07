@@ -1,8 +1,8 @@
 #!/bin/sh
 # Maintainer tool: regenerate the workshop's generated figures (spreadsheet crops, report
-# screenshots, result cards, Part 4 figures). Participants never need this.
+# screenshots, result cards, Part 4 figures, field data sheet crops). Participants never need this.
 # Needs: LibreOffice, Google Chrome, a Python with openpyxl (PYTHON=...), R with ggplot2 + magick,
-# pandoc (RSTUDIO_PANDOC=...). Run from DataAnalysisWorkflow/:
+# pandoc (RSTUDIO_PANDOC=...), pdftoppm (poppler). Run from DataAnalysisWorkflow/:
 #   PYTHON=~/venv/bin/python RSTUDIO_PANDOC=... sh data-raw/render_screenshots.sh
 set -e
 PY="${PYTHON:-python3}"
@@ -47,8 +47,9 @@ done
 "$CHROME" --headless=new --disable-gpu --hide-scrollbars --window-size=1000,2400 --screenshot="$T/report_A.png" "file://$PWD/outputs/option_A/report_option_A.html" 2>/dev/null
 "$CHROME" --headless=new --disable-gpu --hide-scrollbars --window-size=1000,2600 --screenshot="$T/report_B.png" "file://$PWD/outputs/option_B/report_option_B.html" 2>/dev/null
 
-# 5. Compose figures and cards
+# 5. Compose figures and cards; then the field data sheet figures, cut from the two datasheet PDFs
 "$RS" data-raw/make_workshop_figures.R "$T"
+"$RS" data-raw/make_datasheet_figures.R
 
 # 6. Example reports kept with the repository
 mkdir -p example_reports

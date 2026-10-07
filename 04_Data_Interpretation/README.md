@@ -89,13 +89,13 @@ The examples in these two tables are the **constructed Tsawwassen** field exampl
 | Core ID | Unique identifier: site, plot, sampling location | `WWF-01-A` |
 | Date / Time | When the core was taken | 2026-06-16, 10:45 |
 | Study area / site | Location | Tsawwassen Beach |
-| Latitude / Longitude | Coordinates of the core | 49.003354, −123.131287 |
+| Latitude / Longitude | Coordinates of the core | 49.033540, −123.131287 |
 | Photo series ID | Links the core to its photo record | `WWF-01-A-P` |
-| Weather / tidal conditions | Context for the sampling day | Partly cloudy |
+| Weather / tidal conditions | Context for the sampling day | Partly cloudy, low tide |
 | Corer internal diameter (cm) | Only if this core used a different tube from the one on the Instructions tab — **measure it, don't assume it** | *(blank)* |
 | Outside depth (cm) | How far the corer was driven in (penetration) | 65.0 |
 | Inside depth (cm) | Length of core actually recovered | 58.0 |
-| Stratum (code) | The stratum from your sampling design, if you stratified | `dense` |
+| Stratum (code) | The stratum from your sampling design, if you stratified | `Zone 3` |
 
 **Recorded once per slice** — the *Sample Data* tab:
 

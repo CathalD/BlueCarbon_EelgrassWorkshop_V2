@@ -207,8 +207,9 @@ sharply.
 
 **📋 Record it on the data sheet — plot notes**
 
-Let the data sheet guide what you need to capture. Fill in the top section now: date and
-time, site conditions, weather, and tidal conditions — plus the core's latitude/longitude.
+Let the data sheet guide what you need to capture. Fill in the top section now: plot ID, date
+and time, study area and site, weather and tidal conditions — and, if your design has strata,
+the plot's **stratum** (the zone it was drawn from in your Part 2 plan).
 
 </td>
 <td width="45%">
@@ -497,9 +498,9 @@ This step has four short companion videos:
 </td>
 <td width="50%">
 
-<img width="100%" alt="Bagging and labelling a sectioned slice" src="images/bagging_and_labelling_a_sectioned_slice.png">
+<img width="100%" alt="An eelgrass core pushed up to the rim of the tube, its top ready to be sliced off" src="images/core_top_at_rim_ready_to_slice.png">
 
-**Bagging and labelling** each slice with its depths.
+**Ready to slice:** the core pushed up to the rim of the tube.
 
 </td>
 </tr>
@@ -541,7 +542,7 @@ if section 2 ends at 5 cm, section 3 starts at 5 cm, and so on.
 </td>
 <td width="45%">
 
-<img width="461" height="232" alt="Data sheet — sample data section" src="images/data_sheet_sample_data_section.png" />
+<img width="100%" alt="Data sheet — sample data section" src="images/data_sheet_sample_data_section.png">
 
 </td>
 </tr>
@@ -555,7 +556,7 @@ The workshop data sheet is included: **[`datasheets/Eelgrass_Carbon_Datasheet_v2
 with a filled-in example, [`datasheets/Eelgrass_Carbon_Datasheet_Example.pdf`](datasheets/Eelgrass_Carbon_Datasheet_Example.pdf).
 It captures exactly the fields the analysis expects:
 
-- **Plot notes** — Plot ID, date, study area, time, study site, weather/conditions, project name
+- **Plot notes** — project name, stratum (if stratified), Plot ID, date, study area, time, study site, weather/conditions
 - **Core notes** (once per core) — Core ID, latitude, longitude, corer internal diameter, depth of corer inserted, length of core extracted
 - **Sample data** (per slice) — Core ID, sample #, top (cm), bottom (cm), notes
 
@@ -570,10 +571,11 @@ It captures exactly the fields the analysis expects:
 </td>
 <td width="50%">
 
-<img width="100%" alt="Filled-in field data sheet from the Project Planning example" src="images/filled_in_field_data_sheet_from_the_project_planning_example.png">
+<img width="100%" alt="Filled-in field data sheet: the constructed Tsawwassen teaching example, plot WWF-01, core WWF-01-A in Zone 3" src="images/filled_in_field_data_sheet_from_the_project_planning_example.png">
 
-**Filled-in example** — the same sheet completed for the eelgrass inlet site from
-[Section 2 — Project Planning](../02_Project_Planning/).
+**Filled-in example** — the same sheet completed for one core of the constructed Tsawwassen
+plan from [Section 2 — Project Planning](../02_Project_Planning/): plot `WWF-01`, core
+`WWF-01-A`, in Zone 3. A teaching example, not real data.
 
 </td>
 </tr>

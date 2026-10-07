@@ -12,7 +12,7 @@ Legend: 📸 image/screenshot needed · 🔗 link needed · ✍️ writing neede
 
 - [ ] 📸 **GEE boundary**, exported as a file (Part 2, Step 1). The screenshot is in place; the saved boundary itself is not yet in the repo.
 - [ ] 📸 **The exported coordinate list** (Part 2, Step 5) — the first rows of the CSV the tool downloads, beside the map.
-- [ ] 📸 **A real labelled bag beside its sheet row** (Part 3, Extrude and section; Part 4, Figure 1), with the label readable.
+- [ ] 📸 **A real labelled bag beside its sheet row** (Part 3, Extrude and section; Part 4, Figure 1), with the label readable. Figure 1 shows a drawn label, marked as an illustration, until then.
 - [ ] 📸 **NFLD corer photos** for the underwater / stop-cap section, and a check of the stop-cap wording ("suction from the sealed cap holds the sediment in the tube") against the device and video.
 - [ ] 📸 A workshop photo of the team coring or extruding, for the "Extrude and section" step.
 - [ ] 📸 The example lab **submission** sheet, filled in (Part 4, Step 1.3).
@@ -31,14 +31,12 @@ Legend: 📸 image/screenshot needed · 🔗 link needed · ✍️ writing neede
 
 - [ ] 🔗 Step 3 video callout (*"Site Selection and Required Materials"*): swap the playlist link for the **direct** video URL.
 - [ ] 📸 **Margin-of-error comparison** (Step 4): calculator at ±20% vs ±10% side by side, *n* readout circled. Sheet 5 of the calculator now shows this as a grid.
-- [ ] 🗑️ Three GIFs from the **older version of the sampling tool** are no longer used — `images/old_tool_tsawwassen_boundary_drawing.gif`, `old_tool_tsawwassen_auto_stratification.gif` and `old_tool_tsawwassen_stratified_points.gif` (27 MB together). They show a 38-plot result from the old tool, which no longer matches the example. Delete them, or re-record with the current tool.
 - [ ] 🔗 `Sampling Design Tools/SamplingPlanTool_README.md` names `BlueCarbon_SampleAllocation_2026.xlsx`; the file is `BlueCarbon_SampleAllocation_Spreadsheet_V2.xlsx`.
 - [ ] ❓ **Detecting change over time.** Monitoring analysis is out of scope for this release (Part 2 explains what to keep so it stays possible). If repeat surveys become a goal, Part 2 would need a minimum-detectable-difference calculation at the design stage.
 
 ## Part 3 — Field Methods (`03_Field_Methods/README.md`)
 
 - [ ] 🔗 **Core Depths** video (step 1): needs its own direct URL if the current one is shared with "Site Selection."
-- [ ] ❓ The data-sheet section images (`images/data_sheet_*.png`) are crops of the earlier sheet. Replace them with crops of the corrected PDFs once those are exported.
 
 ## Part 4 — Data Interpretation (`04_Data_Interpretation/README.md`)
 
@@ -72,3 +70,4 @@ issues are listed in `advanced/README.md`; fix them only if that material is bro
 - [x] **Figures kept in the repository**: all images downloaded from GitHub attachments, GIFs renamed with static key frames, generated figures and example reports reproducible from `data-raw/`.
 - [x] **Digital data sheet revised:** carbon type (OC / TC / LOI) with an explicit LOI equation; slice and core checks that never turn a blank into a zero; standard depth increments; corer diameter set once with a per-core override; workbook and R cross-checked.
 - [x] **Automated tests** of the calculations (`tests/testthat/`).
+- [x] **Field data sheet corrected** in the Google Doc (`Soil_Carbon_Datasheet_v2`; a backup copy was made first): stratum and corer internal diameter boxes added. A separate filled copy holds the constructed Tsawwassen example (`WWF-01-A`, Zone 3, coordinates inside the plan boundary, ISO date). Both PDFs re-exported; the Part 3 crops and Part 4 Figure 1 are cut from them by `data-raw/make_datasheet_figures.R`.
