@@ -5,22 +5,13 @@
 # 100 m left out), updates it with your sampling units, checks the method on the reference
 # estuaries themselves, and renders a short report. Options A and B do not use any of this.
 
-if (!exists("SETTINGS_FILE")) SETTINGS_FILE <- Sys.getenv("SETTINGS_FILE", "settings.R")
-source(SETTINGS_FILE)
-for (f in list.files("R", pattern = "\\.R$", full.names = TRUE)) source(f)
+# ── Shared foundation (run_checks.R, as for Options A and B) ────────────────────
+source("run_checks.R")
+if (!ready) stop("No complete cores yet — fix what the checks above list, save the workbook, and run again.", call. = FALSE)
 here <- file.path("going_further", "module4_regional_prior")
 source(file.path(here, "R", "regional_prior.R"))
-out <- if (exists("OUTPUT_DIR_M4")) OUTPUT_DIR_M4 else file.path("outputs", "module4")
+out <- file.path(OUTPUT_DIR, "module4")
 dir.create(out, recursive = TRUE, showWarnings = FALSE)
-
-# ── Shared foundation (identical to Options A and B) ───────────────────────────
-wb  <- read_workbook(WORKBOOK)
-chk <- check_slices(wb)
-checks <- print_check_report(check_report(chk))
-if (!any(chk$cores$status == "Complete")) stop("No complete cores yet — see the checks above.")
-inc <- increment_stocks(chk)
-check_mass_conservation(chk, inc)
-cum <- cumulative_stocks(inc)
 
 # ── Your side: one MEASURED value per sampling unit ────────────────────────────
 D <- if (is.null(MODULE4_DEPTH_CM)) common_depth(cum) else MODULE4_DEPTH_CM

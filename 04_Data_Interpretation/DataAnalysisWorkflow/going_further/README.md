@@ -59,7 +59,7 @@ our own cores with what published cores from other estuaries already say?
 source("going_further/module4_regional_prior/run_module4.R")
 ```
 
-Results go to `outputs/module4/`: the prior, local-only and combined estimates, the check, and a
+Results go to `outputs/my_project/module4/` (or `outputs/example/module4/` for the worked example): the prior, local-only and combined estimates, the check, and a
 short report.
 
 **What it found on the worked example.** For the three Cowichan cores at 0–15 cm, the published

@@ -13,10 +13,17 @@ CORE_LOG_COLS <- c(plot_id = 1, core_id = 2, date = 3, time = 4, site = 5, latit
 SAMPLE_COLS <- c(core_id = 1, sample_id = 2, top_cm = 3, bottom_cm = 4, notes = 5,
                  wet_g = 12, dry_g = 13, carbon_value_pct = 14, carbon_type = 15,
                  wb_bd = 17, wb_oc_pct = 18, wb_stock_kg_m2 = 22, wb_check = 27)
-# Rows the template provides for data (first, last). Anything typed below them is an error,
+# Rows the template provides for data (first, last). Current workbooks store their last data
+# row in the named cells LAST_CORE_ROW and LAST_SLICE_ROW (300 cores, 4,000 slices); these are
+# the rows of earlier workbooks, which did not. Anything typed below the table is an error,
 # not something to ignore quietly.
 CORE_LOG_ROWS <- c(6, 35)
 SAMPLE_ROWS   <- c(6, 205)
+
+data_rows <- function(path, name, fallback) {
+  last <- tryCatch(read_named_cell(path, name), error = function(e) NA_real_)
+  if (is.na(last)) fallback else c(fallback[1], last)
+}
 
 read_tab <- function(path, sheet, cols, rows, extra_cols) {
   raw <- suppressMessages(readxl::read_excel(path, sheet = sheet, col_names = FALSE,
@@ -25,9 +32,11 @@ read_tab <- function(path, sheet, cols, rows, extra_cols) {
   filled <- Reduce(`|`, lapply(extra_cols, function(i)
     if (i <= ncol(raw)) !is.na(raw[[i]]) & trimws(raw[[i]]) != "" else rep(FALSE, nrow(raw))))
   if (any(below & filled))
-    stop(sprintf("'%s' has data below row %d (row %s). The template has room for rows %d–%d only: ",
-                 sheet, rows[2], paste(which(below & filled), collapse = ", "), rows[1], rows[2]),
-         "add rows inside the table, or split the project into two workbooks.")
+    stop(sprintf("'%s' has data below row %d (row %s), which is not read. This workbook's table runs from row %d to %d: ",
+                 sheet, rows[2], paste(head(which(below & filled), 10), collapse = ", "), rows[1], rows[2]),
+         "move those rows up into the table. If the table is full, copy everything into the current blank ",
+         "workbook (workbooks/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx), which holds 300 cores and 4,000 slices.",
+         call. = FALSE)
   raw <- raw[rows[1]:min(rows[2], nrow(raw)), , drop = FALSE]
   out <- as.data.frame(lapply(cols, function(i) if (i <= ncol(raw)) raw[[i]] else NA_character_),
                        stringsAsFactors = FALSE)
@@ -57,8 +66,11 @@ read_named_cell <- function(path, name) {
 
 #' Read the workbook. Returns list(cores, samples, loi, corer_diameter_cm).
 read_workbook <- function(path) {
-  if (!file.exists(path)) stop("Workbook not found: ", path)
-  cores <- read_tab(path, "2. Plot & Core Log", CORE_LOG_COLS, CORE_LOG_ROWS, extra_cols = 2)
+  if (!file.exists(path))
+    stop("Workbook not found: ", path, " (looked in ", normalizePath(getwd()), "). Check WORKBOOK in your ",
+         "settings file, and that the workbook is saved there as .xlsx.", call. = FALSE)
+  cores <- read_tab(path, "2. Plot & Core Log", CORE_LOG_COLS,
+                    data_rows(path, "LAST_CORE_ROW", CORE_LOG_ROWS), extra_cols = 2)
   cores <- cores[!blank(cores$core_id), ]
   for (k in c("latitude", "longitude", "diameter_cm", "outside_cm", "inside_cm", "wb_diameter_used"))
     cores[[k]] <- as_num(cores[[k]])
@@ -66,7 +78,8 @@ read_workbook <- function(path) {
   cores$plot_id <- ifelse(blank(cores$plot_id), NA_character_, trimws(cores$plot_id))
   cores$stratum <- ifelse(blank(cores$stratum), NA_character_, trimws(cores$stratum))
 
-  s <- read_tab(path, "3. Sample Data", SAMPLE_COLS, SAMPLE_ROWS, extra_cols = c(2, 3, 4))
+  s <- read_tab(path, "3. Sample Data", SAMPLE_COLS,
+                data_rows(path, "LAST_SLICE_ROW", SAMPLE_ROWS), extra_cols = c(2, 3, 4))
   s <- s[!blank(s$core_id), ]
   for (k in c("top_cm", "bottom_cm", "wet_g", "dry_g", "carbon_value_pct",
               "wb_bd", "wb_oc_pct", "wb_stock_kg_m2"))

@@ -1,24 +1,13 @@
 # run_option_A.R — "What do our samples tell us, and how do they compare?"
 #   source("run_option_A.R")
 # Reads the workbook, checks it, calculates core stocks, compares them with published
-# eelgrass cores, writes tables and figures to outputs/option_A/, and renders the report.
+# eelgrass cores, writes tables and figures to <OUTPUT_DIR>/option_A/, and renders the report.
 
-if (!exists("SETTINGS_FILE")) SETTINGS_FILE <- Sys.getenv("SETTINGS_FILE", "settings.R")
-source(SETTINGS_FILE)
-for (f in list.files("R", pattern = "\\.R$", full.names = TRUE)) source(f)
-out <- if (exists("OUTPUT_DIR_A")) OUTPUT_DIR_A else file.path("outputs", "option_A")
+# ── Shared foundation: read, check, core stocks (run_checks.R) ──────────────────
+source("run_checks.R")
+if (!ready) stop("No complete cores yet — fix what the checks above list, save the workbook, and run again.", call. = FALSE)
+out <- file.path(OUTPUT_DIR, "option_A")
 dir.create(out, recursive = TRUE, showWarnings = FALSE)
-
-# ── Shared foundation: read, check, core stocks ─────────────────────────────────
-wb  <- read_workbook(WORKBOOK)
-chk <- check_slices(wb)
-checks <- print_check_report(check_report(chk))
-if (!any(chk$cores$status == "Complete")) stop("No complete cores yet — see the checks above.")
-
-cores <- core_summary(chk)
-inc   <- increment_stocks(chk)
-check_mass_conservation(chk, inc)
-cum   <- cumulative_stocks(inc)
 
 # ── Comparison ─────────────────────────────────────────────────────────────────
 D <- if (is.null(COMPARE_DEPTH_CM)) common_depth(cum) else COMPARE_DEPTH_CM
@@ -36,9 +25,7 @@ ref_table <- do.call(rbind, lapply(names(refs), function(k)
 boundary <- if (!is.null(BOUNDARY_FILE) && file.exists(BOUNDARY_FILE)) utils::read.csv(BOUNDARY_FILE) else NULL
 
 # ── Write outputs ──────────────────────────────────────────────────────────────
-utils::write.csv(chk$slices, file.path(out, "slices_checked.csv"), row.names = FALSE)
-utils::write.csv(cores, file.path(out, "core_summary.csv"), row.names = FALSE)
-utils::write.csv(inc,   file.path(out, "increment_stocks.csv"), row.names = FALSE)
+# (the checked slices, core summary and increment stocks are in <OUTPUT_DIR>/checks/)
 utils::write.csv(cmp,   file.path(out, "comparison.csv"), row.names = FALSE)
 for (k in names(refs))
   utils::write.csv(refs[[k]], file.path(out, sprintf("reference_cores_%s.csv", k)), row.names = FALSE)

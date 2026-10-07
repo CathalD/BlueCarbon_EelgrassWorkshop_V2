@@ -18,8 +18,8 @@ purpose:
 |---|---|---|
 | Plan (Part 2) | Tsawwassen — constructed team, real tool run | [`02_Project_Planning.md`](02_Project_Planning.md) · [calculator copy](../02_Project_Planning/BlueCarbon_SampleAllocation_Spreadsheet_V2_Tsawwassen_Example.xlsx) |
 | Field practice (Part 3) | Tsawwassen core `WWF-01-A` — constructed | [filled-in field sheet](../03_Field_Methods/datasheets/Eelgrass_Carbon_Datasheet_Example.pdf) |
-| Lab results (Part 4) | Cowichan — published values, mock lab layout | [`Example_Lab_Results.xlsx`](../04_Data_Interpretation/files/Example_Lab_Results.xlsx) |
-| Checked workbook (Part 4) | Cowichan — published, dry weights reconstructed | [`Eelgrass_Carbon_DigitalData_Example.xlsx`](../04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_Example.xlsx) |
+| Lab results (Part 4) | Cowichan — published values, mock lab layout | [`Example_Lab_Results.xlsx`](../04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Example_Lab_Results.xlsx) |
+| Checked workbook (Part 4) | Cowichan — published, dry weights reconstructed | [`Eelgrass_Carbon_DigitalData_Example.xlsx`](../04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx) |
 | Option A and B reports (Part 4) | Cowichan — Option B area hypothetical | [Option A](../04_Data_Interpretation/DataAnalysisWorkflow/example_reports/cowichan_report_option_A.html) · [Option B](../04_Data_Interpretation/DataAnalysisWorkflow/example_reports/cowichan_report_option_B.html) |
 
 | Part | Example | Data |
@@ -33,9 +33,9 @@ site.**
 | You want… | Use this |
 |---|---|
 | A completed planning example | [`02_Project_Planning.md`](02_Project_Planning.md) |
-| A completed digital data sheet | [`04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_Example.xlsx`](../04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_Example.xlsx) |
-| What a lab results sheet looks like | [`04_Data_Interpretation/files/Example_Lab_Results.xlsx`](../04_Data_Interpretation/files/Example_Lab_Results.xlsx) |
-| A blank data sheet to fill in | [`04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx`](../04_Data_Interpretation/files/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx) |
+| A completed digital data sheet | [`04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx`](../04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_Example.xlsx) |
+| What a lab results sheet looks like | [`04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Example_Lab_Results.xlsx`](../04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Example_Lab_Results.xlsx) |
+| A blank data sheet to fill in | [`04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx`](../04_Data_Interpretation/DataAnalysisWorkflow/workbooks/Eelgrass_Carbon_DigitalData_BlankSheet.xlsx) |
 | A blank sampling calculator | [`02_Project_Planning/`](../02_Project_Planning/) |
 | The analysis workflow (reusable) | [`04_Data_Interpretation/DataAnalysisWorkflow/`](../04_Data_Interpretation/DataAnalysisWorkflow/) |
 

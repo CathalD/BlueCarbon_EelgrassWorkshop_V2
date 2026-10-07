@@ -4,7 +4,7 @@
 # sits at 0° N, 0° E so it describes no real place.
 #   SETTINGS_FILE <- "settings_synthetic.R"; source("run_option_B.R")
 
-source("settings.R")   # start from the worked example's settings, then change what differs
+source("settings_example.R")   # start from the worked example's settings, then change what differs
 
 PROJECT <- list(
   title        = "SYNTHETIC stratified survey — calculation demonstration",
@@ -27,4 +27,4 @@ STRATUM_AREAS_M2 <- c(dense = 35609, sparse = 20772, channel_edge = 5935)
 
 REPORT_DEPTH_CM <- NULL       # every synthetic core reaches 30 cm, so the headline is measured
 SCENARIO_DEPTH_CM <- NULL
-OUTPUT_DIR_B <- file.path("outputs", "option_B_synthetic")
+OUTPUT_DIR <- "outputs/synthetic"

@@ -6,7 +6,7 @@ output:
     toc: true
     toc_depth: 2
 params:
-  results: "outputs/option_A/results.rds"
+  results: "outputs/example/option_A/results.rds"
 ---
 
 ```{r setup, include = FALSE}

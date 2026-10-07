@@ -7,9 +7,15 @@ eelgrass cores (Option A), and an estimate for a defined area (Option B).*
 
 ---
 
-You do not need to write R. You edit one settings file and run one line. Everything else —
-checks, tables, figures and a short report — is produced for you, from the same workbook you
-filled in during [Part 4](../README.md).
+You do not need to write R. You download one folder, click **Source** on one file to test it, then
+fill in your own workbook and click **Source** again. Checks, core stocks, tables, figures and short
+reports are produced for you, from the same digital data sheet described in [Part 4](../README.md).
+
+| | You do | You see |
+|---|---|---|
+| **1. Download** | Run two lines in RStudio (below) | RStudio opens a new project, `BlueCarbon_Part4_Workshop`, with `Start_Here.R` |
+| **2. Test** | Click **Source** on `Start_Here.R` | The worked example runs; the console ends with *Setup works*; its report opens; your blank workbook appears in `my_data/` |
+| **3. Your data** | Fill in `my_data/my_eelgrass_carbon.xlsx`, edit `settings.R`, click **Source** again | Your checks and core stocks in the console; your reports in `outputs/my_project/` |
 
 ## What you get
 
@@ -44,62 +50,118 @@ result supports. The example reports are HTML files: download one and open it in
 
 Everything else in `settings.R` has a sensible default. Each line is explained in the file itself.
 
-## 1. Install (once)
+## 1. Download
 
-1. Install **R** (4.1 or later) from [cran.r-project.org](https://cran.r-project.org) and
-   **RStudio** from [posit.co](https://posit.co/download/rstudio-desktop/). RStudio includes
-   pandoc, which the reports need.
-2. In the RStudio console, install the packages:
+Install **R** from [cran.r-project.org](https://cran.r-project.org) and **RStudio** from
+[posit.co](https://posit.co/download/rstudio-desktop/) (RStudio includes pandoc, which the reports
+need). Then, in the RStudio console:
 
-   ```r
-   install.packages(c("readxl", "ggplot2", "survey", "rmarkdown", "knitr"))
-   ```
+```r
+install.packages("usethis")   # only if you do not have it
+usethis::use_course("https://github.com/CathalD/BlueCarbon_EelgrassWorkshop_V2/releases/latest/download/BlueCarbon_Part4_Workshop.zip")
+```
 
-   `testthat` is only needed if you want to run the checks in `tests/`.
-
-## 2. Point it at your workbook
-
-Download or copy this `DataAnalysisWorkflow/` folder. Open it in RStudio and set it as the working
-directory (*Session → Set Working Directory → To Source File Location* with `settings.R` open).
-
-Open **`settings.R`** — the only file you need to edit. As shipped it runs the Cowichan worked
-example. Replace the lines in the picture above.
+`use_course()` asks where to put the folder (your Desktop by default), unpacks it, and opens it as a
+new RStudio project with `Start_Here.R` in front of you. The download is about 2 MB: the workflow,
+the blank and example workbooks, the published reference cores, and the example reports.
 
 <details>
-<summary><b>Every section of settings.R</b></summary>
+<summary><b>Other ways to get the folder</b></summary>
 
 <br>
 
-| Section | What to set |
-|---|---|
-| 1. Your project | The words that go into the report: title, questions, area, dates, design, methods, data source |
-| 2. Your data | `WORKBOOK` — the path to your saved `.xlsx` |
-| 3. Option A | Comparison depth (blank = the deepest standard depth all your cores reached), region, and your own estuary's code to leave out |
-| 4. Option B | `DESIGN` (`"exploratory"`, `"srs"` or `"stratified"`), `BOUNDARY_FILE`, stratum areas, plot size, reporting depth and deeper scenario, precision target |
+- **From the release page:** download `BlueCarbon_Part4_Workshop.zip` from the repository's
+  *Releases*, unzip it, and double-click `BlueCarbon_Part4_Workshop.Rproj`.
+- **From the whole repository:** *Code → Download ZIP* on GitHub (the whole workshop, about
+  120 MB), then open `04_Data_Interpretation/DataAnalysisWorkflow/BlueCarbon_Part4_Workshop.Rproj`.
+
+Either way, always open the `.Rproj` file first: it sets R to the right folder, so every path in
+the workflow works without setting a working directory.
 
 </details>
 
-The boundary is a CSV of `longitude,latitude` vertices in decimal degrees — draw it in any GIS or
-Google Earth and export the corners. See [`data/example_area/`](data/example_area/) for the format.
+## 2. Test
 
-## 3. Run
+Click **Source** at the top right of `Start_Here.R`. The first time, it:
+
+1. installs any missing packages (`readxl`, `ggplot2`, `survey`, `rmarkdown`, `knitr`);
+2. runs the Cowichan worked example through the checks, Option A and Option B, and opens its report.
+   The console ends with **`Setup works.`**;
+3. copies the blank digital data sheet to `my_data/my_eelgrass_carbon.xlsx`, ready for your data.
+
+<details>
+<summary><b>What the console shows on a successful test</b></summary>
+
+<br>
+
+```text
+Eelgrass_Carbon_DigitalData_Example.xlsx — 3 core(s) and 45 slice(s) entered; 3 core(s) complete and totalled.
+ core_id   status measured_to_insitu_cm 0-15 cm (Mg C/ha) 0-30 cm (Mg C/ha) ...
+  COW-S5 Complete                    20              17.1                 — ...
+  COW-S6 Complete                    20              12.1                 — ...
+  COW-S7 Complete                    20              14.5                 — ...
+...
+0–15 cm: mean 14.6 Mg C/ha over 6.56 ha → 96 Mg C (3 sampling units, exploratory design; 0% of it estimated below the cores).
+Deeper scenario — 0–30 cm: mean 33.7 Mg C/ha over 6.56 ha → 221 Mg C (3 sampling units, exploratory design; 38% of it estimated below the cores).
+...
+Setup works. The worked example's results are in outputs/example/.
+Your workbook is ready to fill in: my_data/my_eelgrass_carbon.xlsx
+
+my_eelgrass_carbon.xlsx — 0 core(s) and 0 slice(s) entered; 0 core(s) complete and totalled.
+The workbook has no cores yet: fill in Sheet 2 (one row per core) and Sheet 3 (one row per slice).
+```
+
+</details>
+
+## 3. Your data
+
+1. **Fill in `my_data/my_eelgrass_carbon.xlsx`** — open it from RStudio's *Files* pane. One row per
+   core on *2. Plot & Core Log* (from the field data sheet), one row per slice on *3. Sample Data*
+   (field depths, then the lab's dry weight, carbon value and carbon type). Set your corer diameter
+   and, if you have LOI values, your LOI equation on *1. Instructions*. The workbook calculates
+   bulk density, organic carbon and carbon stock itself, and its *Slice check* column says what is
+   missing. It holds 300 cores and 4,000 slices — compile a larger survey into this one workbook.
+   Google Sheets works too: upload it, then *File → Download → .xlsx* back into `my_data/`.
+2. **Edit `settings.R`** — the lines in the picture above. For Option B, save your boundary as
+   `my_data/boundary.csv` (columns `longitude`, `latitude`, decimal degrees — e.g. exported from the
+   sampling tool in Part 2; see [`data/example_area/`](data/example_area/) for the format) and set
+   `BOUNDARY_FILE`.
+3. **Click Source on `Start_Here.R` again.** Each time it checks the workbook and prints every
+   problem that keeps a core out of the totals — a missing lab value, a gap, a duplicate ID,
+   unmeasured compaction — with the same messages as the workbook. Fix them in the workbook, save,
+   and Source again. Once a core is complete, Option A runs; once `BOUNDARY_FILE` is set, Option B
+   runs too.
+
+Your files in `my_data/` and your results in `outputs/my_project/` are yours: the workflow never
+uploads anything, and the example's results in `outputs/example/` are kept separate.
+
+<details>
+<summary><b>Running one step at a time</b></summary>
+
+<br>
+
+`Start_Here.R` is in numbered sections: click inside one and press *Ctrl+Alt+T* (*Cmd+Option+T* on a
+Mac). Or run the scripts directly from the console:
 
 ```r
+source("run_checks.R")     # read, check, core stocks — use while entering and fixing data
 source("run_option_A.R")   # Option A: our cores, and how they compare
 source("run_option_B.R")   # Option B: an estimate for a defined area
 ```
 
-Both start by checking the workbook. Anything that keeps a core out of the totals is printed first.
-That covers a missing lab value, a gap, a duplicate ID or unmeasured compaction. The same messages
-appear in the workbook's *Slice check* and *QC check* columns. Fix those in the workbook, save it,
-and run again.
+Each script starts with `run_checks.R`, so the checks are the same everywhere. To run the worked
+example instead of your own data, set `SETTINGS_FILE <- "settings_example.R"` first.
+
+</details>
 
 ## 4. Where the results go
 
 | Folder | Contents |
 |---|---|
-| `outputs/option_A/` | `report_option_A.html`; checked slices; core and increment stocks; the comparison table and both reference sets; profile, increment, comparison, bulk-density and location figures |
-| `outputs/option_B/` | `report_option_B.html`; each core's measured and estimated stock by increment; sampling-unit values; the area estimate at every standard depth; carbon curves and the reporting-area map |
+| `outputs/my_project/checks/` | Every slice with its calculations and check message; one row per core; stocks in each standard increment and from the surface down |
+| `outputs/my_project/option_A/` | `report_option_A.html`; the comparison table and both reference sets; profile, increment, comparison, bulk-density and location figures |
+| `outputs/my_project/option_B/` | `report_option_B.html`; each core's measured and estimated stock by increment; sampling-unit values; the area estimate at every standard depth; carbon curves and the reporting-area map |
+| `outputs/example/` | The same, for the worked example (made by the test) |
 
 Open the `.html` reports in any browser.
 
@@ -134,9 +196,9 @@ Open the `.html` reports in any browser.
 
 | Run | Data | What it shows |
 |---|---|---|
-| `source("run_option_A.R")` | Three published Cowichan eelgrass cores (Douglas et al. 2022, via Janousek et al. 2025) | Option A on real measurements |
-| `source("run_option_B.R")` | The same cores, inside a **hypothetical** 6.6 ha boundary, exploratory design | How Option B handles cores that stop at 20 cm, and why no interval is given |
-| `SETTINGS_FILE <- "settings_synthetic.R"; source("run_option_B.R")` | A **synthetic** stratified survey, computer-generated, at 0° N 0° E | The stratified calculation, its interval, and an unsampled stratum |
+| `SETTINGS_FILE <- "settings_example.R"; source("run_option_A.R")` | Three published Cowichan eelgrass cores (Douglas et al. 2022, via Janousek et al. 2025) | Option A on real measurements |
+| `SETTINGS_FILE <- "settings_example.R"; source("run_option_B.R")` | The same cores, inside a **hypothetical** 6.6 ha boundary, exploratory design | How Option B handles cores that stop at 20 cm, and why no interval is given |
+| `SETTINGS_FILE <- "settings_synthetic.R"; source("run_option_B.R")` | A **synthetic** stratified survey, computer-generated, at 0° N 0° E (repository only, not in the download) | The stratified calculation, its interval, and an unsampled stratum |
 
 <details>
 <summary><b>Folder contents</b></summary>
@@ -145,15 +207,21 @@ Open the `.html` reports in any browser.
 
 | Path | What it is |
 |---|---|
-| `settings.R` | The one file you edit |
-| `run_option_A.R`, `run_option_B.R` | The two run scripts |
+| `BlueCarbon_Part4_Workshop.Rproj` | The RStudio project — open this first |
+| `Start_Here.R` | Test, then run your own data: click Source |
+| `settings.R` | The one file you edit — your project |
+| `settings_example.R` | The worked example's settings (used by the test) |
+| `run_checks.R` | The shared foundation: read, check, core stocks |
+| `run_option_A.R`, `run_option_B.R` | The two options, each starting from `run_checks.R` |
+| `workbooks/` | The blank digital data sheet, the Cowichan example, and the mock lab results sheet |
+| `my_data/` | Your own workbook and boundary (not shared, not tracked by git) |
 | `report_option_A.Rmd`, `report_option_B.Rmd` | Report templates (filled in automatically) |
 | `R/` | The functions, in workflow order |
 | `data/reference/` | Published *Zostera marina* cores for Option A comparisons — see its README |
 | `data/example_area/` | The worked example's hypothetical boundary |
 | `data/synthetic/`, `settings_synthetic.R` | The synthetic stratified demonstration |
 | `tests/testthat/` | Automated checks of the calculations, on synthetic fixtures: `testthat::test_dir("tests/testthat")` |
-| `data-raw/` | Maintainer scripts that rebuild the workbooks and reference files. Participants never need these |
+| `data-raw/` | Maintainer scripts that rebuild the workbooks, figures and the download (`build_course_zip.sh`). Participants never need these |
 | `going_further/` | Optional modules that build on Options A and B |
 | `advanced/` | The earlier research pipeline, kept for reference. Nothing here depends on it |
 | `example_reports/` | The rendered example reports, kept so you can look before you run anything |
